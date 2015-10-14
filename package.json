@@ -1,0 +1,17 @@
+{
+  "name": "BracketDraft",
+  "version": "1.0.0",
+  "description": "Draft your Bracket",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Phil Dornfeld",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "http": "0.0.0",
+    "path": "^0.12.7"
+  }
+}
