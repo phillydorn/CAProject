@@ -79,7 +79,12 @@ var React = require('react');
 var NavHeader = React.createClass({displayName: "NavHeader",
   render: function() {
     return (
-      React.createElement("nav", null, "Nav")
+      React.createElement("nav", null, 
+      React.createElement("a", {href: "/"}, "Home"), 
+      React.createElement("a", {href: "/#/signup"}, "Sign Up"), 
+      React.createElement("a", {href: "/#/login"}, "Log In")
+
+      )
       );
   }
 });
@@ -90,6 +95,8 @@ module.exports = NavHeader;
 var React = require('react');
 
 var Signup = React.createClass({displayName: "Signup",
+
+
   render: function() {
     return (
       React.createElement("div", {className: "signup-form"}, 

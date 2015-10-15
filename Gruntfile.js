@@ -7,7 +7,7 @@ grunt.initConfig({
 
   watch: {
       react: {
-        files: 'client/**/*.jsx.js',
+        files: ['client/**/*.jsx.js','client/app.js'],
         tasks: ['browserify']
       }
     },
@@ -24,7 +24,7 @@ grunt.initConfig({
 });
 grunt.loadNpmTasks('grunt-browserify');
 grunt.loadNpmTasks('grunt-contrib-watch');
-grunt.registerTask('default', ['browserify']);
+grunt.registerTask('default', ['browserify', 'watch']);
 
 }
 
