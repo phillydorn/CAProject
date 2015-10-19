@@ -1,12 +1,13 @@
-
+//
 var express = require('express');
     app = express(),
     server  = require('http').createServer(app),
     bodyParser = require ('body-parser');
 
+
 require('./config/express')(app);
-// require('./auth')(app);
-// require('./routes')(app);
+require('./auth')(app);
+require('./routes')(app);
 
 
 

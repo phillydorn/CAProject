@@ -1,0 +1,9 @@
+h1 {
+  color: green; }
+
+.signup-form {
+  width: 50%;
+  margin: 0 auto;
+  font-size: 24px; }
+  .signup-form .input-block {
+    display: block; }

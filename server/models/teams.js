@@ -10,22 +10,27 @@ var sequelize = new Sequelize('bracketDraft', 'root', '', {
   }
 });
 
-var Team = require('./teams');
+var League = require('./leagues');
+var User = require('./users');
+var NCAA_Team = require('./NCAA_Teams');
 
 module.exports = function() {
-  var NCAA_Team = sequelize.define('NCAA_Team', {
-    NCAA_Team_name: Sequelize.STRING,
+  var Team = sequelize.define('Team', {
+    team_name: Sequelize.STRING,
     wins: Sequelize.INTEGER,
 
-  }, {
+  },
+  {
     classMethods: {
       associate: function(models) {
-        NCAA_Team.belongsToMany(models.Team, {through: 'Team-NCAA'});
+        Team.belongsTo(models.League);
+        Team.belongsTo(models.User);
+        Team.belongsToMany(models.NCAA_Team, {through: 'Team-NCAA'});
       }
     }
   });
+  return Team;
 
-
-  return NCAA_Team;
 }
+
 

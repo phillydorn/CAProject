@@ -11,21 +11,20 @@ var sequelize = new Sequelize('bracketDraft', 'root', '', {
 });
 
 var Team = require('./teams');
+var User = require('./users');
 
 module.exports = function() {
-  var NCAA_Team = sequelize.define('NCAA_Team', {
-    NCAA_Team_name: Sequelize.STRING,
-    wins: Sequelize.INTEGER,
-
-  }, {
+  var League = sequelize.define('League', {
+    league_name: Sequelize.STRING
+  },{
     classMethods: {
       associate: function(models) {
-        NCAA_Team.belongsToMany(models.Team, {through: 'Team-NCAA'});
+        League.hasMany(models.Team);
+        League.belongsToMany(models.User, {through: 'league_managers'});
       }
     }
   });
 
-
-  return NCAA_Team;
+  return League;
 }
 

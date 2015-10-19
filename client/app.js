@@ -14,11 +14,17 @@ var NavHeader = require('./components/nav.jsx.js');
 var BracketApp = React.createClass({
 
 
+  getInitialState: function() {
+    return {loggedIn : false}
+  },
+
+
   render : function(){
+
     return (
       <div>
         <NavHeader />
-        <RouteHandler />
+        <RouteHandler data={this.state.loggedIn} />
       </div>
     );
   }
