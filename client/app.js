@@ -8,6 +8,7 @@ var RouteHandler = Router.RouteHandler;
 var BracketMain = require('./components/main.jsx.js');
 var Login = require('./components/login.jsx.js');
 var Signup = require('./components/signup.jsx.js');
+var Bracket = require('./components/bracket.jsx.js');
 var NavHeader = require('./components/nav.jsx.js');
 
 
@@ -36,6 +37,7 @@ var routes = (
       <DefaultRoute handler = {BracketMain} />
         <Route name="Login" path="/login" handler={Login} />
         <Route name="Signup" path="/signup" handler={Signup} />
+        <Route name="Bracket" path="/bracket" handler={Bracket} />
     </Route>
 );
 

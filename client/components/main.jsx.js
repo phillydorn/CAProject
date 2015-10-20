@@ -12,6 +12,10 @@ var Bracket = require('./bracket.jsx.js');
 
     mixins: [Reflux.connect(mainStore, "schoolsList")],
 
+    componentWillMount: function(){
+      MainActions.loadSchools();
+    },
+
     render: function() {
       return (
           <div className="main">

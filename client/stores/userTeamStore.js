@@ -12,16 +12,19 @@ userTeamStore = Reflux.createStore({
 
 
   onAddSchool: function(mainData) {
-    var school = mainData.school[0];
-    var list= this.userSchoolList;
-    for (var i=0; i<10; i++) {
-      if (list[i]==='') {
-        list[i] = {name: school.name, id: school.id};
-        break;
+    if (mainData.school.length>0) {
+
+      var school = mainData.school[0];
+      var list= this.userSchoolList;
+      for (var i=0; i<10; i++) {
+        if (list[i]==='') {
+          list[i] = {market: school.market, id: school.id};
+          break;
+        }
+      }
+      this.trigger(list);
       }
     }
-   this.trigger(list);
-  }
 });
 
 module.exports = userTeamStore;

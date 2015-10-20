@@ -21,7 +21,7 @@ var UserTeam = React.createClass({
   render: function() {
     var schoolNodes = this.state.userSchoolList.map(function (school) {
       return (
-          <UserSchool schoolName = {school.name} schoolId={school.id} key={school.id} />
+          <UserSchool schoolName = {school.market} schoolId={school.id} key={school.id} />
         )
     });
     return (

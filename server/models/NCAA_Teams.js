@@ -15,7 +15,11 @@ var Team = require('./teams');
 module.exports = function() {
   var NCAA_Team = sequelize.define('NCAA_Team', {
     NCAA_Team_name: Sequelize.STRING,
-    wins: Sequelize.INTEGER,
+    wins: {type: Sequelize.INTEGER, defaultValue: 0},
+    market: Sequelize.STRING,
+    sportRadarID: Sequelize.STRING,
+    bracket: Sequelize.STRING,
+    seed: Sequelize.INTEGER,
 
   }, {
     classMethods: {

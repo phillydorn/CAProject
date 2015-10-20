@@ -66,6 +66,7 @@ var RouteHandler = Router.RouteHandler;
 var BracketMain = require('./components/main.jsx.js');
 var Login = require('./components/login.jsx.js');
 var Signup = require('./components/signup.jsx.js');
+var Bracket = require('./components/bracket.jsx.js');
 var NavHeader = require('./components/nav.jsx.js');
 
 
@@ -93,7 +94,8 @@ var routes = (
     React.createElement(Route, {name: "BracketApp", handler: BracketApp, path: "/"}, 
       React.createElement(DefaultRoute, {handler: BracketMain}), 
         React.createElement(Route, {name: "Login", path: "/login", handler: Login}), 
-        React.createElement(Route, {name: "Signup", path: "/signup", handler: Signup})
+        React.createElement(Route, {name: "Signup", path: "/signup", handler: Signup}), 
+        React.createElement(Route, {name: "Bracket", path: "/bracket", handler: Bracket})
     )
 );
 
@@ -101,11 +103,21 @@ Router.run(routes, function (Handler) {
     React.render(React.createElement(Handler, null), document.getElementById('content'));
 });
 
-},{"./components/login.jsx.js":7,"./components/main.jsx.js":8,"./components/nav.jsx.js":9,"./components/signup.jsx.js":12,"react":215,"react-router":52}],6:[function(require,module,exports){
+},{"./components/bracket.jsx.js":6,"./components/login.jsx.js":7,"./components/main.jsx.js":8,"./components/nav.jsx.js":9,"./components/signup.jsx.js":12,"react":215,"react-router":52}],6:[function(require,module,exports){
 var React = require('react');
 
 var Bracket = React.createClass({displayName: "Bracket",
+
+  getDefaultProps: function() {
+    return {teams: []};
+  },
+
+
   render: function() {
+    this.props.teams = this.props.teams instanceof Array ? this.props.teams : this.props.teams.list;
+    var schoolnodes = this.props.teams.map(function(team) {
+
+    });
     return (
         React.createElement("a", {href: "#", className: "bracket"})
       )
@@ -165,6 +177,10 @@ var Bracket = require('./bracket.jsx.js');
 
     mixins: [Reflux.connect(mainStore, "schoolsList")],
 
+    componentWillMount: function(){
+      MainActions.loadSchools();
+    },
+
     render: function() {
       return (
           React.createElement("div", {className: "main"}, 
@@ -193,7 +209,8 @@ var NavHeader = React.createClass({displayName: "NavHeader",
       React.createElement("ul", null, 
         React.createElement("li", null, React.createElement(Link, {to: "/"}, "Home")), 
         React.createElement("li", null, React.createElement(Link, {to: "/signup"}, "Sign Up")), 
-        React.createElement("li", null, React.createElement(Link, {to: "/login"}, "Log In"))
+        React.createElement("li", null, React.createElement(Link, {to: "/login"}, "Log In")), 
+        React.createElement("li", null, React.createElement(Link, {to: "/bracket"}, "Bracket"))
       )
       )
       );
@@ -333,9 +350,10 @@ var School = require('./school.jsx.js');
 var TeamPool = React.createClass({displayName: "TeamPool",
 
   render: function() {
+    this.props.schoolsList = this.props.schoolsList instanceof Array ? this.props.schoolsList : this.props.schoolsList.list;
     var schoolNodes = this.props.schoolsList.map(function (school) {
       return (
-          React.createElement(School, {schoolName: school.name, key: school.id, schoolId: school.id})
+          React.createElement(School, {schoolName: school.market, key: school.id, schoolId: school.id})
         )
     });
     return (
@@ -387,7 +405,7 @@ var UserTeam = React.createClass({displayName: "UserTeam",
   render: function() {
     var schoolNodes = this.state.userSchoolList.map(function (school) {
       return (
-          React.createElement(UserSchool, {schoolName: school.name, schoolId: school.id, key: school.id})
+          React.createElement(UserSchool, {schoolName: school.market, schoolId: school.id, key: school.id})
         )
     });
     return (
@@ -448,6 +466,7 @@ module.exports = loginStore;
 },{"../actions/LoginActions":1,"jquery":21,"react":215,"reflux":232}],17:[function(require,module,exports){
 var Reflux = require('reflux');
 var MainActions = require('../actions/MainActions');
+var $ = require('jquery');
 
 mainStore = Reflux.createStore({
 
@@ -455,25 +474,28 @@ mainStore = Reflux.createStore({
 
 
   getInitialState: function() {
-    return {list: this.onLoadSchools()};
+    this.schoolsList = {};
+    this.schoolsList.list = [];
+    this.schoolsList.school = [];
+    return {list: this.schoolsList};
   },
 
   onLoadSchools: function() {
-    this.schoolsList = [
-      {name: 'Northwestern', id: 1},
-      {name: 'Michigan', id: 2},
-      {name: 'Ohio State', id: 3},
-      {name: 'Michigan State', id: 4},
-      {name: 'Purdue', id: 5},
-      {name: 'Illinois', id: 6},
-    ];
-    return this.schoolsList;
-
+    var self = this;
+    $.ajax({
+      url: '/api/schools',
+      dataType: 'json',
+      method: 'GET',
+      success: function(data) {
+        self.schoolsList.list = data;
+        self.trigger(self.schoolsList);
+      }
+    });
   },
 
 
   onSelectTeam: function(school) {
-    var list = this.schoolsList;
+    var list = this.schoolsList.list;
     for (var i = 0; i< list.length; i++) {
       if (list[i].id === school.props.schoolId) {
         var selectedSchool = list.splice(i,1);
@@ -487,7 +509,7 @@ mainStore = Reflux.createStore({
 });
 
 module.exports = mainStore;
-},{"../actions/MainActions":2,"reflux":232}],18:[function(require,module,exports){
+},{"../actions/MainActions":2,"jquery":21,"reflux":232}],18:[function(require,module,exports){
 var Reflux = require('reflux');
 var SignupActions = require('../actions/SignupActions');
 
@@ -517,16 +539,19 @@ userTeamStore = Reflux.createStore({
 
 
   onAddSchool: function(mainData) {
-    var school = mainData.school[0];
-    var list= this.userSchoolList;
-    for (var i=0; i<10; i++) {
-      if (list[i]==='') {
-        list[i] = {name: school.name, id: school.id};
-        break;
+    if (mainData.school.length>0) {
+
+      var school = mainData.school[0];
+      var list= this.userSchoolList;
+      for (var i=0; i<10; i++) {
+        if (list[i]==='') {
+          list[i] = {market: school.market, id: school.id};
+          break;
+        }
+      }
+      this.trigger(list);
       }
     }
-   this.trigger(list);
-  }
 });
 
 module.exports = userTeamStore;

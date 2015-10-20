@@ -1,5 +1,6 @@
 var Reflux = require('reflux');
 var MainActions = require('../actions/MainActions');
+var $ = require('jquery');
 
 mainStore = Reflux.createStore({
 
@@ -7,25 +8,28 @@ mainStore = Reflux.createStore({
 
 
   getInitialState: function() {
-    return {list: this.onLoadSchools()};
+    this.schoolsList = {};
+    this.schoolsList.list = [];
+    this.schoolsList.school = [];
+    return {list: this.schoolsList};
   },
 
   onLoadSchools: function() {
-    this.schoolsList = [
-      {name: 'Northwestern', id: 1},
-      {name: 'Michigan', id: 2},
-      {name: 'Ohio State', id: 3},
-      {name: 'Michigan State', id: 4},
-      {name: 'Purdue', id: 5},
-      {name: 'Illinois', id: 6},
-    ];
-    return this.schoolsList;
-
+    var self = this;
+    $.ajax({
+      url: '/api/schools',
+      dataType: 'json',
+      method: 'GET',
+      success: function(data) {
+        self.schoolsList.list = data;
+        self.trigger(self.schoolsList);
+      }
+    });
   },
 
 
   onSelectTeam: function(school) {
-    var list = this.schoolsList;
+    var list = this.schoolsList.list;
     for (var i = 0; i< list.length; i++) {
       if (list[i].id === school.props.schoolId) {
         var selectedSchool = list.splice(i,1);
