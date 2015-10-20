@@ -1,5 +1,45 @@
-h1 {
-  color: green; }
+li {
+  list-style: none; }
+
+.team-box {
+  border: 3px solid black;
+  width: 200px; }
+  .team-box.teamPool {
+    background-color: #b99abe;
+    float: left; }
+  .team-box.userTeam {
+    background-color: #9dbcf3;
+    float: right; }
+  .team-box.otherTeam {
+    background-color: #8483a2;
+    float: left;
+    margin-left: 200px; }
+  .team-box .team-list {
+    padding: 0; }
+  .team-box .school {
+    border: 1px solid black;
+    width: 100%; }
+    .team-box .school :hover {
+      background-size: 100%;
+      background-color: #e7ceeb; }
+      .userTeam .team-box .school :hover {
+        background-color: #c4d3ef; }
+    .team-box .school a {
+      padding: 12px;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      line-height: 5px; }
+      .userTeam .team-box .school a {
+        height: 10px; }
+
+.bracket {
+  background-image: url("/images/bracket.gif");
+  background-size: 100%;
+  height: 300px;
+  width: 300px;
+  float: right;
+  position: relative; }
 
 .signup-form {
   width: 50%;
