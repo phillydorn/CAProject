@@ -9,10 +9,17 @@ require('./config/express')(app);
 require('./auth')(app);
 require('./routes')(app);
 
+var models = require('./models');
+
+
 
 
 app.set('port', (process.env.PORT || 3000));
-app.listen(app.get('port'), function() { console.log('Node app running on port', app.get('port')) });
+models.sequelize.sync().then(function () {
+  var server = app.listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + app.get('port'));
+  });
+});
 
 
 

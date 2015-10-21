@@ -1,29 +1,19 @@
-var Sequelize = require('sequelize');
-var sequelize = new Sequelize('bracketDraft', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-  port: 3306,
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  }
-});
-var Team = require('./teams');
-var League = require('./leagues');
+"use strict";
 
-module.exports = function() {
+
+
+module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
-    username: {type: Sequelize.STRING, unique: true},
-    password: Sequelize.STRING,
-    email: Sequelize.STRING,
-    firstname: Sequelize.STRING,
-    lastname: Sequelize.STRING
+    username: {type: DataTypes.STRING, unique: true},
+    password: DataTypes.STRING,
+    email: DataTypes.STRING,
+    firstname: DataTypes.STRING,
+    lastname: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
         User.hasMany(models.Team);
-        User.belongsToMany(models.League, {as: 'Managers', through: 'league_managers'});
+        User.belongsToMany(models.League, {through: 'league_managers'});
       }
     }
   });

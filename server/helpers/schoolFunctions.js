@@ -1,4 +1,4 @@
-var School = require('../models/NCAA_Teams');
+var models = require('../models');
 var request = require('request');
 
 if (!process.env.CLIENT_ID) {
@@ -16,8 +16,8 @@ module.exports = {
         var results = [];
         brackets.forEach(function(bracket) {
           bracket.participants.forEach(function(school){
-            School().sync().then(function() {
-              School().findOrCreate({
+            models.NCAA_Team.sync().then(function() {
+              models.NCAA_Team.findOrCreate({
                 where: {
                   sportRadarID:school.id
                 },

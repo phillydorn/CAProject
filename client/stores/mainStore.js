@@ -11,7 +11,7 @@ mainStore = Reflux.createStore({
     this.schoolsList = {};
     this.schoolsList.list = [];
     this.schoolsList.school = [];
-    return {list: this.schoolsList};
+    return {list: this.schoolsList, otherTeams: []};
   },
 
   onLoadSchools: function() {
@@ -26,6 +26,7 @@ mainStore = Reflux.createStore({
       }
     });
   },
+
 
 
   onSelectTeam: function(school) {

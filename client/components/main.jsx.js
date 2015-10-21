@@ -12,17 +12,22 @@ var Bracket = require('./bracket.jsx.js');
 
     mixins: [Reflux.connect(mainStore, "schoolsList")],
 
+    getInitialState: function() {
+      return {otherTeams: []}
+    },
+
     componentWillMount: function(){
       MainActions.loadSchools();
+      MainActions.loadTeams(this);
     },
+
 
     render: function() {
       return (
           <div className="main">
-            <h1>Main</h1>
             <Bracket teams={this.state.schoolsList.list} />
             <TeamPool schoolsList={this.state.schoolsList.list} />
-            <OtherTeam />
+            <OtherTeam otherTeams={this.state.otherTeams} />
             <UserTeam userSchoolsList={this.state.userSchoolsList} />
           </div>
         );

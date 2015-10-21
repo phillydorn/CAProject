@@ -1,16 +1,49 @@
-var bcrypt = require('bcrypt');
-var User = require('./models/users');
-var Sequelize = require('sequelize');
-var sequelize = new Sequelize('bracketDraft', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-  port: 3306,
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  }
+var bcrypt = require('bcrypt'),
+    models = require('./models'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
+
+
+
+passport.serializeUser(function(user, done) {
+  console.log('serialiez')
+  done(null, user.id);
 });
+
+passport.deserializeUser(function(id, done) {
+  console.log('deserialize')
+  models.User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+var checkPassword = function(password, hash, done, user) {
+
+  bcrypt.compare(password, hash, function(err, resp) {
+    if (resp) {
+      console.log('success')
+        return done(null, user);
+    } else {
+      console.log('failure')
+      return done(null, false, { message: 'Incorrect password.' });
+    }
+  })
+
+
+}
+
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+      models.User.findOne({ where: {username: username }}).then(function (user) {
+        if (!user) {
+          return done(null, false, { message: 'Incorrect username.' });
+        }
+        checkPassword(password, user.password, done, user);
+
+      });
+    }
+  ));
+
 
 module.exports = function(app) {
 
@@ -22,44 +55,25 @@ module.exports = function(app) {
       username : req.body.username
     }
 
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(req.body.password, salt, function(err, hash) {
-        newUser.password = hash;
-        User().sync().then(function() {
-          User().create({
-            firstname: newUser.firstname,
-            lastname: newUser.lastname,
-            email: newUser.email,
-            password: newUser.password,
-            username: newUser.username
-          }).then(function(user){
-            console.log('user created for ', user.username)
-            res.status(200).json(req.body);
-          });
+    bcrypt.hash(req.body.password, 10, function(err, hash) {
+      models.User.sync().then(function() {
+        models.User.create({
+          firstname: newUser.firstname,
+          lastname: newUser.lastname,
+          email: newUser.email,
+          password: hash,
+          username: newUser.username
+        }).then(function(user){
+          console.log('user created for ', user.username)
+          res.status(200).json(req.body);
         });
       });
     });
 
   });
 
-  app.post('/api/auth/login', function (req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
-    User().find({
-      where: {
-        username:username
-      }
-    }).then(function(found) {
-      var hash = found.password;
-      bcrypt.compare(password, hash, function(err, resp) {
-        if (resp) {
-          console.log('success')
-          res.status(200).send({response:'success'})
-        } else {
-          console.log('failure')
-          res.sendStatus(401);
-        }
-      })
+  app.post('/api/auth/login', passport.authenticate('local'), function (req, res) {
+      console.log('authenticate')
+      res.status(200).json('success');
     });
-  });
 };

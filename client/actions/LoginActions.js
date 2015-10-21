@@ -2,9 +2,9 @@ var Reflux = require('reflux');
 var $ = require('jquery');
 
 
-LoginActions = Reflux.createActions({
-  "sendLogin": {children: ['completed', 'failed']}
-  });
+LoginActions = Reflux.createActions([
+  "sendLogin"
+  ]);
 
 
 

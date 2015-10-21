@@ -1,23 +1,10 @@
-var Sequelize = require('sequelize');
-var sequelize = new Sequelize('bracketDraft', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-  port: 3306,
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  }
-});
+"use strict";
 
-var League = require('./leagues');
-var User = require('./users');
-var NCAA_Team = require('./NCAA_Teams');
 
-module.exports = function() {
+module.exports = function(sequelize, DataTypes) {
   var Team = sequelize.define('Team', {
-    team_name: Sequelize.STRING,
-    wins: Sequelize.INTEGER,
+    team_name: DataTypes.STRING,
+    wins: DataTypes.INTEGER,
 
   },
   {

@@ -1,21 +1,8 @@
-var Sequelize = require('sequelize');
-var sequelize = new Sequelize('bracketDraft', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-  port: 3306,
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  }
-});
+"use strict";
 
-var Team = require('./teams');
-var User = require('./users');
-
-module.exports = function() {
+module.exports = function(sequelize, DataTypes) {
   var League = sequelize.define('League', {
-    league_name: Sequelize.STRING
+    name: DataTypes.STRING
   },{
     classMethods: {
       associate: function(models) {
