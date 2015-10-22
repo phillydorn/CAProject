@@ -16,15 +16,15 @@ mainStore = Reflux.createStore({
 
   onLoadSchools: function() {
     var self = this;
-    // $.ajax({
-    //   url: '/api/schools',
-    //   dataType: 'json',
-    //   method: 'GET',
-    //   success: function(data) {
-    //     self.schoolsList.list = data;
-    //     self.trigger(self.schoolsList);
-    //   }
-    // });
+    $.ajax({
+      url: '/api/leagues/'+location.hash.slice(10),
+      dataType: 'json',
+      method: 'GET',
+      success: function(data) {
+        self.schoolsList.list = data;
+        self.trigger(self.schoolsList);
+      }
+    });
   },
 
 

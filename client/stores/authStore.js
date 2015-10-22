@@ -6,13 +6,14 @@ var authStore = Reflux.createStore({
 
   listenables: [AuthActions],
 
+
   onVerify: function() {
     $.ajax({
       url: '/api/auth/verify',
       method: 'GET',
       success: function(response) {
-        console.log('inside verify', response)
         this.loggedIn = response;
+        this.trigger(response);
       }.bind(this)
     });
   }

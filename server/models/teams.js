@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         Team.belongsTo(models.League);
         Team.belongsTo(models.User);
-        Team.belongsToMany(models.NCAA_Team, {through: 'Team-NCAA'});
+        Team.belongsToMany(models.NCAA_Team, {through: 'Team_NCAA'});
       }
     }
   });

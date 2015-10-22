@@ -14,7 +14,8 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        NCAA_Team.belongsToMany(models.Team, {through: 'Team-NCAA'});
+        NCAA_Team.belongsToMany(models.Team, {through: 'Team_NCAA'});
+        NCAA_Team.belongsToMany(models.League, {through: 'Undrafted_teams'});
       }
     }
   });

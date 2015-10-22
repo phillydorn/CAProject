@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         League.hasMany(models.Team);
         League.belongsToMany(models.User, {through: 'league_managers'});
+        League.belongsToMany(models.NCAA_Team, {through: 'Undrafted_teams'});
       }
     }
   });

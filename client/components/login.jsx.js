@@ -1,10 +1,32 @@
 var React = require('react');
+var Reflux = require('reflux');
 var LoginActions = require('../actions/LoginActions');
 var loginStore = require('../stores/loginStore');
+var authStore = require('../stores/authStore');
+var Router = require('react-router');
 
 var Login = React.createClass({
+  // mixins: [Reflux.connect(loginStore, "hash")],
+
   contextTypes: {
     router: React.PropTypes.func
+  },
+
+    mixins: [Router.Navigation, Reflux.connect(authStore, 'loggedIn')],
+
+
+  getInitialState: function() {
+    return {loggedIn: this.props.loggedIn}
+  },
+
+  componentDidMount: function() {
+    this.listenTo(authStore, this.pathRedirect);
+  },
+
+  pathRedirect: function(loggedIn) {
+    if (loggedIn) {
+      this.transitionTo('/');
+    }
   },
 
 

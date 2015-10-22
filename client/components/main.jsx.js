@@ -14,7 +14,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
     mixins: [Reflux.connect(mainStore, "schoolsList")],
 
     getInitialState: function() {
-      return {otherTeams: []}
+      return {otherTeams: [], leagueId: location.hash.slice(10)}
     },
 
     componentWillMount: function(){
@@ -26,6 +26,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
     render: function() {
       return (
           <div className="main">
+            <h1>{this.state.leagueId}</h1>
             <Bracket teams={this.state.schoolsList.list} />
             <TeamPool schoolsList={this.state.schoolsList.list} />
             <OtherTeam otherTeams={this.state.otherTeams} />

@@ -12,9 +12,6 @@ module.exports =function(RequestComponent) {
 
      statics: {
         willTransitionTo: function (transition) {
-          console.log('will transition', transition);
-          AuthActions.verify()
-          console.log('authlog',authStore.loggedIn, RequestComponent)
           if(!authStore.loggedIn) {
             transition.redirect('/login');
           }
@@ -22,21 +19,20 @@ module.exports =function(RequestComponent) {
       },
 
     getInitialState: function() {
+      console.log('state', this.state)
       return {loggedIn : AuthActions.verify()}
     },
 
     updateAuth: function(loggedIn) {
-
+      console.log('setting', loggedIn)
       this.setState({loggedIn: loggedIn})
     },
 
-    // componentWillMount() {
-    //   AuthActions.verify()
-    // },
+
 
     render: function() {
       return (
-        <RequestComponent />
+        <RequestComponent loggedIn={this.state.loggedIn} />
         )
     }
 
