@@ -12,22 +12,17 @@ var Bracket = require('./components/bracket.jsx.js');
 var CreateLeague = require('./components/CreateLeague.jsx.js');
 var JoinLeague = require('./components/joinLeague.jsx.js');
 var NavHeader = require('./components/nav.jsx.js');
+var Logout = require('./components/logout.jsx.js');
 
 
 var BracketApp = React.createClass({
-
-
-  getInitialState: function() {
-    return {loggedIn : false}
-  },
-
 
   render : function(){
 
     return (
       <div>
         <NavHeader />
-        <RouteHandler data={this.state.loggedIn} />
+        <RouteHandler />
       </div>
     );
   }
@@ -42,6 +37,7 @@ var routes = (
         <Route name="Bracket" path="/bracket" handler={Bracket} />
         <Route name="CreateLeague" path="/create" handler={CreateLeague} />
         <Route name="JoinLeague" path="/join" handler={JoinLeague} />
+        <Route name="Logout" path="/logout" handler={Logout} />
     </Route>
 );
 

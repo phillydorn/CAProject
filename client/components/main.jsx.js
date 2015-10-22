@@ -6,9 +6,10 @@ var TeamPool = require('./teamPool.jsx.js');
 var UserTeam = require('./userTeam.jsx.js');
 var OtherTeam = require('./otherTeams.jsx.js');
 var Bracket = require('./bracket.jsx.js');
+var AuthComponent = require('./Authenticated.jsx.js');
 
 
-  var BracketMain = React.createClass({
+  module.exports = AuthComponent(React.createClass({
 
     mixins: [Reflux.connect(mainStore, "schoolsList")],
 
@@ -32,8 +33,6 @@ var Bracket = require('./bracket.jsx.js');
           </div>
         );
     }
-  });
+  }));
 
 
-
-module.exports = BracketMain;

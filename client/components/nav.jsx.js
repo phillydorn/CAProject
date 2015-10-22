@@ -13,6 +13,7 @@ var NavHeader = React.createClass({
         <li><Link to='/bracket'>Bracket</Link></li>
         <li><Link to='/create'>Create League</Link></li>
         <li><Link to='/join'>Join League</Link></li>
+        <li><Link to='/logout'>Log Out</Link></li>
       </ul>
       </nav>
       );

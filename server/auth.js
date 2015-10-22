@@ -6,14 +6,14 @@ var bcrypt = require('bcrypt'),
 
 
 passport.serializeUser(function(user, done) {
-  console.log('serialiez')
+  console.log('serialize')
   done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-  console.log('deserialize')
-  models.User.findById(id, function(err, user) {
-    done(err, user);
+  console.log('deserialize id', id)
+  models.User.findById(id).then(function(user) {
+    done(null, user);
   });
 });
 
@@ -28,8 +28,6 @@ var checkPassword = function(password, hash, done, user) {
       return done(null, false, { message: 'Incorrect password.' });
     }
   })
-
-
 }
 
 passport.use(new LocalStrategy(
@@ -48,6 +46,7 @@ passport.use(new LocalStrategy(
 module.exports = function(app) {
 
   app.post('/api/auth/signup', function (req, res) {
+    console.log('req',req.user)
     var newUser = {
       firstname : req.body.firstname,
       lastname : req.body.lastname,
@@ -64,8 +63,11 @@ module.exports = function(app) {
           password: hash,
           username: newUser.username
         }).then(function(user){
-          console.log('user created for ', user.username)
-          res.status(200).json(req.body);
+          console.log('user created for ', user.username);
+          passport.authenticate('local')(req, res, function() {
+            console.log('authenticate')
+            res.status(200).json('success');
+          });
         });
       });
     });
@@ -76,4 +78,15 @@ module.exports = function(app) {
       console.log('authenticate')
       res.status(200).json('success');
     });
+  app.get('/api/auth/logout', function(req, res) {
+    req.logout();
+    res.status(200).json('logged out');
+  });
+  app.get('/api/auth/verify', function(req, res) {
+    if(req.user && req.user.username) {
+      res.status(200).json(true);
+    } else {
+      res.status(200).json(false);
+    }
+  });
 };
