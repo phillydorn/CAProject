@@ -57,4 +57,5 @@ li {
     display: block; }
 
 nav li {
-  display: inline-block; }
+  display: inline-block;
+  margin: 0 10px; }

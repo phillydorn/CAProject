@@ -14,7 +14,6 @@ loginStore= Reflux.createStore({
       method: 'POST',
       data: data,
       success: function(data) {
-        console.log('success', this)
         AuthActions.verify();
       }.bind(this),
       error: function(error, err2, err3) {

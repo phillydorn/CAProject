@@ -1,6 +1,7 @@
 var React = require('react');
 var Reflux = require('reflux');
 var LogoutActions = require('../actions/LogoutActions');
+var AuthActions = require('../actions/AuthActions');
 var $ = require('jquery');
 
 logoutStore= Reflux.createStore({
@@ -13,8 +14,9 @@ logoutStore= Reflux.createStore({
       method: 'GET',
       success: function(data) {
         console.log('success')
-        location.hash='/';
-      },
+        AuthActions.verify();
+        this.trigger('/');
+      }.bind(this),
       error: function(error, err2, err3) {
         console.log('error', error, '2', err2, '3', err3);
 

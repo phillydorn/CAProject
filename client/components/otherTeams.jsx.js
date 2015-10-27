@@ -3,48 +3,41 @@ var UserSchool = require('./userSchool.jsx.js');
 var Reflux = require('reflux');
 var otherTeamStore = require('../stores/otherTeamStore');
 var OtherTeamActions=  require('../actions/OtherTeamActions');
+var OtherTeam = require('./otherTeam.jsx.js');
 
-var OtherTeam = React.createClass({
+var OtherTeams = React.createClass({
 
-    mixins: [Reflux.connect(otherTeamStore, "otherTeams")],
-
-
- getInitialState: function() {
-    list = [];
-    for (var i=0; i<10; i++) {
-      list.push('');
-    }
-    return {otherSchoolList: list, otherTeams: []};
+  getInitialState: function() {
+    return {otherTeam: 'Other Teams'}
   },
-  componentWillMount: function() {
-    OtherTeamActions.loadTeams();
+
+  handleSelect: function (e) {
+    console.log('value',e.target.value);
+    this.setState({
+      otherTeam: e.target.value
+    });
   },
+
 
   render: function() {
-    console.log(this.state)
-    var schoolNodes = this.state.otherSchoolList.map(function (school) {
+
+    var otherTeams = this.props.otherTeams.map(function(team) {
       return (
-          <UserSchool schoolName = {school.name} schoolId={school.id} key={school.id} />
-        )
-    });
-    var otherTeams = this.state.otherTeams.map(function(team) {
-      return (
-        <option value={team}>{team}</option>
+        <option value={team.username} >{team.username}</option>
       )
     })
     return (
       <div className = "team-box otherTeam">
-      <select>
+      <select onChange={this.handleSelect}>
+        <option value="">Other Teams</option>
         {otherTeams}
       </select>
-        <ul className="team-list">
-         {schoolNodes}
-        </ul>
+        <OtherTeam owner={this.state.otherTeam} />
       </div>
     )
   }
 });
 
 
-module.exports = OtherTeam;
+module.exports = OtherTeams;
 

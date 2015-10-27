@@ -11,24 +11,31 @@ var AuthComponent = require('./Authenticated.jsx.js');
 
   module.exports = AuthComponent(React.createClass({
 
-    mixins: [Reflux.connect(mainStore, "schoolsList")],
+    mixins: [Reflux.connect(mainStore, "data")],
 
     getInitialState: function() {
-      return {otherTeams: [], leagueId: location.hash.slice(10)}
+      return {otherTeams: [], leagueId: location.hash.slice(10), leagueName: '', schoolsList: []}
     },
 
-    componentWillMount: function(){
-      MainActions.loadSchools();
-      MainActions.loadTeams(this);
+    componentDidMount: function(){
+      this.listenTo(mainStore, this.populate);
+      MainActions.populate();
     },
 
+    populate: function(data) {
+      this.setState({
+        otherTeams: data.teams,
+        schoolsList: data.schoolsList,
+        leagueName: data.leagueName
+      });
+    },
 
     render: function() {
       return (
           <div className="main">
-            <h1>{this.state.leagueId}</h1>
-            <Bracket teams={this.state.schoolsList.list} />
-            <TeamPool schoolsList={this.state.schoolsList.list} />
+            <h1>{this.state.leagueName}</h1>
+            <Bracket teams={this.state.schoolsList} />
+            <TeamPool schoolsList={this.state.schoolsList} />
             <OtherTeam otherTeams={this.state.otherTeams} />
             <UserTeam userSchoolsList={this.state.userSchoolsList} />
           </div>

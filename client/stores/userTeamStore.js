@@ -3,28 +3,28 @@ var UserTeamActions = require('../actions/UserTeamActions');
 var mainStore = require('./mainStore');
 
 userTeamStore = Reflux.createStore({
-  userSchoolList: ['','','','','','','','','',''],
+  // userSchoolList: ['','','','','','','','','',''],
 
-  init: function() {
-    this.listenTo(mainStore, this.onAddSchool);
-  },
+  // init: function() {
+  //   this.listenTo(mainStore, this.onAddSchool);
+  // },
 
 
 
-  onAddSchool: function(mainData) {
-    if (mainData.school.length>0) {
+  // onAddSchool: function(mainData) {
+  //   if (mainData.school.length>0) {
 
-      var school = mainData.school[0];
-      var list= this.userSchoolList;
-      for (var i=0; i<10; i++) {
-        if (list[i]==='') {
-          list[i] = {market: school.market, id: school.id};
-          break;
-        }
-      }
-      this.trigger(list);
-      }
-    }
+  //     var school = mainData.school[0];
+  //     var list= this.userSchoolList;
+  //     for (var i=0; i<10; i++) {
+  //       if (list[i]==='') {
+  //         list[i] = {market: school.market, id: school.id};
+  //         break;
+  //       }
+  //     }
+  //     this.trigger(list);
+  //     }
+  //   }
 });
 
 module.exports = userTeamStore;

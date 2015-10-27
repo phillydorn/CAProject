@@ -19,12 +19,10 @@ module.exports =function(RequestComponent) {
       },
 
     getInitialState: function() {
-      console.log('state', this.state)
       return {loggedIn : AuthActions.verify()}
     },
 
     updateAuth: function(loggedIn) {
-      console.log('setting', loggedIn)
       this.setState({loggedIn: loggedIn})
     },
 

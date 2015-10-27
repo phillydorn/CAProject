@@ -3,6 +3,8 @@ var Reflux = require('reflux');
 var AuthComponent = require('./Authenticated.jsx.js');
 var leagueStore = require('../stores/leagueStore');
 var League = require('./league.jsx.js');
+var LeagueActions = require('../actions/LeagueActions');
+
 
   module.exports = AuthComponent(React.createClass({
 
@@ -12,8 +14,12 @@ var League = require('./league.jsx.js');
       return {leaguesList: []}
     },
 
-    componentWillMount: function(){
-      LeagueActions.loadLeagues();
+    componentDidMount: function(){
+      LeagueActions.loadUserLeagues();
+    },
+
+    componentWillUnmount: function() {
+
     },
 
 

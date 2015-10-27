@@ -6,7 +6,6 @@ var authStore = require('../stores/authStore');
 var Router = require('react-router');
 
 var Login = React.createClass({
-  // mixins: [Reflux.connect(loginStore, "hash")],
 
   contextTypes: {
     router: React.PropTypes.func

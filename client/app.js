@@ -10,7 +10,7 @@ var Login = require('./components/login.jsx.js');
 var Signup = require('./components/signup.jsx.js');
 var Bracket = require('./components/bracket.jsx.js');
 var CreateLeague = require('./components/CreateLeague.jsx.js');
-var JoinLeague = require('./components/joinLeague.jsx.js');
+var JoinLeagues = require('./components/joinLeagues.jsx.js');
 var Leagues = require('./components/leagues.jsx.js');
 var NavHeader = require('./components/nav.jsx.js');
 var Logout = require('./components/logout.jsx.js');
@@ -37,7 +37,7 @@ var routes = (
         <Route name="Signup" path="/signup" handler={Signup} />
         <Route name="Bracket" path="/bracket" handler={Bracket} />
         <Route name="CreateLeague" path="/create" handler={CreateLeague} />
-        <Route name="JoinLeague" path="/join" handler={JoinLeague} />
+        <Route name="JoinLeagues" path="/join" handler={JoinLeagues} />
         <Route name="Leagues" path="/leagues" handler={Leagues} />
         <Route name="League" path="/leagues/:league" handler={BracketMain} />
         <Route name="Logout" path="/logout" handler={Logout} />

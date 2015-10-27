@@ -13,7 +13,6 @@ module.exports = {
         }
       }).then(function(league) {
         models.NCAA_Team.findAll().then(function(teams) {
-          console.log('teams', teams[0])
           league[0].setNCAA_Teams(teams);
         })
         .then(function() {
@@ -23,6 +22,8 @@ module.exports = {
               }
             }).then (function(user) {
               league[0].setUsers(user);
+              console.log('league id', league[0].id)
+              res.status(200).json(league[0].id);
             });
 
         });
@@ -30,7 +31,27 @@ module.exports = {
     });
   },
 
-  getLeagues: function(req, res) {
+  createOwnerTeam: function(req, res) {
+    var teamName = req.body.teamname;
+    var userID = req.user.id;
+    var leagueID = req.url.slice(1);
+
+    models.Team.create({team_name:teamName, wins:0}).then (function(team) {
+      models.League.findById(leagueID).then(function(league) {
+        league.addTeam(team).then (function() {
+          models.User.findById(userID).then(function(user) {
+            user.addTeam(team).then(function() {
+              res.status(200).send('success');
+            });
+          });
+        });
+      });
+    });
+
+
+  },
+
+  getUserLeagues: function(req, res) {
     models.League.findAll({
       include: [{
         model: models.User,
@@ -43,13 +64,33 @@ module.exports = {
     });
   },
 
+  getAllLeagues: function(req, res) {
+    models.League.findAll().then (function(leagues) {
+      res.status(200).json(leagues);
+    });
+  },
+
   loadSchools: function(req, res) {
     var id = req.url.slice(1);
-    console.log('your id is ', id)
     models.League.findById(id).then (function (league) {
-      league.getNCAA_Teams().then (function(teams) {
-        res.status(200).json(teams);
+      league.getNCAA_Teams().then (function(NCAATeams) {
+        data = {schoolsList: NCAATeams, leagueName:league.name}
+        league.getTeams().then(function(teams){
+          data.teams = teams;
+          res.status(200).json(data);
+        });
+
       });
     })
+  },
+  joinLeague: function(req, res) {
+    var leagueId = req.body.id;
+    var userId = req.user.id;
+    models.League.findById(leagueId).then (function(league) {
+      models.User.findById(userId).then (function(user) {
+        league.addUser(user);
+        res.status(200).json(league);
+      });
+    });
   }
 }

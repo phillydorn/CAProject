@@ -1,18 +1,46 @@
 var React = require('react');
-var CreateActions = require('../actions/CreateActions');
-var createStore = require('../stores/createStore');
+var Reflux = require('reflux');
+var CreateLeagueActions = require('../actions/CreateLeagueActions');
+var createLeagueStore = require('../stores/createLeagueStore');
+var createTeamStore = require('../stores/createTeamStore');
+var TeamForm = require('./teamForm.jsx.js');
+var AuthComponent = require('./Authenticated.jsx.js');
+var Router = require('react-router');
 
-var CreateLeague = React.createClass({
-handleSubmit: function(e) {
-    e.preventDefault();
-    var leaguename= React.findDOMNode(this.refs.leaguename).value
 
 
-    var data = {
-        leaguename: leaguename
-      };
-      CreateActions.createLeague(data);
+module.exports = AuthComponent(React.createClass({
+
+
+  mixins: [Reflux.ListenerMixin, Router.Navigation],
+  getInitialState: function() {
+    return {teamForm: <div />, created: false}
   },
+
+  componentDidMount: function() {
+    this.listenTo(createLeagueStore, this.loadForm);
+    this.listenTo(createTeamStore, this.pathRedirect);
+  },
+
+  loadForm: function(payload) {
+    if (payload.created) {
+      this.setState({
+
+        teamForm: <TeamForm leagueID={payload.leagueID} />
+      });
+    }
+  },
+
+  pathRedirect: function(leagueID) {
+    this.transitionTo('/leagues/'+leagueID);
+  },
+
+  handleSubmit: function(e) {
+      e.preventDefault();
+      var leaguename= React.findDOMNode(this.refs.leaguename).value
+
+      CreateLeagueActions.createLeague(leaguename);
+    },
 
 
   render: function() {
@@ -27,9 +55,9 @@ handleSubmit: function(e) {
           </div>
           <input type="Submit" />
         </form>
+        {this.state.teamForm}
       </div>
     );
   }
-});
+}));
 
-module.exports = CreateLeague;
