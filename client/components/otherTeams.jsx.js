@@ -33,7 +33,7 @@ var OtherTeams = React.createClass({
         <option value="">Other Teams</option>
         {otherTeams}
       </select>
-        <UserTeam teamId ={this.state.otherTeam} />
+        <OtherTeam teamId ={this.state.otherTeam} />
       </div>
     )
   }

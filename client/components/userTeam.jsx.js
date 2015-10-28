@@ -22,7 +22,7 @@ var UserTeam = React.createClass({
     setTimeout(function() {
       console.log('mount props', this.props)
       UserTeamActions.loadSchools(this.props.teamId);
-    }.bind(this), 1000)
+    }.bind(this), 500)
   },
 
   render: function() {

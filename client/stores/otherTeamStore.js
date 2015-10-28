@@ -1,24 +1,32 @@
 var Reflux = require('reflux');
 var OtherTeamActions = require('../actions/OtherTeamActions');
+var SchoolActions = require('../actions/SchoolActions');
+var mainStore = require('./mainStore');
 var $ = require('jquery');
 
 otherTeamStore = Reflux.createStore({
 
-  listenables: [OtherTeamActions],
+  listenables: [OtherTeamActions, SchoolActions],
 
+  getSchools: function(teamId) {
+    console.log('laodscholls', teamId)
+    $.ajax({
+      method: 'GET',
+      url: '/api/teams/'+teamId,
+      success: function(response) {
+        this.trigger(response);
+      }.bind(this)
+    });
+  },
 
-   // onLoadSchools: function(ownerId) {
-   //  console.log('id', ownerId)
-   //  $.ajax({
-   //    url: '/api/teams/'+ownerId,
-   //    method: 'GET',
-   //    success: function(data) {
-   //      console.log('teams', data)
-   //    }
-   //  });
+  onLoadSchools: function(teamId) {
+    this.teamId = teamId;
+    this.getSchools(teamId);
+  },
 
-   //    // this.trigger(otherTeams);
-   //  }
+  onSelectTeamCompleted: function() {
+    this.getSchools(this.teamId);
+    }
 });
 
 module.exports = otherTeamStore;

@@ -127,7 +127,6 @@ var UserTeamActions = Reflux.createActions([
   "loadSchools"
 ]);
 
-UserTeamActions.sync = true;
 module.exports = UserTeamActions;
 },{"reflux":257}],11:[function(require,module,exports){
 arguments[4][3][0].apply(exports,arguments)
@@ -633,40 +632,54 @@ module.exports = NavHeader;
 var React = require('react');
 var UserSchool = require('./userSchool.jsx.js');
 var Reflux = require('reflux');
-var otherTeamStore = require('../stores/otherTeamStore');
-var OtherTeamActions = require('../actions/OtherTeamActions');
+var mainStore = require('../stores/mainStore');
+var OtherTeamActions=  require('../actions/OtherTeamActions');
+var otherTeamStore =  require('../stores/otherTeamStore');
 
 var OtherTeam = React.createClass({displayName: "OtherTeam",
 
-  mixins: [Reflux.connect(otherTeamStore, 'otherTeamSchools')],
+    mixins: [Reflux.connect(otherTeamStore, "otherSchoolList")],
 
-  getInitialState: function() {
-    return {otherSchoolList: ['','','','','','','','','','']}
+
+ getInitialState: function() {
+    list = [];
+    for (var i=0; i<10; i++) {
+      list.push('');
+    }
+    return {otherSchoolList: list};
   },
 
-
-  componentDidUpdate: function() {
-    OtherTeamActions.loadSchools(this.props.owner);
+  componentWillReceiveProps: function (){
+    setTimeout(function() {
+      console.log('mount props', this.props)
+      OtherTeamActions.loadSchools(this.props.teamId);
+    }.bind(this), 500)
   },
-
 
   render: function() {
-      var schoolNodes = this.state.otherSchoolList.map(function (school) {
-        return (
-            React.createElement(UserSchool, {schoolName: school.name, schoolId: school.id, key: school.id})
-          )
-      });
+    console.log('otherprops', this.props)
+    console.log('otherstate', this.state)
+    var schoolNodes = this.state.otherSchoolList.map(function (school) {
       return (
-          React.createElement("ul", {className: "team-list"}, 
-           schoolNodes
-          )
+          React.createElement(UserSchool, {schoolName: school.market, schoolId: school.id, key: school.id})
+        )
+    });
+    return (
+      React.createElement("div", {className: "team-box otherTeam"}, 
+      React.createElement("h1", null, "Other Team"), 
+        React.createElement("ul", {className: "team-list"}, 
+         schoolNodes
+        )
       )
-    }
-  });
+    )
+  }
+});
 
 
 module.exports = OtherTeam;
-},{"../actions/OtherTeamActions":7,"../stores/otherTeamStore":41,"./userSchool.jsx.js":32,"react":240,"reflux":257}],27:[function(require,module,exports){
+
+
+},{"../actions/OtherTeamActions":7,"../stores/mainStore":40,"../stores/otherTeamStore":41,"./userSchool.jsx.js":32,"react":240,"reflux":257}],27:[function(require,module,exports){
 var React = require('react');
 var UserSchool = require('./userSchool.jsx.js');
 var Reflux = require('reflux');
@@ -702,7 +715,7 @@ var OtherTeams = React.createClass({displayName: "OtherTeams",
         React.createElement("option", {value: ""}, "Other Teams"), 
         otherTeams
       ), 
-        React.createElement(UserTeam, {teamId: this.state.otherTeam})
+        React.createElement(OtherTeam, {teamId: this.state.otherTeam})
       )
     )
   }
@@ -904,7 +917,7 @@ var UserTeam = React.createClass({displayName: "UserTeam",
     setTimeout(function() {
       console.log('mount props', this.props)
       UserTeamActions.loadSchools(this.props.teamId);
-    }.bind(this), 1000)
+    }.bind(this), 500)
   },
 
   render: function() {
@@ -1163,29 +1176,37 @@ module.exports = mainStore;
 },{"../actions/MainActions":6,"jquery":46,"reflux":257}],41:[function(require,module,exports){
 var Reflux = require('reflux');
 var OtherTeamActions = require('../actions/OtherTeamActions');
+var SchoolActions = require('../actions/SchoolActions');
+var mainStore = require('./mainStore');
 var $ = require('jquery');
 
 otherTeamStore = Reflux.createStore({
 
-  listenables: [OtherTeamActions],
+  listenables: [OtherTeamActions, SchoolActions],
 
+  getSchools: function(teamId) {
+    console.log('laodscholls', teamId)
+    $.ajax({
+      method: 'GET',
+      url: '/api/teams/'+teamId,
+      success: function(response) {
+        this.trigger(response);
+      }.bind(this)
+    });
+  },
 
-   // onLoadSchools: function(ownerId) {
-   //  console.log('id', ownerId)
-   //  $.ajax({
-   //    url: '/api/teams/'+ownerId,
-   //    method: 'GET',
-   //    success: function(data) {
-   //      console.log('teams', data)
-   //    }
-   //  });
+  onLoadSchools: function(teamId) {
+    this.teamId = teamId;
+    this.getSchools(teamId);
+  },
 
-   //    // this.trigger(otherTeams);
-   //  }
+  onSelectTeamCompleted: function() {
+    this.getSchools(this.teamId);
+    }
 });
 
 module.exports = otherTeamStore;
-},{"../actions/OtherTeamActions":7,"jquery":46,"reflux":257}],42:[function(require,module,exports){
+},{"../actions/OtherTeamActions":7,"../actions/SchoolActions":8,"./mainStore":40,"jquery":46,"reflux":257}],42:[function(require,module,exports){
 var Reflux= require('reflux');
 var SchoolActions = require('../actions/SchoolActions');
 var $ = require('jquery');

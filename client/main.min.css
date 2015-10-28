@@ -14,8 +14,7 @@ li {
     float: right; }
   .team-box.otherTeam {
     background-color: #8483a2;
-    float: left;
-    margin-left: 200px; }
+    float: left; }
   .team-box .team-list {
     padding: 0; }
   .team-box .school {

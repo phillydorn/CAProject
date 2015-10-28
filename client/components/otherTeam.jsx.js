@@ -1,36 +1,49 @@
 var React = require('react');
 var UserSchool = require('./userSchool.jsx.js');
 var Reflux = require('reflux');
-var otherTeamStore = require('../stores/otherTeamStore');
-var OtherTeamActions = require('../actions/OtherTeamActions');
+var mainStore = require('../stores/mainStore');
+var OtherTeamActions=  require('../actions/OtherTeamActions');
+var otherTeamStore =  require('../stores/otherTeamStore');
 
 var OtherTeam = React.createClass({
 
-  mixins: [Reflux.connect(otherTeamStore, 'otherTeamSchools')],
+    mixins: [Reflux.connect(otherTeamStore, "otherSchoolList")],
 
-  getInitialState: function() {
-    return {otherSchoolList: ['','','','','','','','','','']}
+
+ getInitialState: function() {
+    list = [];
+    for (var i=0; i<10; i++) {
+      list.push('');
+    }
+    return {otherSchoolList: list};
   },
 
-
-  componentDidUpdate: function() {
-    OtherTeamActions.loadSchools(this.props.owner);
+  componentWillReceiveProps: function (){
+    setTimeout(function() {
+      console.log('mount props', this.props)
+      OtherTeamActions.loadSchools(this.props.teamId);
+    }.bind(this), 500)
   },
-
 
   render: function() {
-      var schoolNodes = this.state.otherSchoolList.map(function (school) {
-        return (
-            <UserSchool schoolName = {school.name} schoolId={school.id} key={school.id} />
-          )
-      });
+    console.log('otherprops', this.props)
+    console.log('otherstate', this.state)
+    var schoolNodes = this.state.otherSchoolList.map(function (school) {
       return (
-          <ul className="team-list">
-           {schoolNodes}
-          </ul>
-      )
-    }
-  });
+          <UserSchool schoolName = {school.market} schoolId={school.id} key={school.id} />
+        )
+    });
+    return (
+      <div className = "team-box otherTeam">
+      <h1>Other Team</h1>
+        <ul className="team-list">
+         {schoolNodes}
+        </ul>
+      </div>
+    )
+  }
+});
 
 
 module.exports = OtherTeam;
+
