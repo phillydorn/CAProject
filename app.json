@@ -1,0 +1,6 @@
+{
+  "name": "BracketDraft",
+  "description": "Draft Your Bracket",
+  "repository": "https://github.com/phillydorn/CAProject",
+  "keywords": ["node", "express", "static"]
+}
