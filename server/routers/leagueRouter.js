@@ -7,4 +7,5 @@ module.exports = function(app) {
   app.get('/', leagues.getAllLeagues);
   app.get('/*', leagues.loadSchools);
   app.put('/', leagues.joinLeague);
+  app.put('/*', leagues.selectTeam);
 };

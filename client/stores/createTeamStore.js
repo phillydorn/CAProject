@@ -8,7 +8,6 @@ var createTeamStore = Reflux.createStore({
 
 
   onCreateTeam: function(leagueID, teamname) {
-    console.log('le', leagueID, 'team', teamname)
     $.ajax({
       url: '/api/leagues/'+leagueID,
       method: 'POST',

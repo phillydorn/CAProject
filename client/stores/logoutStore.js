@@ -14,8 +14,9 @@ logoutStore= Reflux.createStore({
       method: 'GET',
       success: function(data) {
         console.log('success')
-        AuthActions.verify();
-        this.trigger('/');
+        AuthActions.verify(function () {
+          this.trigger('/');
+        }.bind(this));
       }.bind(this),
       error: function(error, err2, err3) {
         console.log('error', error, '2', err2, '3', err3);

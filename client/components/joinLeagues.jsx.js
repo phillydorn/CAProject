@@ -3,15 +3,16 @@ var Reflux = require('reflux');
 var Router = require('react-router');
 var AuthComponent = require('./Authenticated.jsx.js');
 var leagueStore = require('../stores/leagueStore');
+var createTeamStore = require('../stores/createTeamStore');
 var JoinLeague = require('./JoinLeague.jsx.js');
 var LeagueActions = require('../actions/LeagueActions');
 
   module.exports = AuthComponent(React.createClass({
 
-    mixins: [Reflux.connect(leagueStore, "data"), Router.Navigation],
+    mixins: [Reflux.ListenerMixin, Router.Navigation],
 
     getInitialState: function() {
-      return {data: {leaguesList: []}}
+      return {leaguesList: []}
     },
 
     componentWillMount: function(){
@@ -19,19 +20,24 @@ var LeagueActions = require('../actions/LeagueActions');
     },
 
     componentDidMount: function() {
-      this.listenTo(leagueStore, this.pathRedirect);
+      this.listenTo(leagueStore, this.loadLeagues);
+      this.listenTo(createTeamStore, this.pathRedirect);
     },
 
-    pathRedirect: function(data) {
-      var league = data.joinedLeague;
-      console.log('league is', league)
-      if (league) {
-        this.transitionTo('/leagues/'+league.id);
+    loadLeagues: function(data) {
+      this.setState({
+        leaguesList: data.leaguesList
+      });
+    },
+
+    pathRedirect: function(leagueID) {
+      if (leagueID) {
+        this.transitionTo('/leagues/'+leagueID);
       }
     },
 
     render: function() {
-      var leagueNodes = this.state.data.leaguesList.map(function (league) {
+      var leagueNodes = this.state.leaguesList.map(function (league) {
         return (
             <JoinLeague leagueName = {league.name} key = {league.id} leagueId = {league.id} />
           )

@@ -1,30 +1,32 @@
 var Reflux = require('reflux');
 var UserTeamActions = require('../actions/UserTeamActions');
+var SchoolActions = require('../actions/SchoolActions');
 var mainStore = require('./mainStore');
+var $ = require('jquery');
 
 userTeamStore = Reflux.createStore({
-  // userSchoolList: ['','','','','','','','','',''],
 
-  // init: function() {
-  //   this.listenTo(mainStore, this.onAddSchool);
-  // },
+  listenables: [UserTeamActions, SchoolActions],
 
+  getSchools: function(teamId) {
+    console.log('laodscholls', teamId)
+    $.ajax({
+      method: 'GET',
+      url: '/api/teams/'+teamId,
+      success: function(response) {
+        this.trigger(response);
+      }.bind(this)
+    });
+  },
 
+  onLoadSchools: function(teamId) {
+    this.teamId = teamId;
+    this.getSchools(teamId);
+  },
 
-  // onAddSchool: function(mainData) {
-  //   if (mainData.school.length>0) {
-
-  //     var school = mainData.school[0];
-  //     var list= this.userSchoolList;
-  //     for (var i=0; i<10; i++) {
-  //       if (list[i]==='') {
-  //         list[i] = {market: school.market, id: school.id};
-  //         break;
-  //       }
-  //     }
-  //     this.trigger(list);
-  //     }
-  //   }
+  onSelectTeamCompleted: function() {
+    this.getSchools(this.teamId);
+    }
 });
 
 module.exports = userTeamStore;

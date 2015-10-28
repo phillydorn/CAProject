@@ -18,7 +18,15 @@ var UserTeam = React.createClass({
     return {userSchoolList: list};
   },
 
+  componentWillReceiveProps: function (){
+    setTimeout(function() {
+      console.log('mount props', this.props)
+      UserTeamActions.loadSchools(this.props.teamId);
+    }.bind(this), 1000)
+  },
+
   render: function() {
+    console.log('userprops', this.props)
     var schoolNodes = this.state.userSchoolList.map(function (school) {
       return (
           <UserSchool schoolName = {school.market} schoolId={school.id} key={school.id} />

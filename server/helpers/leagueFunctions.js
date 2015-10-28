@@ -35,13 +35,16 @@ module.exports = {
     var teamName = req.body.teamname;
     var userID = req.user.id;
     var leagueID = req.url.slice(1);
+    console.log('team', teamName, 'user', userID, 'leag', leagueID)
 
     models.Team.create({team_name:teamName, wins:0}).then (function(team) {
       models.League.findById(leagueID).then(function(league) {
         league.addTeam(team).then (function() {
           models.User.findById(userID).then(function(user) {
             user.addTeam(team).then(function() {
-              res.status(200).send('success');
+              user.addLeague(league).then (function() {
+                res.status(200).send('success');
+              });
             });
           });
         });
@@ -77,7 +80,14 @@ module.exports = {
         data = {schoolsList: NCAATeams, leagueName:league.name}
         league.getTeams().then(function(teams){
           data.teams = teams;
-          res.status(200).json(data);
+          models.User.findById(req.user.id).then(function(user) {
+            teams.forEach(function(team) {
+              if (team.UserId===user.id) {
+                data.userTeam = team;
+                res.status(200).json(data);
+              }
+            });
+          });
         });
 
       });
@@ -90,6 +100,30 @@ module.exports = {
       models.User.findById(userId).then (function(user) {
         league.addUser(user);
         res.status(200).json(league);
+      });
+    });
+  },
+
+  selectTeam: function(req, res) {
+    var schoolId = req.body.schoolId;
+    console.log('url', req.url)
+    var leagueId = req.url.slice(1);
+    var userId = req.user.id;
+    models.NCAA_Team.findById(schoolId).then (function(school) {
+      models.League.findById(leagueId).then(function(league) {
+        console.log('league', leagueId, 'user', userId)
+        models.Team.findOne({
+          where: {
+            LeagueId: leagueId,
+            UserId: userId
+          }
+        }).then (function(team) {
+          team.addNCAA_Team(school).then (function() {
+            league.removeNCAA_Team(school).then (function() {
+              res.status(200).json(league);
+            });
+          });
+        });
       });
     });
   }

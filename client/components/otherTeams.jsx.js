@@ -4,6 +4,7 @@ var Reflux = require('reflux');
 var otherTeamStore = require('../stores/otherTeamStore');
 var OtherTeamActions=  require('../actions/OtherTeamActions');
 var OtherTeam = require('./otherTeam.jsx.js');
+var UserTeam = require('./userTeam.jsx.js');
 
 var OtherTeams = React.createClass({
 
@@ -20,10 +21,10 @@ var OtherTeams = React.createClass({
 
 
   render: function() {
-
+    console.log('other team state', this.state)
     var otherTeams = this.props.otherTeams.map(function(team) {
       return (
-        <option value={team.username} >{team.username}</option>
+        <option key={team.id} value={team.id} >{team.team_name}</option>
       )
     })
     return (
@@ -32,7 +33,7 @@ var OtherTeams = React.createClass({
         <option value="">Other Teams</option>
         {otherTeams}
       </select>
-        <OtherTeam owner={this.state.otherTeam} />
+        <UserTeam teamId ={this.state.otherTeam} />
       </div>
     )
   }

@@ -1,13 +1,15 @@
 var React = require('react');
-var MainActions = require('../actions/MainActions');
+var SchoolActions = require('../actions/SchoolActions');
 var UserTeamActions = require('../actions/UserTeamActions');
+var schoolStore = require('../stores/schoolStore');
 
 var School = React.createClass({
 
   handleSelect: function(e) {
+    var schoolId = this.props.schoolId;
+    var leagueId = this.props.leagueId;
     e.preventDefault();
-    MainActions.selectTeam(this);
-    // UserTeamActions.addSchool(selectedSchool);
+    SchoolActions.selectTeam(schoolId, leagueId);
   },
   render: function() {
     return (

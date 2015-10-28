@@ -7,18 +7,18 @@ otherTeamStore = Reflux.createStore({
   listenables: [OtherTeamActions],
 
 
-   onLoadSchools: function(ownerId) {
-    console.log('id', ownerId)
-    $.ajax({
-      url: '/api/teams/'+ownerId,
-      method: 'GET',
-      success: function(data) {
-        console.log('teams', data)
-      }
-    });
+   // onLoadSchools: function(ownerId) {
+   //  console.log('id', ownerId)
+   //  $.ajax({
+   //    url: '/api/teams/'+ownerId,
+   //    method: 'GET',
+   //    success: function(data) {
+   //      console.log('teams', data)
+   //    }
+   //  });
 
-      // this.trigger(otherTeams);
-    }
+   //    // this.trigger(otherTeams);
+   //  }
 });
 
 module.exports = otherTeamStore;

@@ -21,7 +21,9 @@ var express = require('express'),
     app.use(bodyParser.json());
     app.use(cookieParser());
     app.use(session({
-      secret: 'mySecret'
+      secret: 'mySecret',
+      resave: false,
+      saveUninitialized: false
     }));
     app.use(passport.initialize());
     app.use(passport.session());

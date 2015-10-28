@@ -1,7 +1,7 @@
 var Reflux = require('reflux');
 
 var UserTeamActions = Reflux.createActions([
-  "addSchool"
+  "loadSchools"
 ]);
 
 UserTeamActions.sync = true;

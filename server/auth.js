@@ -55,7 +55,7 @@ module.exports = function(app) {
     }
 
     bcrypt.hash(req.body.password, 10, function(err, hash) {
-      models.User.sync().then(function() {
+      models.sequelize.sync().then(function() {
         models.User.create({
           firstname: newUser.firstname,
           lastname: newUser.lastname,

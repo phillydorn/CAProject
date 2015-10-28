@@ -30,7 +30,7 @@ module.exports =function(RequestComponent) {
 
     render: function() {
       return (
-        <RequestComponent loggedIn={this.state.loggedIn} />
+        <RequestComponent params={this.props.params} loggedIn={this.state.loggedIn} />
         )
     }
 

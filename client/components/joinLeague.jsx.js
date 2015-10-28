@@ -2,6 +2,7 @@ var React = require('react');
 var LeagueActions = require('../actions/LeagueActions');
 var Reflux = require('reflux');
 var Router = require('react-router');
+var TeamForm = require('./teamForm.jsx.js');
 
 
 var joinLeague = React.createClass({
@@ -12,7 +13,10 @@ var joinLeague = React.createClass({
 
   handleSelect: function(e) {
     e.preventDefault();
-    LeagueActions.selectLeague(this.props.leagueId);
+    this.setState({
+      teamForm: <TeamForm leagueID={this.props.leagueId} />
+    });
+    // LeagueActions.selectLeague(this.props.leagueId);
   },
 
 
