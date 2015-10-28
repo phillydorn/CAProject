@@ -1,10 +1,11 @@
 var Reflux = require('reflux');
 var MainActions = require('../actions/MainActions');
+var SchoolActions = require('../actions/SchoolActions');
 var $ = require('jquery');
 
 mainStore = Reflux.createStore({
 
-  listenables: [MainActions],
+  listenables: [MainActions, SchoolActions],
 
   onPopulate: function(leagueID) {
     $.ajax({
@@ -16,6 +17,10 @@ mainStore = Reflux.createStore({
       }.bind(this)
     });
   },
+
+  onSelectTeamCompleted: function(leagueId) {
+    this.onPopulate(leagueId);
+  }
 
 
 

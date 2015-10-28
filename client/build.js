@@ -1151,11 +1151,12 @@ module.exports = logoutStore;
 },{"../actions/AuthActions":1,"../actions/LogoutActions":5,"jquery":46,"react":240,"reflux":257}],40:[function(require,module,exports){
 var Reflux = require('reflux');
 var MainActions = require('../actions/MainActions');
+var SchoolActions = require('../actions/SchoolActions');
 var $ = require('jquery');
 
 mainStore = Reflux.createStore({
 
-  listenables: [MainActions],
+  listenables: [MainActions, SchoolActions],
 
   onPopulate: function(leagueID) {
     $.ajax({
@@ -1168,12 +1169,16 @@ mainStore = Reflux.createStore({
     });
   },
 
+  onSelectTeamCompleted: function(leagueId) {
+    this.onPopulate(leagueId);
+  }
+
 
 
 });
 
 module.exports = mainStore;
-},{"../actions/MainActions":6,"jquery":46,"reflux":257}],41:[function(require,module,exports){
+},{"../actions/MainActions":6,"../actions/SchoolActions":8,"jquery":46,"reflux":257}],41:[function(require,module,exports){
 var Reflux = require('reflux');
 var OtherTeamActions = require('../actions/OtherTeamActions');
 var SchoolActions = require('../actions/SchoolActions');
@@ -1224,7 +1229,7 @@ SchoolStore = Reflux.createStore({
         schoolId: schoolId
       },
       success: function(response) {
-        SchoolActions.selectTeam.completed();
+        SchoolActions.selectTeam.completed(leagueId);
       }.bind(this)
     });
   }

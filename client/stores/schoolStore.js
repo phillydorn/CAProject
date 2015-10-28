@@ -15,7 +15,7 @@ SchoolStore = Reflux.createStore({
         schoolId: schoolId
       },
       success: function(response) {
-        SchoolActions.selectTeam.completed();
+        SchoolActions.selectTeam.completed(leagueId);
       }.bind(this)
     });
   }
