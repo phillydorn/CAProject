@@ -463,12 +463,14 @@ var LeagueActions = require('../actions/LeagueActions');
     }
   }));
 },{"../actions/LeagueActions":3,"../stores/leagueStore":37,"./Authenticated.jsx.js":13,"./league.jsx.js":20,"react":240,"reflux":257}],22:[function(require,module,exports){
+(function (process){
 var React = require('react');
 var Reflux = require('reflux');
 var LoginActions = require('../actions/LoginActions');
 var loginStore = require('../stores/loginStore');
 var authStore = require('../stores/authStore');
 var Router = require('react-router');
+var WebSocket = require('ws');
 
 var Login = React.createClass({displayName: "Login",
 
@@ -485,6 +487,17 @@ var Login = React.createClass({displayName: "Login",
 
   componentDidMount: function() {
     this.listenTo(authStore, this.pathRedirect);
+    function updateStats(memuse) {
+        document.getElementById('rss').innerHTML = memuse.rss;
+        document.getElementById('heapTotal').innerHTML = memuse.heapTotal;
+        document.getElementById('heapUsed').innerHTML = memuse.heapUsed;
+      }
+      var host = window.document.location.host.replace(/:.*/, '');
+      console.log('host', host)
+      var ws = new WebSocket('ws://' + host + (process.env.PORT||':3000'));
+      ws.onmessage = function (event) {
+        updateStats(JSON.parse(event.data));
+      };
   },
 
   pathRedirect: function(loggedIn) {
@@ -520,7 +533,8 @@ var Login = React.createClass({displayName: "Login",
 });
 
 module.exports = Login;
-},{"../actions/LoginActions":4,"../stores/authStore":34,"../stores/loginStore":38,"react":240,"react-router":77,"reflux":257}],23:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"../actions/LoginActions":4,"../stores/authStore":34,"../stores/loginStore":38,"_process":45,"react":240,"react-router":77,"reflux":257,"ws":260}],23:[function(require,module,exports){
 var React = require('react');
 var LogoutActions = require('../actions/LogoutActions');
 var logoutStore = require('../stores/logoutStore');
@@ -34582,4 +34596,49 @@ module.exports = function(listenables){
     };
 };
 
-},{"reflux-core/lib/ListenerMethods":244}]},{},[13,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,12]);
+},{"reflux-core/lib/ListenerMethods":244}],260:[function(require,module,exports){
+
+/**
+ * Module dependencies.
+ */
+
+var global = (function() { return this; })();
+
+/**
+ * WebSocket constructor.
+ */
+
+var WebSocket = global.WebSocket || global.MozWebSocket;
+
+/**
+ * Module exports.
+ */
+
+module.exports = WebSocket ? ws : null;
+
+/**
+ * WebSocket constructor.
+ *
+ * The third `opts` options object gets ignored in web browsers, since it's
+ * non-standard, and throws a TypeError if passed to the constructor.
+ * See: https://github.com/einaros/ws/issues/227
+ *
+ * @param {String} uri
+ * @param {Array} protocols (optional)
+ * @param {Object) opts (optional)
+ * @api public
+ */
+
+function ws(uri, protocols, opts) {
+  var instance;
+  if (protocols) {
+    instance = new WebSocket(uri, protocols);
+  } else {
+    instance = new WebSocket(uri);
+  }
+  return instance;
+}
+
+if (WebSocket) ws.prototype = WebSocket.prototype;
+
+},{}]},{},[13,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,12]);
