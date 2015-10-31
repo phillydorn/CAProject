@@ -585,7 +585,7 @@ var WebSocket = require('ws');
         if (event.data==='update'){
           MainActions.populate(this.state.leagueId);
         }
-      }
+      }.bind(this)
     },
 
     populate: function(data) {

@@ -28,8 +28,8 @@ var WebSocket = require('ws');
         console.log('received', event.data)
         if (event.data==='update'){
           MainActions.populate(this.state.leagueId);
-        }.bind(this)
-      }
+        }
+      }.bind(this)
     },
 
     populate: function(data) {
