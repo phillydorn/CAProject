@@ -469,7 +469,6 @@ var LoginActions = require('../actions/LoginActions');
 var loginStore = require('../stores/loginStore');
 var authStore = require('../stores/authStore');
 var Router = require('react-router');
-var WebSocket = require('ws');
 
 var Login = React.createClass({displayName: "Login",
 
@@ -486,18 +485,6 @@ var Login = React.createClass({displayName: "Login",
 
   componentDidMount: function() {
     this.listenTo(authStore, this.pathRedirect);
-function updateStats(memuse) {
-        document.getElementById('rss').innerHTML = memuse.rss;
-        document.getElementById('heapTotal').innerHTML = memuse.heapTotal;
-        document.getElementById('heapUsed').innerHTML = memuse.heapUsed;
-      }
-
-      var host = location.origin.replace(/^http/, 'ws');
-      var ws = new WebSocket(host);
-      ws.onmessage = function (event) {
-        console.log(event.data)
-         updateStats(JSON.parse(event.data));
-}
   },
 
   pathRedirect: function(loggedIn) {
@@ -519,10 +506,6 @@ function updateStats(memuse) {
   render: function() {
     return (
       React.createElement("div", null, 
-      React.createElement("strong", null, "Server Stats"), React.createElement("br", null), 
-    "RSS: ", React.createElement("div", {id: "rss"}), React.createElement("br", null), 
-    "Heap total: ", React.createElement("div", {id: "heapTotal"}), React.createElement("br", null), 
-    "Heap used: ", React.createElement("div", {id: "heapUsed"}), React.createElement("br", null), 
         React.createElement("form", {noValidate: true, className: "signup-form", onSubmit: this.handleSubmit}, 
           React.createElement("h1", null, "Login"), 
           React.createElement("label", null, "username"), 
@@ -537,7 +520,7 @@ function updateStats(memuse) {
 });
 
 module.exports = Login;
-},{"../actions/LoginActions":4,"../stores/authStore":34,"../stores/loginStore":38,"react":240,"react-router":77,"reflux":257,"ws":260}],23:[function(require,module,exports){
+},{"../actions/LoginActions":4,"../stores/authStore":34,"../stores/loginStore":38,"react":240,"react-router":77,"reflux":257}],23:[function(require,module,exports){
 var React = require('react');
 var LogoutActions = require('../actions/LogoutActions');
 var logoutStore = require('../stores/logoutStore');
@@ -580,6 +563,8 @@ var UserTeam = require('./userTeam.jsx.js');
 var OtherTeam = require('./otherTeams.jsx.js');
 var Bracket = require('./bracket.jsx.js');
 var AuthComponent = require('./Authenticated.jsx.js');
+var WebSocket = require('ws');
+
 
 
   module.exports = AuthComponent(React.createClass({
@@ -593,6 +578,14 @@ var AuthComponent = require('./Authenticated.jsx.js');
     componentDidMount: function(){
       this.listenTo(mainStore, this.populate);
       MainActions.populate(this.state.leagueId);
+      var host = location.origin.replace(/^http/, 'ws');
+      var ws = new WebSocket(host);
+      ws.onmessage = function (event) {
+        console.log('received', event.data)
+        if (event.data==='update'){
+          MainActions.populate(this.state.leagueId);
+        }
+      }
     },
 
     populate: function(data) {
@@ -619,7 +612,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
 
 
 
-},{"../actions/MainActions":6,"../stores/mainStore":40,"./Authenticated.jsx.js":13,"./bracket.jsx.js":16,"./otherTeams.jsx.js":27,"./teamPool.jsx.js":31,"./userTeam.jsx.js":33,"react":240,"reflux":257}],25:[function(require,module,exports){
+},{"../actions/MainActions":6,"../stores/mainStore":40,"./Authenticated.jsx.js":13,"./bracket.jsx.js":16,"./otherTeams.jsx.js":27,"./teamPool.jsx.js":31,"./userTeam.jsx.js":33,"react":240,"reflux":257,"ws":260}],25:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;

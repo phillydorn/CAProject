@@ -24,16 +24,19 @@ app.set('port', (process.env.PORT || 3000));
 
 var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
-  var id = setInterval(function() {
-    ws.send(JSON.stringify(process.memoryUsage()), function() { /* ignore errors */ });
-  }, 1000);
-  console.log('started client interval');
+  console.log('ws connection');
+  ws.on('message', function (message) {
+    console.log('received', message)
+  });
+  ws.send('outgoing');
+  wss.clients.forEach(function(client) {
+    ws.send('broadcast')
+  })
   ws.on('close', function() {
-    console.log('stopping client interval');
-    clearInterval(id);
+    console.log('close connection');
   });
 });
-
+app.wss = wss;
 
 exports =module.exports=app;
 

@@ -7,6 +7,8 @@ var UserTeam = require('./userTeam.jsx.js');
 var OtherTeam = require('./otherTeams.jsx.js');
 var Bracket = require('./bracket.jsx.js');
 var AuthComponent = require('./Authenticated.jsx.js');
+var WebSocket = require('ws');
+
 
 
   module.exports = AuthComponent(React.createClass({
@@ -20,6 +22,14 @@ var AuthComponent = require('./Authenticated.jsx.js');
     componentDidMount: function(){
       this.listenTo(mainStore, this.populate);
       MainActions.populate(this.state.leagueId);
+      var host = location.origin.replace(/^http/, 'ws');
+      var ws = new WebSocket(host);
+      ws.onmessage = function (event) {
+        console.log('received', event.data)
+        if (event.data==='update'){
+          MainActions.populate(this.state.leagueId);
+        }
+      }
     },
 
     populate: function(data) {
