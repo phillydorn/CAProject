@@ -22,7 +22,7 @@ app.set('port', (process.env.PORT || 3000));
   });
 // });
 
-var wss = new WebSocketServer({server: server});
+var wss = new WebSocketServer({server: server, port:8080});
 wss.on('connection', function(ws) {
   var id = setInterval(function() {
     ws.send(JSON.stringify(process.memoryUsage()), function() { /* ignore errors */ });
