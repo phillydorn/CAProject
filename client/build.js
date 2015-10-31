@@ -492,8 +492,8 @@ function updateStats(memuse) {
         document.getElementById('heapUsed').innerHTML = memuse.heapUsed;
       }
 
-      var host = window.document.location.host.replace(/:.*/, '');
-      var ws = new WebSocket('ws://' + host + ':8080');
+      var host = location.origin.replace(/^http/, 'ws');
+      var ws = new WebSocket(host);
       ws.onmessage = function (event) {
         console.log(event.data)
          updateStats(JSON.parse(event.data));
