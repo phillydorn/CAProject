@@ -463,7 +463,6 @@ var LeagueActions = require('../actions/LeagueActions');
     }
   }));
 },{"../actions/LeagueActions":3,"../stores/leagueStore":37,"./Authenticated.jsx.js":13,"./league.jsx.js":20,"react":240,"reflux":257}],22:[function(require,module,exports){
-(function (process){
 var React = require('react');
 var Reflux = require('reflux');
 var LoginActions = require('../actions/LoginActions');
@@ -487,17 +486,18 @@ var Login = React.createClass({displayName: "Login",
 
   componentDidMount: function() {
     this.listenTo(authStore, this.pathRedirect);
-    function updateStats(memuse) {
+function updateStats(memuse) {
         document.getElementById('rss').innerHTML = memuse.rss;
         document.getElementById('heapTotal').innerHTML = memuse.heapTotal;
         document.getElementById('heapUsed').innerHTML = memuse.heapUsed;
       }
+
       var host = window.document.location.host.replace(/:.*/, '');
-      console.log('host', host)
-      var ws = new WebSocket('ws://' + host + (process.env.PORT||':3000'));
+      var ws = new WebSocket('ws://' + host + ':3000');
       ws.onmessage = function (event) {
-        updateStats(JSON.parse(event.data));
-      };
+        console.log(event.data)
+         updateStats(JSON.parse(event.data));
+}
   },
 
   pathRedirect: function(loggedIn) {
@@ -519,6 +519,10 @@ var Login = React.createClass({displayName: "Login",
   render: function() {
     return (
       React.createElement("div", null, 
+      React.createElement("strong", null, "Server Stats"), React.createElement("br", null), 
+    "RSS: ", React.createElement("div", {id: "rss"}), React.createElement("br", null), 
+    "Heap total: ", React.createElement("div", {id: "heapTotal"}), React.createElement("br", null), 
+    "Heap used: ", React.createElement("div", {id: "heapUsed"}), React.createElement("br", null), 
         React.createElement("form", {noValidate: true, className: "signup-form", onSubmit: this.handleSubmit}, 
           React.createElement("h1", null, "Login"), 
           React.createElement("label", null, "username"), 
@@ -533,8 +537,7 @@ var Login = React.createClass({displayName: "Login",
 });
 
 module.exports = Login;
-}).call(this,require('_process'))
-},{"../actions/LoginActions":4,"../stores/authStore":34,"../stores/loginStore":38,"_process":45,"react":240,"react-router":77,"reflux":257,"ws":260}],23:[function(require,module,exports){
+},{"../actions/LoginActions":4,"../stores/authStore":34,"../stores/loginStore":38,"react":240,"react-router":77,"reflux":257,"ws":260}],23:[function(require,module,exports){
 var React = require('react');
 var LogoutActions = require('../actions/LogoutActions');
 var logoutStore = require('../stores/logoutStore');

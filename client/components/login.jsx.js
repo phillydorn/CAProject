@@ -21,17 +21,18 @@ var Login = React.createClass({
 
   componentDidMount: function() {
     this.listenTo(authStore, this.pathRedirect);
-    function updateStats(memuse) {
+function updateStats(memuse) {
         document.getElementById('rss').innerHTML = memuse.rss;
         document.getElementById('heapTotal').innerHTML = memuse.heapTotal;
         document.getElementById('heapUsed').innerHTML = memuse.heapUsed;
       }
+
       var host = window.document.location.host.replace(/:.*/, '');
-      console.log('host', host)
-      var ws = new WebSocket('ws://' + host + (process.env.PORT||':3000'));
+      var ws = new WebSocket('ws://' + host + ':3000');
       ws.onmessage = function (event) {
-        updateStats(JSON.parse(event.data));
-      };
+        console.log(event.data)
+         updateStats(JSON.parse(event.data));
+}
   },
 
   pathRedirect: function(loggedIn) {
@@ -53,6 +54,10 @@ var Login = React.createClass({
   render: function() {
     return (
       <div>
+      <strong>Server Stats</strong><br/>
+    RSS: <div id='rss'></div><br/>
+    Heap total: <div id='heapTotal'></div><br/>
+    Heap used: <div id='heapUsed'></div><br/>
         <form noValidate className="signup-form" onSubmit = {this.handleSubmit}>
           <h1>Login</h1>
           <label>username</label>

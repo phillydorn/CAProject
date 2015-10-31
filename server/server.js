@@ -3,9 +3,7 @@ var express = require('express');
     app = express(),
     server  = require('http').createServer(app),
     bodyParser = require ('body-parser'),
-    url = require('url'),
-    WebSocketServer = require('ws').Server,
-    wss = new WebSocketServer({ server: server });
+    WebSocketServer = require('ws').Server;
 
 
 require('./config/express')(app);
@@ -24,10 +22,11 @@ app.set('port', (process.env.PORT || 3000));
   });
 // });
 
+var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
   var id = setInterval(function() {
     ws.send(JSON.stringify(process.memoryUsage()), function() { /* ignore errors */ });
-  }, 100);
+  }, 1000);
   console.log('started client interval');
   ws.on('close', function() {
     console.log('stopping client interval');
