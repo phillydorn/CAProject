@@ -22,7 +22,7 @@ var WebSocket = require('ws');
     componentDidMount: function(){
       this.listenTo(mainStore, this.populate);
       MainActions.populate(this.state.leagueId);
-      var host = location.origin.replace(/^http/, 'ws');
+      var host = location.origin.replace(/^http/, 'wss');
       var ws = new WebSocket(host);
       ws.onmessage = function (event) {
         console.log('received', event.data)
