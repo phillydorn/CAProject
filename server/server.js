@@ -3,7 +3,8 @@ var express = require('express');
     app = express(),
     server  = require('http').createServer(app),
     bodyParser = require ('body-parser'),
-    io = require('socket.io')(server);
+    WebSocketServer = require('ws').Server,
+    CLIENTS = [];
 
 
 require('./config/express')(app);
@@ -15,24 +16,27 @@ var models = require('./models');
 
 
 
-app.set('port', (process.env.PORT || 3000));
-models.sequelize.sync().then(function () {
-  var server = app.listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + app.get('port'));
-  });
-});
 
-io.on('connection', function(socket) {
-  console.log('socket connection');
-  socket.on('message', function (message) {
+var wss = new WebSocketServer({server: server});
+wss.on('connection', function(ws) {
+  console.log('ws connection');
+  CLIENTS.push(ws);
+  console.log('CLIENTs', CLIENTS.length)
+  ws.on('message', function (message) {
     console.log('received', message)
   });
-  socket.on('close', function() {
+  ws.on('close', function() {
     console.log('close connection');
   });
 });
-app.io = io;
+app.wss = wss;
 
+app.set('port', (process.env.PORT || 3000));
+models.sequelize.sync().then(function () {
+  server.listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + app.get('port'));
+  });
+});
 exports =module.exports=app;
 
 

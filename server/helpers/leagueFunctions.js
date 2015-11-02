@@ -120,7 +120,7 @@ module.exports = {
         }).then (function(team) {
           team.addNCAA_Team(school).then (function() {
             league.removeNCAA_Team(school).then (function() {
-                app.io.clients.forEach(function(client) {
+                app.wss.clients.forEach(function(client) {
                   client.send('update');
                 });
               res.status(200).json(league);

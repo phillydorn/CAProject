@@ -7,7 +7,7 @@ var UserTeam = require('./userTeam.jsx.js');
 var OtherTeam = require('./otherTeams.jsx.js');
 var Bracket = require('./bracket.jsx.js');
 var AuthComponent = require('./Authenticated.jsx.js');
-// var WebSocket = require('ws');
+var WebSocket = require('ws');
 
 
 

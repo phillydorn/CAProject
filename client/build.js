@@ -565,7 +565,7 @@ var UserTeam = require('./userTeam.jsx.js');
 var OtherTeam = require('./otherTeams.jsx.js');
 var Bracket = require('./bracket.jsx.js');
 var AuthComponent = require('./Authenticated.jsx.js');
-// var WebSocket = require('ws');
+var WebSocket = require('ws');
 
 
 
@@ -614,7 +614,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
 
 
 
-},{"../actions/MainActions":6,"../stores/mainStore":40,"./Authenticated.jsx.js":13,"./bracket.jsx.js":16,"./otherTeams.jsx.js":27,"./teamPool.jsx.js":31,"./userTeam.jsx.js":33,"react":240,"reflux":257}],25:[function(require,module,exports){
+},{"../actions/MainActions":6,"../stores/mainStore":40,"./Authenticated.jsx.js":13,"./bracket.jsx.js":16,"./otherTeams.jsx.js":27,"./teamPool.jsx.js":31,"./userTeam.jsx.js":33,"react":240,"reflux":257,"ws":260}],25:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
@@ -34616,4 +34616,49 @@ module.exports = function(listenables){
     };
 };
 
-},{"reflux-core/lib/ListenerMethods":244}]},{},[13,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,12]);
+},{"reflux-core/lib/ListenerMethods":244}],260:[function(require,module,exports){
+
+/**
+ * Module dependencies.
+ */
+
+var global = (function() { return this; })();
+
+/**
+ * WebSocket constructor.
+ */
+
+var WebSocket = global.WebSocket || global.MozWebSocket;
+
+/**
+ * Module exports.
+ */
+
+module.exports = WebSocket ? ws : null;
+
+/**
+ * WebSocket constructor.
+ *
+ * The third `opts` options object gets ignored in web browsers, since it's
+ * non-standard, and throws a TypeError if passed to the constructor.
+ * See: https://github.com/einaros/ws/issues/227
+ *
+ * @param {String} uri
+ * @param {Array} protocols (optional)
+ * @param {Object) opts (optional)
+ * @api public
+ */
+
+function ws(uri, protocols, opts) {
+  var instance;
+  if (protocols) {
+    instance = new WebSocket(uri, protocols);
+  } else {
+    instance = new WebSocket(uri);
+  }
+  return instance;
+}
+
+if (WebSocket) ws.prototype = WebSocket.prototype;
+
+},{}]},{},[13,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,12]);
