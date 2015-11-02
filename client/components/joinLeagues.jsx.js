@@ -44,6 +44,7 @@ var LeagueActions = require('../actions/LeagueActions');
       });
       return (
           <div className = "league-page">
+          <h1>Join a League</h1>
             <ul className = "league-list">
               {leagueNodes}
             </ul>

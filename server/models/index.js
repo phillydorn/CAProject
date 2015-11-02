@@ -2,17 +2,19 @@
 
 if (!process.env.CLIENT_ID) {
   var keys = require('../keys.js');
-  var dbUser = keys.clearDB_username;
-  var dbPassword = keys.clearDB_password;
-  var dbAddress = keys.clearDB_address;
-  var dbHost = keys.clearDB_hostName;
-  var dbName = keys.clearDB_name;
+  var dbUser = keys.pg_username;
+  var dbPassword = keys.pg_password;
+  var dbAddress = keys.pg_address;
+  var dbHost = keys.pg_hostName;
+  var dbName = keys.pg_name;
+  var dbPort = keys.pg_port;
   } else {
-  var dbUser = process.env.CLEARDB_USERNAME;
-  var dbPassword = process.env.CLEARDB_PASSWORD;
-  var dbAddress = process.env.CLEARDB_ADDRESS;
-  var dbHost = process.env.CLEARDB_HOSTNAME;
-  var dbName = process.env.CLEARDB_NAME;
+  var dbUser = process.env.PG_USERNAME;
+  var dbPassword = process.env.PG_PASSWORD;
+  var dbAddress = process.env.PG_ADDRESS;
+  var dbHost = process.env.PG_HOSTNAME;
+  var dbName = process.env.PG_NAME;
+  var dbPort = process.env.PG_PORT;
   }
 
 var fs        = require("fs");
@@ -20,12 +22,13 @@ var path      = require("path");
 var Sequelize = require("sequelize");
 var sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   host: dbHost,
-  dialect: 'mysql',
-  port: 3306,
+  dialect: 'postgres',
+  port: dbPort,
+  native: true,
   pool: {
-    max: 500,
+    max: 5,
     min: 1,
-    idle: 50000
+    idle: 5
   }
 });
 var db        = {};

@@ -9,7 +9,7 @@ var UserTeam = require('./userTeam.jsx.js');
 var OtherTeams = React.createClass({
 
   getInitialState: function() {
-    return {otherTeam: 'Other Teams'}
+    return {otherTeam: ''}
   },
 
   handleSelect: function (e) {

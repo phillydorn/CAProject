@@ -21,7 +21,7 @@ var OtherTeam = React.createClass({
   componentWillReceiveProps: function (){
     setTimeout(function() {
       console.log('mount props', this.props)
-      OtherTeamActions.loadSchools(this.props.teamId);
+      OtherTeamActions.loadSchools(this.props.teamId || 0);
     }.bind(this), 500)
   },
 

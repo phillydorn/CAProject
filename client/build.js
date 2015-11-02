@@ -394,6 +394,7 @@ var LeagueActions = require('../actions/LeagueActions');
       });
       return (
           React.createElement("div", {className: "league-page"}, 
+          React.createElement("h1", null, "Join a League"), 
             React.createElement("ul", {className: "league-list"}, 
               leagueNodes
             )
@@ -455,6 +456,7 @@ var LeagueActions = require('../actions/LeagueActions');
       });
       return (
           React.createElement("div", {className: "league-page"}, 
+            React.createElement("h1", null, "Your Leagues"), 
             React.createElement("ul", {className: "league-list"}, 
               leagueNodes
             )
@@ -662,7 +664,7 @@ var OtherTeam = React.createClass({displayName: "OtherTeam",
   componentWillReceiveProps: function (){
     setTimeout(function() {
       console.log('mount props', this.props)
-      OtherTeamActions.loadSchools(this.props.teamId);
+      OtherTeamActions.loadSchools(this.props.teamId || 0);
     }.bind(this), 500)
   },
 
@@ -701,7 +703,7 @@ var UserTeam = require('./userTeam.jsx.js');
 var OtherTeams = React.createClass({displayName: "OtherTeams",
 
   getInitialState: function() {
-    return {otherTeam: 'Other Teams'}
+    return {otherTeam: ''}
   },
 
   handleSelect: function (e) {
@@ -761,10 +763,30 @@ var School = React.createClass({displayName: "School",
 module.exports = School;
 },{"../actions/SchoolActions":8,"../actions/UserTeamActions":10,"../stores/schoolStore":42,"react":240}],29:[function(require,module,exports){
 var React = require('react');
-var SignupActions = require('../actions/SignupActions')
-var signupStore = require('../stores/signupStore')
+var Reflux = require('reflux');
+var SignupActions = require('../actions/SignupActions');
+var signupStore = require('../stores/signupStore');
+var Router = require('react-router');
+var authStore = require('../stores/authStore');
 
 var Signup = React.createClass({displayName: "Signup",
+
+  mixins: [Router.Navigation, Reflux.connect(authStore, 'loggedIn')],
+
+
+  getInitialState: function() {
+    return {loggedIn: this.props.loggedIn}
+  },
+
+  componentDidMount: function() {
+    this.listenTo(authStore, this.pathRedirect);
+  },
+
+  pathRedirect: function(loggedIn) {
+    if (loggedIn) {
+      this.transitionTo('/');
+    }
+  },
 
   handleSubmit: function(e) {
     e.preventDefault();
@@ -819,7 +841,7 @@ var Signup = React.createClass({displayName: "Signup",
 
 module.exports = Signup;
 
-},{"../actions/SignupActions":9,"../stores/signupStore":43,"react":240}],30:[function(require,module,exports){
+},{"../actions/SignupActions":9,"../stores/authStore":34,"../stores/signupStore":43,"react":240,"react-router":77,"reflux":257}],30:[function(require,module,exports){
 var React = require('react');
 var CreateLeagueActions = require('../actions/CreateLeagueActions');
 var createTeamStore = require('../stores/createTeamStore');
@@ -1251,19 +1273,21 @@ module.exports = SchoolStore;
 },{"../actions/SchoolActions":8,"jquery":46,"reflux":257}],43:[function(require,module,exports){
 var Reflux = require('reflux');
 var SignupActions = require('../actions/SignupActions');
+var AuthActions = require('../actions/AuthActions');
 
 signupStore= Reflux.createStore({
   listenables: [SignupActions],
 
   onSendSignupCompleted: function(data) {
     console.log('store data', data);
+    AuthActions.verify();
   }
 
 });
 
 
 module.exports = signupStore;
-},{"../actions/SignupActions":9,"reflux":257}],44:[function(require,module,exports){
+},{"../actions/AuthActions":1,"../actions/SignupActions":9,"reflux":257}],44:[function(require,module,exports){
 var Reflux = require('reflux');
 var UserTeamActions = require('../actions/UserTeamActions');
 var SchoolActions = require('../actions/SchoolActions');

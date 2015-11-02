@@ -1,8 +1,28 @@
 var React = require('react');
-var SignupActions = require('../actions/SignupActions')
-var signupStore = require('../stores/signupStore')
+var Reflux = require('reflux');
+var SignupActions = require('../actions/SignupActions');
+var signupStore = require('../stores/signupStore');
+var Router = require('react-router');
+var authStore = require('../stores/authStore');
 
 var Signup = React.createClass({
+
+  mixins: [Router.Navigation, Reflux.connect(authStore, 'loggedIn')],
+
+
+  getInitialState: function() {
+    return {loggedIn: this.props.loggedIn}
+  },
+
+  componentDidMount: function() {
+    this.listenTo(authStore, this.pathRedirect);
+  },
+
+  pathRedirect: function(loggedIn) {
+    if (loggedIn) {
+      this.transitionTo('/');
+    }
+  },
 
   handleSubmit: function(e) {
     e.preventDefault();
