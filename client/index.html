@@ -11,6 +11,9 @@
     <h1>BracketDraft</h1>
     <section id="content"></section>
     <script src="build.js"></script>
-
+    <script src="./socket.io.js"></script>
+    <script>
+      var socket = io(location.origin+'/socket.io', {transports: ['websocket']});
+    </script>
   </body>
 </html>
