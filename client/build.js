@@ -663,14 +663,11 @@ var OtherTeam = React.createClass({displayName: "OtherTeam",
 
   componentWillReceiveProps: function (){
     setTimeout(function() {
-      console.log('mount props', this.props)
       OtherTeamActions.loadSchools(this.props.teamId || 0);
     }.bind(this), 500)
   },
 
   render: function() {
-    console.log('otherprops', this.props)
-    console.log('otherstate', this.state)
     var schoolNodes = this.state.otherSchoolList.map(function (school) {
       return (
           React.createElement(UserSchool, {schoolName: school.market, schoolId: school.id, key: school.id})
@@ -947,13 +944,11 @@ var UserTeam = React.createClass({displayName: "UserTeam",
 
   componentWillReceiveProps: function (){
     setTimeout(function() {
-      console.log('mount props', this.props)
       UserTeamActions.loadSchools(this.props.teamId);
     }.bind(this), 500)
   },
 
   render: function() {
-    console.log('userprops', this.props)
     var schoolNodes = this.state.userSchoolList.map(function (school) {
       return (
           React.createElement(UserSchool, {schoolName: school.market, schoolId: school.id, key: school.id})
@@ -1222,7 +1217,6 @@ otherTeamStore = Reflux.createStore({
   listenables: [OtherTeamActions, SchoolActions],
 
   getSchools: function(teamId) {
-    console.log('laodscholls', teamId)
     $.ajax({
       method: 'GET',
       url: '/api/teams/'+teamId,

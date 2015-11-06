@@ -9,7 +9,6 @@ otherTeamStore = Reflux.createStore({
   listenables: [OtherTeamActions, SchoolActions],
 
   getSchools: function(teamId) {
-    console.log('laodscholls', teamId)
     $.ajax({
       method: 'GET',
       url: '/api/teams/'+teamId,

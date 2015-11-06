@@ -4,7 +4,7 @@ var express = require('express');
     server  = require('http').createServer(app),
     bodyParser = require ('body-parser'),
     WebSocketServer = require('ws').Server,
-    CLIENTS = [];
+    CLIENTS = {};
 
 
 require('./config/express')(app);
@@ -20,10 +20,14 @@ var models = require('./models');
 var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
   console.log('ws connection');
-  CLIENTS.push(ws);
-  console.log('CLIENTs', CLIENTS.length)
+  app.use(function(req, res) {
+    CLIENTS[req.user.id] = ws;
+    // console.log('req', req)
+
+  })
+  console.log('CLIENTs', CLIENTS)
   ws.on('message', function (message) {
-    console.log('received', message)
+    console.log('received')
   });
   ws.on('close', function() {
     console.log('close connection');

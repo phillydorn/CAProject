@@ -14,7 +14,7 @@ var express = require('express'),
     }
 
 
-    module.exports = function(app) {
+    module.exports = (app) => {
     app.use(express.static('./client'));
 
     app.use(bodyParser.urlencoded({extended:true}));

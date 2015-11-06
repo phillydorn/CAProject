@@ -20,14 +20,11 @@ var OtherTeam = React.createClass({
 
   componentWillReceiveProps: function (){
     setTimeout(function() {
-      console.log('mount props', this.props)
       OtherTeamActions.loadSchools(this.props.teamId || 0);
     }.bind(this), 500)
   },
 
   render: function() {
-    console.log('otherprops', this.props)
-    console.log('otherstate', this.state)
     var schoolNodes = this.state.otherSchoolList.map(function (school) {
       return (
           <UserSchool schoolName = {school.market} schoolId={school.id} key={school.id} />

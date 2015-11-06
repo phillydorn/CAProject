@@ -93,7 +93,7 @@ module.exports = {
       });
     })
   },
-  joinLeague: function(req, res) {
+  joinLeague(req, res) {
     var leagueId = req.body.id;
     var userId = req.user.id;
     models.League.findById(leagueId).then (function(league) {
@@ -104,7 +104,7 @@ module.exports = {
     });
   },
 
-  selectTeam: function(req, res) {
+  selectTeam(req, res) {
     var schoolId = req.body.schoolId;
     console.log('url', req.url)
     var leagueId = req.url.slice(1);
@@ -120,12 +120,20 @@ module.exports = {
         }).then (function(team) {
           team.addNCAA_Team(school).then (function() {
             league.removeNCAA_Team(school).then (function() {
-                app.wss.clients.forEach(function(client) {
-                  client.send('update');
-                });
+                module.exports.updateLeague(leagueId);
               res.status(200).json(league);
             });
           });
+        });
+      });
+    });
+  },
+
+  updateLeague(leagueId) {
+    models.League.findById(leagueId).then((league)=>{
+      league.getUsers().then((users)=>{
+        app.wss.clients.forEach(function(client) {
+          client.send('update');
         });
       });
     });

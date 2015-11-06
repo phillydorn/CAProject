@@ -76,9 +76,6 @@ module.exports = function(app) {
 
   app.post('/api/auth/login', passport.authenticate('local'), function (req, res) {
       console.log('authenticate')
-      app.wss.clients.forEach(function(client) {
-        client.send('everyone')
-      })
       res.status(200).json('success');
     });
   app.get('/api/auth/logout', function(req, res) {
