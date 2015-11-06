@@ -9,6 +9,7 @@
   "author": "Phil Dornfeld",
   "license": "ISC",
   "dependencies": {
+    "babel-core": "^6.1.2",
     "bcrypt": "^0.8.5",
     "body-parser": "^1.14.1",
     "browserify": "^11.2.0",
