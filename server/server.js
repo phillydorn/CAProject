@@ -1,39 +1,36 @@
 //
-var express = require('express');
+
+"use strict";
+
+var express = require('express'),
     app = express(),
     server  = require('http').createServer(app),
     bodyParser = require ('body-parser'),
-    WebSocketServer = require('ws').Server,
-    CLIENTS = {};
+    io = require('socket.io')(server);
 
-
+require('babel-core/register');
 require('./config/express')(app);
+require('./routes')(app, io);
 require('./auth')(app);
-require('./routes')(app);
 
 var models = require('./models');
 
 
+// io.on('connection', function(socket) {
+//   app.socket = socket;
+//   console.log('socket connection');
+//   socket.on('leaguePage', (data) => {
+//     let leagueId = data.leagueId;
+//     socket.join(leagueId);
+//     console.log('user joined room', leagueId)
+//     io.to(leagueId).emit('update', leagueId);
+//   })
 
+//   socket.on('close', function() {
+//     console.log('close connection');
+//   })
+// });
 
-
-var wss = new WebSocketServer({server: server});
-wss.on('connection', function(ws) {
-  console.log('ws connection');
-  app.use(function(req, res) {
-    CLIENTS[req.user.id] = ws;
-    // console.log('req', req)
-
-  })
-  console.log('CLIENTs', CLIENTS)
-  ws.on('message', function (message) {
-    console.log('received')
-  });
-  ws.on('close', function() {
-    console.log('close connection');
-  });
-});
-app.wss = wss;
 
 app.set('port', (process.env.PORT || 3000));
 models.sequelize.sync().then(function () {
@@ -41,7 +38,6 @@ models.sequelize.sync().then(function () {
     console.log('Express server listening on port ' + app.get('port'));
   });
 });
-exports =module.exports=app;
 
 
 

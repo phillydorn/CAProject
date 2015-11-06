@@ -1,6 +1,6 @@
-var leagues = require('../helpers/leagueFunctions');
 
-module.exports = function(app) {
+module.exports = function(app, io) {
+  var leagues = require('../helpers/leagueFunctions')(io);
   app.post('/', leagues.createLeague);
   app.post('/*', leagues.createOwnerTeam);
   app.get('/user', leagues.getUserLeagues);

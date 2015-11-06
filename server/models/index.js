@@ -25,6 +25,7 @@ var sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   dialect: 'postgres',
   port: dbPort,
   native: true,
+  logging: false,
   pool: {
     max: 5,
     min: 1,

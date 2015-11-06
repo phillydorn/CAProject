@@ -7,7 +7,8 @@ var UserTeam = require('./userTeam.jsx.js');
 var OtherTeam = require('./otherTeams.jsx.js');
 var Bracket = require('./bracket.jsx.js');
 var AuthComponent = require('./Authenticated.jsx.js');
-var WebSocket = require('ws');
+var io = require('socket.io-client');
+var socket = io(location.origin, {transports: ['websocket']});
 
 
 
@@ -21,15 +22,12 @@ var WebSocket = require('ws');
 
     componentDidMount: function(){
       this.listenTo(mainStore, this.populate);
+      socket.on('update', (message) => {
+        console.log('updating', message)
+        MainActions.populate(this.state.leagueId);
+      });
+      socket.emit('leaguePage', {leagueId: this.state.leagueId});
       MainActions.populate(this.state.leagueId);
-      var host = location.origin.replace(/^http/, 'ws');
-      var ws = new WebSocket('ws://'+window.document.location.host);
-      ws.onmessage = function (event) {
-        console.log('received', event.data)
-        if (event.data==='update'){
-          MainActions.populate(this.state.leagueId);
-        }
-      }.bind(this)
     },
 
     populate: function(data) {

@@ -2,6 +2,9 @@ var Reflux = require('reflux');
 var MainActions = require('../actions/MainActions');
 var SchoolActions = require('../actions/SchoolActions');
 var $ = require('jquery');
+var io = require('socket.io-client');
+var socket = io(location.origin, {transports: ['websocket']});
+
 
 mainStore = Reflux.createStore({
 
@@ -19,7 +22,9 @@ mainStore = Reflux.createStore({
   },
 
   onSelectTeamCompleted: function(leagueId) {
-    this.onPopulate(leagueId);
+    console.log('complete')
+    socket.emit('update', {leagueId: leagueId});
+    // this.onPopulate(leagueId);
   }
 
 

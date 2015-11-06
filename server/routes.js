@@ -2,7 +2,7 @@ var express=require('express');
 var bodyParser = require('body-parser');
 
 
-module.exports = function(app) {
+module.exports = function(app, io) {
   var schoolRouter = express.Router();
   var leagueRouter = express.Router();
   var teamRouter = express.Router();
@@ -15,6 +15,6 @@ module.exports = function(app) {
   app.use('/api/teams', teamRouter);
 
   require('./routers/schoolRouter.js')(schoolRouter);
-  require('./routers/leagueRouter.js')(leagueRouter);
+  require('./routers/leagueRouter.js')(leagueRouter, io);
   require('./routers/teamRouter.js')(teamRouter);
 };

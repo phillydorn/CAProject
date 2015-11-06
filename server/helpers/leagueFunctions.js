@@ -1,6 +1,8 @@
 var models = require('../models');
 
-module.exports = {
+module.exports = function(io) {
+  var helpers = {
+
   createLeague : function(req, res) {
 
     models.sequelize.sync().then(function() {
@@ -75,9 +77,36 @@ module.exports = {
 
   loadSchools: function(req, res) {
     var id = req.url.slice(1);
+
+    // let nsp = io.of('/'+id);
+    // nsp.on('connection', (socket) =>{
+    //   console.log('connNNNNN')
+    // });
+
+    io.on('connection', function(socket) {
+      console.log('socket connection');
+      socket.on('leaguePage', (data) => {
+        console.log('leaguePage', data)
+        let leagueId = data.leagueId;
+        socket.join(leagueId);
+        console.log('user joined room', leagueId)
+        io.to(leagueId).emit('update', leagueId);
+      })
+      socket.on('update', (data) =>{
+        console.log('update', data)
+
+        let leagueId= data.leagueId;
+        io.to(leagueId).emit('update', leagueId);
+
+      });
+      socket.on('close', function() {
+        console.log('close connection');
+      })
+    });
+
     models.League.findById(id).then (function (league) {
       league.getNCAA_Teams().then (function(NCAATeams) {
-        data = {schoolsList: NCAATeams, leagueName:league.name}
+        let data = {schoolsList: NCAATeams, leagueName:league.name}
         league.getTeams().then(function(teams){
           data.teams = teams;
           models.User.findById(req.user.id).then(function(user) {
@@ -106,12 +135,10 @@ module.exports = {
 
   selectTeam(req, res) {
     var schoolId = req.body.schoolId;
-    console.log('url', req.url)
     var leagueId = req.url.slice(1);
     var userId = req.user.id;
     models.NCAA_Team.findById(schoolId).then (function(school) {
       models.League.findById(leagueId).then(function(league) {
-        console.log('league', leagueId, 'user', userId)
         models.Team.findOne({
           where: {
             LeagueId: leagueId,
@@ -120,8 +147,11 @@ module.exports = {
         }).then (function(team) {
           team.addNCAA_Team(school).then (function() {
             league.removeNCAA_Team(school).then (function() {
-                module.exports.updateLeague(leagueId);
-              res.status(200).json(league);
+              // console.log('io', io)
+              // io.on('connection', (socket)=> {
+              //   io.to(leagueId).emit('update', {leagueId})
+                res.status(200).json(league);
+              // })
             });
           });
         });
@@ -132,10 +162,9 @@ module.exports = {
   updateLeague(leagueId) {
     models.League.findById(leagueId).then((league)=>{
       league.getUsers().then((users)=>{
-        app.wss.clients.forEach(function(client) {
-          client.send('update');
-        });
       });
     });
   }
+  }
+  return helpers;
 }
