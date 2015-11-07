@@ -5,6 +5,7 @@ var MainActions = require('../actions/MainActions');
 var TeamPool = require('./teamPool.jsx.js');
 var UserTeam = require('./userTeam.jsx.js');
 var OtherTeam = require('./otherTeams.jsx.js');
+var ChatWindow = require('./chatWindow.jsx.js');
 var Bracket = require('./bracket.jsx.js');
 var AuthComponent = require('./Authenticated.jsx.js');
 var io = require('socket.io-client');
@@ -17,7 +18,7 @@ var socket = io(location.origin, {transports: ['websocket']});
     mixins: [Reflux.ListenerMixin],
 
     getInitialState: function() {
-      return {otherTeams: [], leagueId: this.props.params.league, teamId: '', leagueName: '', schoolsList: []}
+      return {socket: socket, otherTeams: [], leagueId: this.props.params.league, username: '', teamId: '', leagueName: '', schoolsList: []}
     },
 
     componentDidMount: function(){
@@ -35,7 +36,8 @@ var socket = io(location.origin, {transports: ['websocket']});
         otherTeams: data.teams,
         schoolsList: data.schoolsList,
         leagueName: data.leagueName,
-        teamId: data.userTeam.id
+        teamId: data.userTeam.id,
+        username: data.username
       });
     },
 
@@ -47,6 +49,7 @@ var socket = io(location.origin, {transports: ['websocket']});
             <TeamPool leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} />
             <OtherTeam otherTeams={this.state.otherTeams} />
             <UserTeam teamId={this.state.teamId} />
+            <ChatWindow socket={this.state.socket} leagueId = {this.state.leagueId} username={this.state.username} />
           </div>
         );
     }

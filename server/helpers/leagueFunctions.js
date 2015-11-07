@@ -80,11 +80,6 @@ module.exports = function(io) {
   loadSchools: function(req, res) {
     var id = req.url.slice(1);
 
-    // let nsp = io.of('/'+id);
-    // nsp.on('connection', (socket) =>{
-    //   console.log('connNNNNN')
-    // });
-
     io.on('connection', function(socket) {
       console.log('socket connection');
       socket.on('leaguePage', (data) => {
@@ -93,7 +88,13 @@ module.exports = function(io) {
         socket.join(leagueId);
         console.log('user joined room', leagueId)
         io.to(leagueId).emit('update', leagueId);
-      })
+      });
+
+      socket.on('sendMessage', (data) => {
+        let leagueId=data.leagueId;
+        io.to(leagueId).emit('newMessage', data);
+      });
+
       socket.on('update', (data) =>{
         console.log('update', data)
 
@@ -101,6 +102,7 @@ module.exports = function(io) {
         io.to(leagueId).emit('update', leagueId);
 
       });
+
       socket.on('close', function() {
         console.log('close connection');
       })
@@ -112,6 +114,7 @@ module.exports = function(io) {
         league.getTeams().then(function(teams){
           data.teams = teams;
           models.User.findById(req.user.id).then(function(user) {
+            data.username = user.username;
             teams.forEach(function(team) {
               if (team.UserId===user.id) {
                 data.userTeam = team;
