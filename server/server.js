@@ -4,7 +4,7 @@
 
 var express = require('express'),
     app = express(),
-    server  = require('http').createServer(app),
+    server  = require('http').Server(app),
     bodyParser = require ('body-parser'),
     io = require('socket.io')(server);
 
@@ -16,21 +16,12 @@ require('./auth')(app);
 var models = require('./models');
 
 
-// io.on('connection', function(socket) {
-//   app.socket = socket;
-//   console.log('socket connection');
-//   socket.on('leaguePage', (data) => {
-//     let leagueId = data.leagueId;
-//     socket.join(leagueId);
-//     console.log('user joined room', leagueId)
-//     io.to(leagueId).emit('update', leagueId);
-//   })
 
-//   socket.on('close', function() {
-//     console.log('close connection');
-//   })
-// });
 
+app.all('*', (req, res, next) => {
+  console.log('url', req.url);
+  next()
+});
 
 app.set('port', (process.env.PORT || 3000));
 models.sequelize.sync().then(function () {

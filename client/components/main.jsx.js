@@ -8,9 +8,6 @@ var OtherTeam = require('./otherTeams.jsx.js');
 var ChatWindow = require('./chatWindow.jsx.js');
 var Bracket = require('./bracket.jsx.js');
 var AuthComponent = require('./Authenticated.jsx.js');
-var io = require('socket.io-client');
-var socket = io(location.origin, {transports: ['websocket']});
-
 
 
   module.exports = AuthComponent(React.createClass({
@@ -18,15 +15,23 @@ var socket = io(location.origin, {transports: ['websocket']});
     mixins: [Reflux.ListenerMixin],
 
     getInitialState: function() {
-      return {socket: socket, otherTeams: [], leagueId: this.props.params.league, username: '', teamId: '', leagueName: '', schoolsList: []}
+      return {otherTeams: [], leagueId: this.props.params.league, username: '', teamId: '', leagueName: '', schoolsList: []}
+    },
+
+    componentWillMount: function() {
+      // this.setState({socket : io.connect(location.origin, {transports: ['websocket']})});
     },
 
     componentDidMount: function(){
+      console.log('mainsocket', socket)
       this.listenTo(mainStore, this.populate);
+      // MainActions.openSocket(this.state.leagueId);
+      console.log('state', socket)
       socket.on('update', (message) => {
         console.log('updating', message)
         MainActions.populate(this.state.leagueId);
       });
+      console.log('socket emitting')
       socket.emit('leaguePage', {leagueId: this.state.leagueId});
       MainActions.populate(this.state.leagueId);
     },
@@ -41,6 +46,10 @@ var socket = io(location.origin, {transports: ['websocket']});
       });
     },
 
+    componentWillUnmount: function () {
+      socket.emit('leave', {leagueId: this.state.leagueId});
+    },
+
     render: function() {
       return (
           <div className="main">
@@ -49,7 +58,7 @@ var socket = io(location.origin, {transports: ['websocket']});
             <TeamPool leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} />
             <OtherTeam otherTeams={this.state.otherTeams} />
             <UserTeam teamId={this.state.teamId} />
-            <ChatWindow socket={this.state.socket} leagueId = {this.state.leagueId} username={this.state.username} />
+            <ChatWindow socket={socket} leagueId = {this.state.leagueId} username={this.state.username} />
           </div>
         );
     }

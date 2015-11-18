@@ -81,10 +81,12 @@ module.exports = function(io) {
     var id = req.url.slice(1);
 
     io.on('connection', function(socket) {
-      console.log('socket connection');
+      console.log('socket connection', socket.rooms);
       socket.on('leaguePage', (data) => {
         console.log('leaguePage', data)
         let leagueId = data.leagueId;
+        socket.disconnect();
+        socket.connect();
         socket.join(leagueId);
         console.log('user joined room', leagueId)
         io.to(leagueId).emit('update', leagueId);
@@ -103,9 +105,14 @@ module.exports = function(io) {
 
       });
 
-      socket.on('close', function() {
+      socket.on('leave', function(data) {
         console.log('close connection');
+        socket.leave(data.leagueId)
       })
+
+      socket.on('disconnect', function() {
+        console.log('closing')
+      });
     });
 
     models.League.findById(id).then (function (league) {

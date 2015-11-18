@@ -2,8 +2,6 @@ var Reflux = require('reflux');
 var MainActions = require('../actions/MainActions');
 var SchoolActions = require('../actions/SchoolActions');
 var $ = require('jquery');
-var io = require('socket.io-client');
-var socket = io(location.origin, {transports: ['websocket']});
 
 
 mainStore = Reflux.createStore({

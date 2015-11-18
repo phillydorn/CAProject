@@ -11,9 +11,8 @@ class ChatWindow extends React.Component {
     super(props);
     this.state =  {messages: []};
   }
-  componentDidMount () {
-    console.log('this',this)
-    this.props.socket.on('newMessage', (message)=> {
+  componentDidUpdate () {
+    socket.on('newMessage', (message)=> {
       let messages = this.state.messages;
       messages.push(message);
       console.log('messages', messages)
@@ -27,7 +26,7 @@ class ChatWindow extends React.Component {
     let content = React.findDOMNode(this.refs.messageText).value;
     let username = this.props.username;
     let leagueId = this.props.leagueId;
-    this.props.socket.emit('sendMessage', {leagueId, content, username})
+    socket.emit('sendMessage', {leagueId, content, username})
 
   }
 
