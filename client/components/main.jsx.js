@@ -19,14 +19,11 @@ var AuthComponent = require('./Authenticated.jsx.js');
     },
 
     componentWillMount: function() {
-      // this.setState({socket : io.connect(location.origin, {transports: ['websocket']})});
     },
 
     componentDidMount: function(){
-      console.log('mainsocket', socket)
       this.listenTo(mainStore, this.populate);
       // MainActions.openSocket(this.state.leagueId);
-      console.log('state', socket)
       socket.on('update', (message) => {
         console.log('updating', message)
         MainActions.populate(this.state.leagueId);
@@ -58,7 +55,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
             <TeamPool leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} />
             <OtherTeam otherTeams={this.state.otherTeams} />
             <UserTeam teamId={this.state.teamId} />
-            <ChatWindow socket={socket} leagueId = {this.state.leagueId} username={this.state.username} />
+            <ChatWindow leagueId = {this.state.leagueId} username={this.state.username} />
           </div>
         );
     }

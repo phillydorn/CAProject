@@ -203,8 +203,6 @@ module.exports =function(RequestComponent) {
       },
 
     getInitialState: function() {
-      console.log('authsocket', socket)
-      socket.emit('close');
       return { loggedIn : AuthActions.verify()}
     },
 
@@ -359,7 +357,7 @@ class ChatWindow extends React.Component {
     super(props);
     this.state =  {messages: []};
   }
-  componentDidUpdate () {
+  componentDidMount () {
     socket.on('newMessage', (message)=> {
       let messages = this.state.messages;
       messages.push(message);
@@ -640,14 +638,11 @@ var AuthComponent = require('./Authenticated.jsx.js');
     },
 
     componentWillMount: function() {
-      // this.setState({socket : io.connect(location.origin, {transports: ['websocket']})});
     },
 
     componentDidMount: function(){
-      console.log('mainsocket', socket)
       this.listenTo(mainStore, this.populate);
       // MainActions.openSocket(this.state.leagueId);
-      console.log('state', socket)
       socket.on('update', (message) => {
         console.log('updating', message)
         MainActions.populate(this.state.leagueId);
@@ -679,7 +674,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
             React.createElement(TeamPool, {leagueId: this.state.leagueId, schoolsList: this.state.schoolsList}), 
             React.createElement(OtherTeam, {otherTeams: this.state.otherTeams}), 
             React.createElement(UserTeam, {teamId: this.state.teamId}), 
-            React.createElement(ChatWindow, {socket: socket, leagueId: this.state.leagueId, username: this.state.username})
+            React.createElement(ChatWindow, {leagueId: this.state.leagueId, username: this.state.username})
           )
         );
     }

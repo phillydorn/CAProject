@@ -10,18 +10,45 @@ var express = require('express'),
 
 require('babel-core/register');
 require('./config/express')(app);
-require('./routes')(app, io);
+require('./routes')(app);
 require('./auth')(app);
 
 var models = require('./models');
 
 
 
+    io.on('connection', function(socket) {
+      console.log('socket connection', socket.rooms);
+      socket.on('leaguePage', (data) => {
+        console.log('leaguePage', data)
+        let leagueId = data.leagueId;
+        socket.join(leagueId);
+        console.log('user joined room', leagueId)
+        io.to(leagueId).emit('update', leagueId);
+      });
 
-app.all('*', (req, res, next) => {
-  console.log('url', req.url);
-  next()
-});
+      socket.on('sendMessage', (data) => {
+        let leagueId=data.leagueId;
+        io.to(leagueId).emit('newMessage', data);
+      });
+
+      socket.on('update', (data) =>{
+        console.log('update', data)
+
+        let leagueId= data.leagueId;
+        io.to(leagueId).emit('update', leagueId);
+
+      });
+
+      socket.on('leave', function(data) {
+        console.log('close connection');
+        socket.leave(data.leagueId)
+      })
+
+      socket.on('disconnect', function() {
+        console.log('closing')
+      });
+    });
 
 app.set('port', (process.env.PORT || 3000));
 models.sequelize.sync().then(function () {

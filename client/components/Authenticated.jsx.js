@@ -19,8 +19,6 @@ module.exports =function(RequestComponent) {
       },
 
     getInitialState: function() {
-      console.log('authsocket', socket)
-      socket.emit('close');
       return { loggedIn : AuthActions.verify()}
     },
 

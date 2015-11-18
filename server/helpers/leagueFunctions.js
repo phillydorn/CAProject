@@ -2,8 +2,8 @@
 
 var models = require('../models');
 
-module.exports = function(io) {
-  var helpers = {
+module.exports = {
+
 
   createLeague : function(req, res) {
 
@@ -80,40 +80,6 @@ module.exports = function(io) {
   loadSchools: function(req, res) {
     var id = req.url.slice(1);
 
-    io.on('connection', function(socket) {
-      console.log('socket connection', socket.rooms);
-      socket.on('leaguePage', (data) => {
-        console.log('leaguePage', data)
-        let leagueId = data.leagueId;
-        socket.disconnect();
-        socket.connect();
-        socket.join(leagueId);
-        console.log('user joined room', leagueId)
-        io.to(leagueId).emit('update', leagueId);
-      });
-
-      socket.on('sendMessage', (data) => {
-        let leagueId=data.leagueId;
-        io.to(leagueId).emit('newMessage', data);
-      });
-
-      socket.on('update', (data) =>{
-        console.log('update', data)
-
-        let leagueId= data.leagueId;
-        io.to(leagueId).emit('update', leagueId);
-
-      });
-
-      socket.on('leave', function(data) {
-        console.log('close connection');
-        socket.leave(data.leagueId)
-      })
-
-      socket.on('disconnect', function() {
-        console.log('closing')
-      });
-    });
 
     models.League.findById(id).then (function (league) {
       league.getNCAA_Teams().then (function(NCAATeams) {
@@ -177,6 +143,4 @@ module.exports = function(io) {
       });
     });
   }
-  }
-  return helpers;
 }

@@ -6,12 +6,10 @@ var bcrypt = require('bcrypt'),
 
 
 passport.serializeUser(function(user, done) {
-  console.log('serialize')
   done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-  console.log('deserialize id', id)
   models.User.findById(id).then(function(user) {
     done(null, user);
   });

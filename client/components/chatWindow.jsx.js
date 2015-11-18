@@ -11,7 +11,7 @@ class ChatWindow extends React.Component {
     super(props);
     this.state =  {messages: []};
   }
-  componentDidUpdate () {
+  componentDidMount () {
     socket.on('newMessage', (message)=> {
       let messages = this.state.messages;
       messages.push(message);
