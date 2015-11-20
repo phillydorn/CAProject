@@ -3,6 +3,7 @@ var Reflux = require('reflux');
 var mainStore = require('../stores/mainStore');
 var MainActions = require('../actions/MainActions');
 var TeamPool = require('./teamPool.jsx.js');
+var Timer = require('./timer.jsx.js');
 var UserTeam = require('./userTeam.jsx.js');
 var OtherTeam = require('./otherTeams.jsx.js');
 var ChatWindow = require('./chatWindow.jsx.js');
@@ -15,7 +16,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
     mixins: [Reflux.ListenerMixin],
 
     getInitialState: function() {
-      return {otherTeams: [], leagueId: this.props.params.league, username: '', teamId: '', leagueName: '', schoolsList: []}
+      return {round: '', time: '', otherTeams: [], leagueId: this.props.params.league, username: '', teamId: '', leagueName: '', schoolsList: [], yourTurn: false}
     },
 
     componentWillMount: function() {
@@ -28,9 +29,11 @@ var AuthComponent = require('./Authenticated.jsx.js');
         console.log('updating', message)
         MainActions.populate(this.state.leagueId);
       });
-      console.log('socket emitting')
       socket.emit('leaguePage', {leagueId: this.state.leagueId});
       MainActions.populate(this.state.leagueId);
+      socket.on('timer', (seconds)=> {
+        this.setState({time: seconds})
+      });
     },
 
     populate: function(data) {
@@ -42,6 +45,10 @@ var AuthComponent = require('./Authenticated.jsx.js');
         username: data.username
       });
     },
+    startDraft: function(e) {
+      socket.emit('startDraft', this.state.leagueId);
+      // MainActions.startDraft(this.state.leagueId);
+    },
 
     componentWillUnmount: function () {
       socket.emit('leave', {leagueId: this.state.leagueId});
@@ -51,6 +58,8 @@ var AuthComponent = require('./Authenticated.jsx.js');
       return (
           <div className="main">
             <h1>{this.state.leagueName}</h1>
+            <button classname="start" onClick={this.startDraft} >Start Draft</button>
+            <Timer round={this.state.round} time={this.state.time} />
             <Bracket teams={this.state.schoolsList} />
             <TeamPool leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} />
             <OtherTeam otherTeams={this.state.otherTeams} />

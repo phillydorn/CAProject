@@ -23,6 +23,15 @@ mainStore = Reflux.createStore({
     console.log('complete')
     socket.emit('update', {leagueId: leagueId});
     // this.onPopulate(leagueId);
+  },
+
+  onStartDraft: function(leagueId) {
+    socket.emit('startDraft', leagueId)
+    // $.ajax({
+    //   url: '/api/leagues/start',
+    //   method: 'POST',
+    //   data: {leagueId: leagueId}
+    // });
   }
 
 

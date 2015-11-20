@@ -14,7 +14,8 @@ require('./routes')(app);
 require('./auth')(app);
 
 var models = require('./models');
-
+var schools = require('./helpers/schoolFunctions');
+var leagues = require('./helpers/leagueFunctions');
 
 
     io.on('connection', function(socket) {
@@ -32,9 +33,20 @@ var models = require('./models');
         io.to(leagueId).emit('newMessage', data);
       });
 
+      socket.on('startDraft', (leagueId)=> {
+        let seconds = 60;
+        let timer = setInterval(()=>{
+          seconds--;
+          io.to(leagueId).emit('timer', seconds)
+          if (seconds < 1) {
+            clearInterval(timer);
+          }
+        }, 1000);
+        leagues.startDraft(leagueId);
+      });
+
       socket.on('update', (data) =>{
         console.log('update', data)
-
         let leagueId= data.leagueId;
         io.to(leagueId).emit('update', leagueId);
 
@@ -51,7 +63,13 @@ var models = require('./models');
     });
 
 app.set('port', (process.env.PORT || 3000));
+
 models.sequelize.sync().then(function () {
+  models.NCAA_Team.findAll().then(function(teams) {
+    if (!teams.length) {
+      schools.fetchAllSchools();
+    }
+  });
   server.listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
   });

@@ -2,7 +2,8 @@
 
 module.exports = function(sequelize, DataTypes) {
   var League = sequelize.define('League', {
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    totalUsers: {type: DataTypes.INTEGER, defaultValue: 0}
   },{
     classMethods: {
       associate: function(models) {

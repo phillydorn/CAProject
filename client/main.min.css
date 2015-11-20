@@ -61,6 +61,13 @@ li {
     width: 100%;
     height: 280px;
     border: 1px solid black; }
+    .chat-window .messages .message-user {
+      display: inline-block;
+      color: red; }
+    .chat-window .messages .message-content {
+      display: inline-block;
+      color: blue;
+      margin-left: 5px; }
   .chat-window .typeMessage {
     position: absolute;
     bottom: 0;

@@ -3,10 +3,7 @@ var LeagueActions = require('../actions/leagueActions');
 
 var League = React.createClass({
 
-  // handleSelect: function(e) {
-  //   e.preventDefault();
-  //   LeagueActions.selectLeague(this.props.leagueId);
-  // },
+
   render: function() {
     return (
         <li  className = {"league " + this.props.leagueName}>

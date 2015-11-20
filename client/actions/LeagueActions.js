@@ -5,8 +5,7 @@ var $ = require('jquery');
 
 LeagueActions = Reflux.createActions([
   "loadUserLeagues",
-  "loadAllLeagues",
-  "selectLeague"
+  "loadAllLeagues"
   ]);
 
 

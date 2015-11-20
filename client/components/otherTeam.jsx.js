@@ -32,7 +32,7 @@ var OtherTeam = React.createClass({
     });
     return (
       <div className = "team-box otherTeam">
-      <h1>Other Team</h1>
+      <h1>{this.props.teamName}</h1>
         <ul className="team-list">
          {schoolNodes}
         </ul>

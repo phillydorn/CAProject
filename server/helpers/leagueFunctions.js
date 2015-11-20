@@ -2,6 +2,19 @@
 
 var models = require('../models');
 
+var draftOrder = [
+  [1,2,3,4,5,6],
+  [6,5,4,3,2,1],
+  [5,6,1,2,3,4],
+  [4,3,2,1,6,5],
+  [3,4,5,6,1,2],
+  [2,1,6,5,4,3],
+  [1,2,3,4,5,6],
+  [6,5,4,3,2,1],
+  [5,6,1,2,3,4],
+  [4,3,2,1,6,5]
+];
+
 module.exports = {
 
 
@@ -44,19 +57,26 @@ module.exports = {
     models.Team.create({team_name:teamName, wins:0}).then (function(team) {
       models.League.findById(leagueID).then(function(league) {
         league.addTeam(team).then (function() {
-          models.User.findById(userID).then(function(user) {
-            user.addTeam(team).then(function() {
-              user.addLeague(league).then (function() {
-                res.status(200).send('success');
+          league.totalUsers++;
+          league.save().then (function() {
+            team.draftPosition = league.totalUsers;
+            team.save().then (function() {
+              models.User.findById(userID).then(function(user) {
+                user.addTeam(team).then(function() {
+                  user.addLeague(league).then (function() {
+                    res.status(200).send('success');
+                  });
+                });
               });
             });
-          });
+          })
         });
       });
     });
 
 
   },
+
 
   getUserLeagues: function(req, res) {
     models.League.findAll({
@@ -72,7 +92,13 @@ module.exports = {
   },
 
   getAllLeagues: function(req, res) {
-    models.League.findAll().then (function(leagues) {
+    models.League.findAll({
+      where: {
+        totalUsers: {
+          $lt: 6
+        }
+      }
+    }).then (function(leagues) {
       res.status(200).json(leagues);
     });
   },
@@ -82,7 +108,9 @@ module.exports = {
 
 
     models.League.findById(id).then (function (league) {
-      league.getNCAA_Teams().then (function(NCAATeams) {
+      league.getNCAA_Teams({
+        order: ['seed']
+      }).then (function(NCAATeams) {
         let data = {schoolsList: NCAATeams, leagueName:league.name}
         league.getTeams().then(function(teams){
           data.teams = teams;
@@ -100,16 +128,6 @@ module.exports = {
       });
     })
   },
-  joinLeague(req, res) {
-    var leagueId = req.body.id;
-    var userId = req.user.id;
-    models.League.findById(leagueId).then (function(league) {
-      models.User.findById(userId).then (function(user) {
-        league.addUser(user);
-        res.status(200).json(league);
-      });
-    });
-  },
 
   selectTeam(req, res) {
     var schoolId = req.body.schoolId;
@@ -125,16 +143,16 @@ module.exports = {
         }).then (function(team) {
           team.addNCAA_Team(school).then (function() {
             league.removeNCAA_Team(school).then (function() {
-              // console.log('io', io)
-              // io.on('connection', (socket)=> {
-              //   io.to(leagueId).emit('update', {leagueId})
                 res.status(200).json(league);
-              // })
             });
           });
         });
       });
     });
+  },
+
+  startDraft(leagueId) {
+
   },
 
   updateLeague(leagueId) {

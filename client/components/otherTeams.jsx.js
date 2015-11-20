@@ -1,3 +1,5 @@
+"use strict";
+
 var React = require('react');
 var UserSchool = require('./userSchool.jsx.js');
 var Reflux = require('reflux');
@@ -9,22 +11,27 @@ var UserTeam = require('./userTeam.jsx.js');
 var OtherTeams = React.createClass({
 
   getInitialState: function() {
-    return {otherTeam: ''}
+    return {otherTeamId: '', teamName: '', team: {}}
   },
 
   handleSelect: function (e) {
-    console.log('value',e.target.value);
+    let teamName;
+    this.props.otherTeams.forEach ((team) => {
+      if (team.id == e.target.value) {
+        teamName = team.team_name;
+      }
+    });
     this.setState({
-      otherTeam: e.target.value
+      otherTeamId: e.target.value,
+      teamName: teamName
     });
   },
 
 
   render: function() {
-    console.log('other team state', this.state)
     var otherTeams = this.props.otherTeams.map(function(team) {
       return (
-        <option key={team.id} value={team.id} >{team.team_name}</option>
+        <option key={team.id} value={team.id}>{team.team_name}</option>
       )
     })
     return (
@@ -33,7 +40,7 @@ var OtherTeams = React.createClass({
         <option value="">Other Teams</option>
         {otherTeams}
       </select>
-        <OtherTeam teamId ={this.state.otherTeam} />
+        <OtherTeam teamId ={this.state.otherTeamId} teamName={this.state.teamName} />
       </div>
     )
   }

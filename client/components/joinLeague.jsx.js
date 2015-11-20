@@ -16,7 +16,6 @@ var joinLeague = React.createClass({
     this.setState({
       teamForm: <TeamForm leagueID={this.props.leagueId} />
     });
-    // LeagueActions.selectLeague(this.props.leagueId);
   },
 
 

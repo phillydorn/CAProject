@@ -5,8 +5,9 @@ module.exports = function(sequelize, DataTypes) {
   var Team = sequelize.define('Team', {
     team_name: DataTypes.STRING,
     wins: DataTypes.INTEGER,
-
+    draftPosition: DataTypes.INTEGER
   },
+
   {
     classMethods: {
       associate: function(models) {

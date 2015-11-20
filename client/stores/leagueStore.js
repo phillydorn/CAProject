@@ -32,22 +32,6 @@ leagueStore = Reflux.createStore({
     });
   },
 
-  onSelectLeague: function(leagueId) {
-    $.ajax({
-      url: 'api/leagues',
-      dataType: 'json',
-      method: 'PUT',
-      data: {id: leagueId},
-      success: function(response) {
-        var data = {
-          joinedLeague: response,
-          leaguesList: []
-        }
-        console.log('selected', data)
-        this.trigger(data);
-      }.bind(this)
-    });
-  }
 
 });
 
