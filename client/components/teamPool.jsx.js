@@ -7,7 +7,7 @@ var TeamPool = React.createClass({
   render: function() {
     var schoolNodes = this.props.schoolsList.map(function (school) {
       return (
-          <School leagueId={this.props.leagueId} schoolName = {school.market} key = {school.id} schoolId = {school.id} />
+          <School yourTurn = {this.props.yourTurn} leagueId={this.props.leagueId} schoolName = {school.market} key = {school.id} schoolId = {school.id} />
         )
     }.bind(this));
     return (

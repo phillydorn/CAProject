@@ -3,17 +3,21 @@
 var models = require('../models');
 
 var draftOrder = [
-  [1,2,3,4,5,6],
-  [6,5,4,3,2,1],
-  [5,6,1,2,3,4],
-  [4,3,2,1,6,5],
-  [3,4,5,6,1,2],
-  [2,1,6,5,4,3],
-  [1,2,3,4,5,6],
-  [6,5,4,3,2,1],
-  [5,6,1,2,3,4],
-  [4,3,2,1,6,5]
+  [0,1,2,3,4,5],
+  [5,4,3,2,1,0],
+  [4,5,0,1,2,3],
+  [3,2,1,0,5,4],
+  [2,3,4,5,0,1],
+  [1,0,5,4,3,2],
+  [0,1,2,3,4,5],
+  [5,4,3,2,1,0],
+  [4,5,0,1,2,3],
+  [3,2,1,0,5,4]
 ];
+
+var draftPositions = [0,0,0,0,0,0],
+    round = 0,
+    position = 0;
 
 module.exports = {
 
@@ -151,8 +155,20 @@ module.exports = {
     });
   },
 
-  startDraft(leagueId) {
+  findNextDraftId(round, position) {
+    let currentDraftPosition = draftOrder[round][position];
+    return draftPositions[currentDraftPosition];
+  },
 
+  startDraft(io, leagueId) {
+    models.League.findById(leagueId).then((league)=>{
+      league.getTeams().then((teams)=>{
+        teams.forEach((team)=>{
+          draftPositions[team.draftPosition-1]=team.id;
+        });
+        io.to(leagueId).emit('advance', {nextUp:draftPositions[0]});
+      });
+    });
   },
 
   updateLeague(leagueId) {

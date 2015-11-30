@@ -6,10 +6,12 @@ var schoolStore = require('../stores/schoolStore');
 var School = React.createClass({
 
   handleSelect: function(e) {
-    var schoolId = this.props.schoolId;
-    var leagueId = this.props.leagueId;
     e.preventDefault();
-    SchoolActions.selectTeam(schoolId, leagueId);
+    if (this.props.yourTurn) {
+      var schoolId = this.props.schoolId;
+      var leagueId = this.props.leagueId;
+      SchoolActions.selectTeam(schoolId, leagueId);
+    }
   },
   render: function() {
     return (

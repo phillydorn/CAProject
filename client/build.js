@@ -631,7 +631,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
     mixins: [Reflux.ListenerMixin],
 
     getInitialState: function() {
-      return {round: '', time: '', otherTeams: [], leagueId: this.props.params.league, username: '', teamId: '', leagueName: '', schoolsList: [], yourTurn: false}
+      return {round: '', time: '', otherTeams: [], leagueId: this.props.params.league, username: '', teamId: '', leagueName: '', schoolsList: [], yourTurn: false, activeTeam: ''}
     },
 
     componentWillMount: function() {
@@ -648,6 +648,13 @@ var AuthComponent = require('./Authenticated.jsx.js');
       MainActions.populate(this.state.leagueId);
       socket.on('timer', (seconds)=> {
         this.setState({time: seconds})
+      });
+      socket.on('advance', (data)=>{
+        if (this.state.teamId == data.nextUp) {
+          this.setState({yourTurn: true});
+        } else {
+          this.setState({yourTurn: false});
+        }
       });
     },
 
@@ -674,9 +681,9 @@ var AuthComponent = require('./Authenticated.jsx.js');
           React.createElement("div", {className: "main"}, 
             React.createElement("h1", null, this.state.leagueName), 
             React.createElement("button", {classname: "start", onClick: this.startDraft}, "Start Draft"), 
-            React.createElement(Timer, {round: this.state.round, time: this.state.time}), 
+            React.createElement(Timer, {round: this.state.round, time: this.state.time, activeTeam: this.state.activeTeam}), 
             React.createElement(Bracket, {teams: this.state.schoolsList}), 
-            React.createElement(TeamPool, {leagueId: this.state.leagueId, schoolsList: this.state.schoolsList}), 
+            React.createElement(TeamPool, {yourTurn: this.state.yourTurn, leagueId: this.state.leagueId, schoolsList: this.state.schoolsList}), 
             React.createElement(OtherTeam, {otherTeams: this.state.otherTeams}), 
             React.createElement(UserTeam, {teamId: this.state.teamId}), 
             React.createElement(ChatWindow, {leagueId: this.state.leagueId, username: this.state.username})
@@ -844,10 +851,12 @@ var schoolStore = require('../stores/schoolStore');
 var School = React.createClass({displayName: "School",
 
   handleSelect: function(e) {
-    var schoolId = this.props.schoolId;
-    var leagueId = this.props.leagueId;
     e.preventDefault();
-    SchoolActions.selectTeam(schoolId, leagueId);
+    if (this.props.yourTurn) {
+      var schoolId = this.props.schoolId;
+      var leagueId = this.props.leagueId;
+      SchoolActions.selectTeam(schoolId, leagueId);
+    }
   },
   render: function() {
     return (
@@ -994,7 +1003,7 @@ var TeamPool = React.createClass({displayName: "TeamPool",
   render: function() {
     var schoolNodes = this.props.schoolsList.map(function (school) {
       return (
-          React.createElement(School, {leagueId: this.props.leagueId, schoolName: school.market, key: school.id, schoolId: school.id})
+          React.createElement(School, {yourTurn: this.props.yourTurn, leagueId: this.props.leagueId, schoolName: school.market, key: school.id, schoolId: school.id})
         )
     }.bind(this));
     return (
@@ -1018,9 +1027,11 @@ var React = require('react'),
 class Timer extends React.Component{
 
   render () {
+    var activeString = this.props.activeTeam ? this.props.activeTeam+' is drafting.' : "Draft has not begun yet.";
     return (
       React.createElement("div", null, 
         React.createElement("p", null, "Round ", this.props.round), 
+        React.createElement("p", null, activeString), 
         React.createElement("p", null, "Time Left ", this.props.time)
       )
     )
@@ -1313,7 +1324,10 @@ mainStore = Reflux.createStore({
     // $.ajax({
     //   url: '/api/leagues/start',
     //   method: 'POST',
-    //   data: {leagueId: leagueId}
+    //   data: {leagueId: leagueId},
+    //   success: function(data) {
+    //     console.log('return',data)
+    //   }
     // });
   }
 

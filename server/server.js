@@ -42,7 +42,7 @@ var leagues = require('./helpers/leagueFunctions');
             clearInterval(timer);
           }
         }, 1000);
-        leagues.startDraft(leagueId);
+        leagues.startDraft(io, leagueId);
       });
 
       socket.on('update', (data) =>{

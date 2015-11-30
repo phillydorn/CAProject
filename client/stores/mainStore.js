@@ -30,7 +30,10 @@ mainStore = Reflux.createStore({
     // $.ajax({
     //   url: '/api/leagues/start',
     //   method: 'POST',
-    //   data: {leagueId: leagueId}
+    //   data: {leagueId: leagueId},
+    //   success: function(data) {
+    //     console.log('return',data)
+    //   }
     // });
   }
 

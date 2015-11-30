@@ -16,7 +16,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
     mixins: [Reflux.ListenerMixin],
 
     getInitialState: function() {
-      return {round: '', time: '', otherTeams: [], leagueId: this.props.params.league, username: '', teamId: '', leagueName: '', schoolsList: [], yourTurn: false}
+      return {round: '', time: '', otherTeams: [], leagueId: this.props.params.league, username: '', teamId: '', leagueName: '', schoolsList: [], yourTurn: false, activeTeam: ''}
     },
 
     componentWillMount: function() {
@@ -33,6 +33,13 @@ var AuthComponent = require('./Authenticated.jsx.js');
       MainActions.populate(this.state.leagueId);
       socket.on('timer', (seconds)=> {
         this.setState({time: seconds})
+      });
+      socket.on('advance', (data)=>{
+        if (this.state.teamId == data.nextUp) {
+          this.setState({yourTurn: true});
+        } else {
+          this.setState({yourTurn: false});
+        }
       });
     },
 
@@ -59,9 +66,9 @@ var AuthComponent = require('./Authenticated.jsx.js');
           <div className="main">
             <h1>{this.state.leagueName}</h1>
             <button classname="start" onClick={this.startDraft} >Start Draft</button>
-            <Timer round={this.state.round} time={this.state.time} />
+            <Timer round={this.state.round} time={this.state.time} activeTeam={this.state.activeTeam} />
             <Bracket teams={this.state.schoolsList} />
-            <TeamPool leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} />
+            <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} />
             <OtherTeam otherTeams={this.state.otherTeams} />
             <UserTeam teamId={this.state.teamId} />
             <ChatWindow leagueId = {this.state.leagueId} username={this.state.username} />
