@@ -15,7 +15,7 @@ var OtherTeams = React.createClass({
   },
 
   handleSelect: function (e) {
-    let teamName;
+    var teamName;
     this.props.otherTeams.forEach ((team) => {
       if (team.id == e.target.value) {
         teamName = team.team_name;

@@ -350,34 +350,34 @@ var React = require('react'),
     Message = require('./message.jsx.js');
 
 
-class ChatWindow extends React.Component {
+var ChatWindow= React.createClass ({displayName: "ChatWindow",
 
-  constructor (props) {
-    super(props);
-    this.state =  {messages: []};
-  }
-  componentDidMount () {
+  getInitialState() {
+    return {messages: []}
+  },
+
+  componentDidMount() {
     socket.on('newMessage', (message)=> {
-      let messages = this.state.messages;
+      var messages = this.state.messages;
       messages.push(message);
       console.log('messages', messages)
       this.setState ({messages});
       console.log('state', this.state.messages)
     });
-  }
+  },
 
-  submitHandler (e) {
+  submitHandler(e) {
     e.preventDefault();
-    let content = React.findDOMNode(this.refs.messageText).value;
-    let username = this.props.username;
-    let leagueId = this.props.leagueId;
+    var content = React.findDOMNode(this.refs.messageText).value;
+    var username = this.props.username;
+    var leagueId = this.props.leagueId;
     socket.emit('sendMessage', {leagueId, content, username})
 
-  }
+  },
 
-  render () {
+  render() {
     console.log('render', this.state)
-    let messages = this.state.messages.map ((message) => {
+    var messages = this.state.messages.map ((message) => {
       return (
           React.createElement(Message, {content: message.content, username: message.username})
         )
@@ -400,7 +400,7 @@ class ChatWindow extends React.Component {
         )
       )
   }
-};
+});
 
 module.exports = ChatWindow;
 },{"./message.jsx.js":26,"react":243,"reflux":260}],18:[function(require,module,exports){
@@ -706,9 +706,9 @@ var React = require('react'),
     Reflux = require('reflux');
 
 
-class Message extends React.Component {
+var Message = React.createClass ({displayName: "Message",
 
-  render () {
+  render() {
     return (
         React.createElement("li", {className: "message"}, 
           React.createElement("p", {className: "message-user"}, this.props.username, ":"), 
@@ -716,7 +716,7 @@ class Message extends React.Component {
         )
       )
   }
-}
+});
 
 
 module.exports = Message;
@@ -812,7 +812,7 @@ var OtherTeams = React.createClass({displayName: "OtherTeams",
   },
 
   handleSelect: function (e) {
-    let teamName;
+    var teamName;
     this.props.otherTeams.forEach ((team) => {
       if (team.id == e.target.value) {
         teamName = team.team_name;
@@ -1029,7 +1029,7 @@ var React = require('react'),
     Reflux = require('reflux');
 
 
-class Timer extends React.Component{
+var Timer = React.createClass ({displayName: "Timer",
 
   render () {
     var activeString = this.props.activeTeamName ? this.props.activeTeamName+' is drafting.' : "Draft has not begun yet.";
@@ -1041,7 +1041,7 @@ class Timer extends React.Component{
       )
     )
   }
-}
+});
 
 module.exports = Timer;
 },{"react":243,"reflux":260}],35:[function(require,module,exports){

@@ -5,34 +5,34 @@ var React = require('react'),
     Message = require('./message.jsx.js');
 
 
-class ChatWindow extends React.Component {
+var ChatWindow= React.createClass ({
 
-  constructor (props) {
-    super(props);
-    this.state =  {messages: []};
-  }
-  componentDidMount () {
+  getInitialState() {
+    return {messages: []}
+  },
+
+  componentDidMount() {
     socket.on('newMessage', (message)=> {
-      let messages = this.state.messages;
+      var messages = this.state.messages;
       messages.push(message);
       console.log('messages', messages)
       this.setState ({messages});
       console.log('state', this.state.messages)
     });
-  }
+  },
 
-  submitHandler (e) {
+  submitHandler(e) {
     e.preventDefault();
-    let content = React.findDOMNode(this.refs.messageText).value;
-    let username = this.props.username;
-    let leagueId = this.props.leagueId;
+    var content = React.findDOMNode(this.refs.messageText).value;
+    var username = this.props.username;
+    var leagueId = this.props.leagueId;
     socket.emit('sendMessage', {leagueId, content, username})
 
-  }
+  },
 
-  render () {
+  render() {
     console.log('render', this.state)
-    let messages = this.state.messages.map ((message) => {
+    var messages = this.state.messages.map ((message) => {
       return (
           <Message content={message.content} username={message.username} />
         )
@@ -55,6 +55,6 @@ class ChatWindow extends React.Component {
         </div>
       )
   }
-};
+});
 
 module.exports = ChatWindow;

@@ -4,9 +4,9 @@ var React = require('react'),
     Reflux = require('reflux');
 
 
-class Message extends React.Component {
+var Message = React.createClass ({
 
-  render () {
+  render() {
     return (
         <li className ="message">
           <p className = "message-user">{this.props.username}:</p>
@@ -14,7 +14,7 @@ class Message extends React.Component {
         </li>
       )
   }
-}
+});
 
 
 module.exports = Message;

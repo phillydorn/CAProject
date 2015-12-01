@@ -4,7 +4,7 @@ var React = require('react'),
     Reflux = require('reflux');
 
 
-class Timer extends React.Component{
+var Timer = React.createClass ({
 
   render () {
     var activeString = this.props.activeTeamName ? this.props.activeTeamName+' is drafting.' : "Draft has not begun yet.";
@@ -16,6 +16,6 @@ class Timer extends React.Component{
       </div>
     )
   }
-}
+});
 
 module.exports = Timer;
