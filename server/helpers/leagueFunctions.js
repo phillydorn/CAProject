@@ -166,7 +166,7 @@ module.exports = {
         teams.forEach((team)=>{
           draftPositions[team.draftPosition-1]=team.id;
         });
-        io.to(leagueId).emit('advance', {nextUp:draftPositions[0]});
+        io.to(leagueId).emit('advance', {round: 0, position: 0, nextUp:draftPositions[0]});
       });
     });
   },

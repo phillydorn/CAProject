@@ -19,6 +19,9 @@ var leagues = require('./helpers/leagueFunctions');
 
 
     io.on('connection', function(socket) {
+      var round = 0,
+          position = 0,
+          timer;
       console.log('socket connection', socket.rooms);
       socket.on('leaguePage', (data) => {
         console.log('leaguePage', data)
@@ -35,8 +38,9 @@ var leagues = require('./helpers/leagueFunctions');
 
       socket.on('startDraft', (leagueId)=> {
         let seconds = 60;
-        let timer = setInterval(()=>{
+        timer = setInterval(()=>{
           seconds--;
+          console.log('seconds', seconds)
           io.to(leagueId).emit('timer', seconds)
           if (seconds < 1) {
             clearInterval(timer);
@@ -48,8 +52,25 @@ var leagues = require('./helpers/leagueFunctions');
       socket.on('update', (data) =>{
         console.log('update', data)
         let leagueId= data.leagueId;
+        clearInterval(timer);
         io.to(leagueId).emit('update', leagueId);
-
+        if (position<5) {
+          position++;
+        } else {
+          position = 0;
+          round++;
+        }
+        let nextDraft = leagues.findNextDraftId(round, position);
+        io.to(leagueId).emit('advance', {round: round, position: position, nextUp:nextDraft});
+        let seconds = 60;
+        timer = setInterval(()=>{
+          seconds--;
+          console.log('seconds', seconds)
+          io.to(leagueId).emit('timer', seconds)
+          if (seconds < 1) {
+            clearInterval(timer);
+          }
+        }, 1000);
       });
 
       socket.on('leave', function(data) {
