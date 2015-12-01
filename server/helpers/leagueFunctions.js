@@ -15,7 +15,7 @@ var draftOrder = [
   [3,2,1,0,5,4]
 ];
 
-var draftPositions = [0,0,0,0,0,0],
+var draftPositions = [{},{},{},{},{},{}],
     round = 0,
     position = 0;
 
@@ -164,9 +164,10 @@ module.exports = {
     models.League.findById(leagueId).then((league)=>{
       league.getTeams().then((teams)=>{
         teams.forEach((team)=>{
-          draftPositions[team.draftPosition-1]=team.id;
+          draftPositions[team.draftPosition-1].id=team.id;
+          draftPositions[team.draftPosition-1].team_name=team.team_name;
         });
-        io.to(leagueId).emit('advance', {round: 0, position: 0, nextUp:draftPositions[0]});
+        io.to(leagueId).emit('advance', {round: 0, position: 0, nextUpId:draftPositions[0].id, nextUpName: draftPositions[0].team_name});
       });
     });
   },

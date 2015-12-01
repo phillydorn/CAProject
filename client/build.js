@@ -650,11 +650,12 @@ var AuthComponent = require('./Authenticated.jsx.js');
         this.setState({time: seconds})
       });
       socket.on('advance', (data)=>{
-        if (this.state.teamId == data.nextUp) {
+        if (this.state.teamId == data.nextUpId) {
           this.setState({yourTurn: true});
         } else {
           this.setState({yourTurn: false});
         }
+        this.setState({activeTeamId: data.nextUpId, activeTeamName: data.nextUpName})
       });
     },
 
@@ -681,7 +682,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
           React.createElement("div", {className: "main"}, 
             React.createElement("h1", null, this.state.leagueName), 
             React.createElement("button", {classname: "start", onClick: this.startDraft}, "Start Draft"), 
-            React.createElement(Timer, {round: this.state.round+1, time: this.state.time, activeTeam: this.state.activeTeam}), 
+            React.createElement(Timer, {round: this.state.round+1, time: this.state.time, activeTeamId: this.state.activeTeamId, activeTeamName: this.state.activeTeamName}), 
             React.createElement(Bracket, {teams: this.state.schoolsList}), 
             React.createElement(TeamPool, {yourTurn: this.state.yourTurn, leagueId: this.state.leagueId, schoolsList: this.state.schoolsList}), 
             React.createElement(OtherTeam, {otherTeams: this.state.otherTeams}), 
@@ -1027,7 +1028,7 @@ var React = require('react'),
 class Timer extends React.Component{
 
   render () {
-    var activeString = this.props.activeTeam ? this.props.activeTeam+' is drafting.' : "Draft has not begun yet.";
+    var activeString = this.props.activeTeamName ? this.props.activeTeamName+' is drafting.' : "Draft has not begun yet.";
     return (
       React.createElement("div", null, 
         React.createElement("p", null, "Round ", this.props.round), 

@@ -61,7 +61,7 @@ var leagues = require('./helpers/leagueFunctions');
           round++;
         }
         let nextDraft = leagues.findNextDraftId(round, position);
-        io.to(leagueId).emit('advance', {round: round, position: position, nextUp:nextDraft});
+        io.to(leagueId).emit('advance', {round: round, position: position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});
         let seconds = 60;
         timer = setInterval(()=>{
           seconds--;

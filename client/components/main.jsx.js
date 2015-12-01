@@ -35,11 +35,12 @@ var AuthComponent = require('./Authenticated.jsx.js');
         this.setState({time: seconds})
       });
       socket.on('advance', (data)=>{
-        if (this.state.teamId == data.nextUp) {
+        if (this.state.teamId == data.nextUpId) {
           this.setState({yourTurn: true});
         } else {
           this.setState({yourTurn: false});
         }
+        this.setState({activeTeamId: data.nextUpId, activeTeamName: data.nextUpName})
       });
     },
 
@@ -66,7 +67,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
           <div className="main">
             <h1>{this.state.leagueName}</h1>
             <button classname="start" onClick={this.startDraft} >Start Draft</button>
-            <Timer round={this.state.round+1} time={this.state.time} activeTeam={this.state.activeTeam} />
+            <Timer round={this.state.round+1} time={this.state.time} activeTeamId={this.state.activeTeamId} activeTeamName={this.state.activeTeamName} />
             <Bracket teams={this.state.schoolsList} />
             <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} />
             <OtherTeam otherTeams={this.state.otherTeams} />
