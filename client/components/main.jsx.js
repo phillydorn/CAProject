@@ -35,12 +35,16 @@ var AuthComponent = require('./Authenticated.jsx.js');
         this.setState({time: seconds})
       });
       socket.on('advance', (data)=>{
-        if (this.state.teamId == data.nextUpId) {
-          this.setState({yourTurn: true});
-        } else {
+        if (data.round == 10) {
           this.setState({yourTurn: false});
+        } else {
+          if (this.state.teamId == data.nextUpId) {
+            this.setState({yourTurn: true});
+          } else {
+            this.setState({yourTurn: false});
+          }
+          this.setState({activeTeamId: data.nextUpId, activeTeamName: data.nextUpName})
         }
-        this.setState({activeTeamId: data.nextUpId, activeTeamName: data.nextUpName})
       });
     },
 

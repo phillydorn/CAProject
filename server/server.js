@@ -62,19 +62,21 @@ var leagues = require('./helpers/leagueFunctions');
         }
         let nextDraft = leagues.findNextDraftId(round, position);
         io.to(leagueId).emit('advance', {round: round, position: position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});
-        let seconds = 60;
-        timer = setInterval(()=>{
-          seconds--;
-          console.log('seconds', seconds)
-          io.to(leagueId).emit('timer', seconds)
-          if (seconds < 1) {
-            clearInterval(timer);
-          }
-        }, 1000);
+        if (round < 10) {
+          let seconds = 60;
+          timer = setInterval(()=>{
+            seconds--;
+            console.log('seconds', seconds)
+            io.to(leagueId).emit('timer', seconds)
+            if (seconds < 1) {
+              clearInterval(timer);
+            }
+          }, 1000);
+        }
       });
 
       socket.on('leave', function(data) {
-        console.log('close connection');
+        console.log('close connection', data.leagueId);
         socket.leave(data.leagueId)
       })
 
