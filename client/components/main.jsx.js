@@ -25,7 +25,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
     componentDidMount: function(){
       this.listenTo(mainStore, this.populate);
       // MainActions.openSocket(this.state.leagueId);
-      socket.on('update', (message) => {
+      socket.on('update', (message) =>{
         console.log('updating', message)
         MainActions.populate(this.state.leagueId);
       });
@@ -70,7 +70,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
       return (
           <div className="main">
             <h1>{this.state.leagueName}</h1>
-            <button classname="start" onClick={this.startDraft} >Start Draft</button>
+            <button className="start" onClick={this.startDraft} >Start Draft</button>
             <Timer round={this.state.round+1} time={this.state.time} activeTeamId={this.state.activeTeamId} activeTeamName={this.state.activeTeamName} />
             <Bracket teams={this.state.schoolsList} />
             <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} />

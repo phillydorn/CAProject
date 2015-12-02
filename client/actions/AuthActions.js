@@ -2,7 +2,7 @@ var Reflux = require('reflux');
 var $ = require('jquery');
 
 
-AuthActions = Reflux.createActions([
+var AuthActions = Reflux.createActions([
   "verify"
   ]);
 

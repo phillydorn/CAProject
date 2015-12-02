@@ -3,7 +3,7 @@ var $ = require('jquery');
 
 
 
-CreateLeagueActions = Reflux.createActions([
+var CreateLeagueActions = Reflux.createActions([
   "createLeague",
   "createTeam"
   ]);

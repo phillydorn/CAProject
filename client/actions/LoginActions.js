@@ -2,7 +2,7 @@ var Reflux = require('reflux');
 var $ = require('jquery');
 
 
-LoginActions = Reflux.createActions([
+var LoginActions = Reflux.createActions([
   "sendLogin"
   ]);
 

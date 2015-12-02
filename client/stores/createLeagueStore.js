@@ -2,7 +2,7 @@ var Reflux = require('reflux');
 var CreateLeagueActions = require('../actions/CreateLeagueActions');
 var $ = require('jquery');
 
-createLeagueStore= Reflux.createStore({
+var createLeagueStore= Reflux.createStore({
   listenables: [CreateLeagueActions],
 
   onCreateLeague: function(leaguename) {

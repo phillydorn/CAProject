@@ -11,7 +11,7 @@ var OtherTeam = React.createClass({
 
 
  getInitialState: function() {
-    list = [];
+    let list = [];
     for (var i=0; i<10; i++) {
       list.push('');
     }

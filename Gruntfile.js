@@ -7,13 +7,17 @@ grunt.initConfig({
 
   watch: {
     react: {
-      files: ['client/**/*.js','client/app.js', '!client/build.js'],
+      files: ['client/**/*.js','client/app.js', '!client/build.js','!client/build2.js'],
       tasks: ['browserify']
     },
     sass: {
       files: 'client/styles/*.scss',
       tasks: ['sass']
     },
+    babel: {
+      files: 'client/build2.js',
+      tasks: ['babel']
+    }
   },
 
   sass: {
@@ -34,12 +38,23 @@ grunt.initConfig({
     },
     client: {
       src: ['client/**/*.jsx.js', 'client/app.js'],
-      dest: 'client/build.js'
+      dest: 'client/build2.js'
+    }
+  },
+
+  babel: {
+    options:{
+      // presets: ['es2015','react']
+    },
+    dist:{
+      files: {
+        'client/build.js': 'client/build2.js'
+      }
     }
   }
 });
 grunt.loadNpmTasks('grunt-browserify');
 grunt.loadNpmTasks('grunt-contrib-watch');
-grunt.registerTask('default', ['browserify', 'sass', 'watch']);
+grunt.registerTask('default', ['browserify', 'sass', 'watch', 'babel']);
 
 }

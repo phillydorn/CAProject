@@ -4,7 +4,7 @@ var LogoutActions = require('../actions/LogoutActions');
 var AuthActions = require('../actions/AuthActions');
 var $ = require('jquery');
 
-logoutStore= Reflux.createStore({
+var logoutStore= Reflux.createStore({
   listenables: [LogoutActions],
 
   onLogout: function(data) {

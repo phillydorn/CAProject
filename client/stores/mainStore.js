@@ -4,7 +4,7 @@ var SchoolActions = require('../actions/SchoolActions');
 var $ = require('jquery');
 
 
-mainStore = Reflux.createStore({
+var mainStore = Reflux.createStore({
 
   listenables: [MainActions, SchoolActions],
 

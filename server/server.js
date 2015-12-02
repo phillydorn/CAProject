@@ -50,7 +50,7 @@ var leagues = require('./helpers/leagueFunctions');
       });
 
       socket.on('update', (data) =>{
-        console.log('update', data)
+        console.log('update', timer)
         let leagueId= data.leagueId;
         clearInterval(timer);
         io.to(leagueId).emit('update', leagueId);
@@ -60,6 +60,8 @@ var leagues = require('./helpers/leagueFunctions');
           position = 0;
           round++;
         }
+        console.log('round', round);
+        console.log('position', position);
         let nextDraft = leagues.findNextDraftId(round, position);
         io.to(leagueId).emit('advance', {round: round, position: position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});
         if (round < 10) {

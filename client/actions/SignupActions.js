@@ -3,7 +3,7 @@ var $ = require('jquery');
 
 
 
-SignupActions = Reflux.createActions({
+var SignupActions = Reflux.createActions({
   "sendSignup": {children: ['completed', 'failed']}
   });
 

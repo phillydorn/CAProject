@@ -3,7 +3,7 @@ var $ = require('jquery');
 
 
 
-LeagueActions = Reflux.createActions([
+var LeagueActions = Reflux.createActions([
   "loadUserLeagues",
   "loadAllLeagues"
   ]);

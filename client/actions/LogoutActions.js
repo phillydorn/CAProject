@@ -1,7 +1,7 @@
 var Reflux = require('reflux');
 
 
-LogoutActions = Reflux.createActions([
+var LogoutActions = Reflux.createActions([
   "logout"
   ]);
 

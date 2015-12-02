@@ -4,7 +4,7 @@ var LoginActions = require('../actions/LoginActions');
 var AuthActions = require('../actions/AuthActions');
 var $ = require('jquery');
 
-loginStore= Reflux.createStore({
+var loginStore= Reflux.createStore({
   listenables: [LoginActions],
 
   onSendLogin: function(data) {

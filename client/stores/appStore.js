@@ -2,7 +2,7 @@ var React = require('react');
 var Reflux = require('reflux');
 var LoginActions = require('../actions/LoginActions');
 
-appStore = Reflux.createStore({
+var appStore = Reflux.createStore({
   listenables: [LoginActions],
 
   onSendLogin: function(data) {
