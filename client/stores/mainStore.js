@@ -8,13 +8,16 @@ var mainStore = Reflux.createStore({
 
   listenables: [MainActions, SchoolActions],
 
-  onPopulate: function(leagueID) {
+  onPopulate: function(leagueID, socket) {
     $.ajax({
       url: '/api/leagues/'+leagueID,
       dataType: 'json',
       method: 'GET',
       success: function(data) {
         this.trigger(data);
+        if (socket) {
+          socket.emit('leaguePage', {leagueId: leagueID});
+        }
       }.bind(this)
     });
   },
@@ -22,19 +25,10 @@ var mainStore = Reflux.createStore({
   onSelectTeamCompleted: function(leagueId) {
     console.log('complete')
     socket.emit('update', {leagueId: leagueId});
-    // this.onPopulate(leagueId);
   },
 
   onStartDraft: function(leagueId) {
     socket.emit('startDraft', leagueId)
-    // $.ajax({
-    //   url: '/api/leagues/start',
-    //   method: 'POST',
-    //   data: {leagueId: leagueId},
-    //   success: function(data) {
-    //     console.log('return',data)
-    //   }
-    // });
   }
 
 

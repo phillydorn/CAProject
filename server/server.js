@@ -16,18 +16,18 @@ require('./auth')(app);
 var models = require('./models');
 var schools = require('./helpers/schoolFunctions');
 var leagues = require('./helpers/leagueFunctions');
-
+var drafts = {};
 
     io.on('connection', function(socket) {
-      var round = 0,
-          position = 0,
-          timer;
-      console.log('socket connection', socket.rooms);
+
       socket.on('leaguePage', (data) => {
-        console.log('leaguePage', data)
         let leagueId = data.leagueId;
         socket.join(leagueId);
-        console.log('user joined room', leagueId)
+
+        if (drafts[leagueId]) {
+          let nextDraft = leagues.findNextDraftId(drafts[leagueId].round, drafts[leagueId].position);
+          socket.emit('advance', {round: drafts[leagueId].round, position: drafts[leagueId].position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});
+        }
         io.to(leagueId).emit('update', leagueId);
       });
 
@@ -37,41 +37,44 @@ var leagues = require('./helpers/leagueFunctions');
       });
 
       socket.on('startDraft', (leagueId)=> {
+        drafts[leagueId] = {
+          timer:60,
+          round: 0,
+          position: 0,
+          drafting: true
+        }
         let seconds = 60;
-        timer = setInterval(()=>{
+        drafts[leagueId].timer = setInterval(()=>{
           seconds--;
-          console.log('seconds', seconds)
           io.to(leagueId).emit('timer', seconds)
           if (seconds < 1) {
-            clearInterval(timer);
+            clearInterval(drafts[leagueId].timer);
           }
         }, 1000);
         leagues.startDraft(io, leagueId);
       });
 
       socket.on('update', (data) =>{
-        console.log('update', timer)
         let leagueId= data.leagueId;
-        clearInterval(timer);
+        console.log('update', drafts[leagueId].timer)
+        clearInterval(drafts[leagueId].timer);
         io.to(leagueId).emit('update', leagueId);
-        if (position<5) {
-          position++;
+        if (drafts[leagueId].position<5) {
+          drafts[leagueId].position++;
         } else {
-          position = 0;
-          round++;
+          drafts[leagueId].position = 0;
+          drafts[leagueId].round++;
         }
-        console.log('round', round);
-        console.log('position', position);
-        let nextDraft = leagues.findNextDraftId(round, position);
-        io.to(leagueId).emit('advance', {round: round, position: position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});
-        if (round < 10) {
+        let nextDraft = leagues.findNextDraftId(drafts[leagueId].round, drafts[leagueId].position);
+        io.to(leagueId).emit('advance', {round: drafts[leagueId].round, position: drafts[leagueId].position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});
+        if (drafts[leagueId].round < 10) {
           let seconds = 60;
-          timer = setInterval(()=>{
+          drafts[leagueId].timer = setInterval(()=>{
             seconds--;
             console.log('seconds', seconds)
             io.to(leagueId).emit('timer', seconds)
             if (seconds < 1) {
-              clearInterval(timer);
+              clearInterval(drafts[leagueId].timer);
             }
           }, 1000);
         }

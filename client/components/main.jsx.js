@@ -16,25 +16,46 @@ var AuthComponent = require('./Authenticated.jsx.js');
     mixins: [Reflux.ListenerMixin],
 
     getInitialState: function() {
-      return {round: 0, position: 0, time: '', otherTeams: [], leagueId: this.props.params.league, username: '', teamId: '', leagueName: '', schoolsList: [], yourTurn: false, activeTeam: ''}
+      return {
+        round: 0,
+        position: 0,
+        time: '',
+        otherTeams: [],
+        leagueId: this.props.params.league,
+        username: '',
+        teamId: '',
+        leagueName: '',
+        schoolsList: [],
+        yourTurn: false,
+        activeTeam: '',
+        drafting: false
+      }
     },
 
     componentWillMount: function() {
     },
 
     componentDidMount: function(){
+      MainActions.populate(this.state.leagueId, socket);
       this.listenTo(mainStore, this.populate);
-      // MainActions.openSocket(this.state.leagueId);
+
       socket.on('update', (message) =>{
         console.log('updating', message)
         MainActions.populate(this.state.leagueId);
       });
-      socket.emit('leaguePage', {leagueId: this.state.leagueId});
-      MainActions.populate(this.state.leagueId);
+
+
       socket.on('timer', (seconds)=> {
         this.setState({time: seconds})
       });
+
+      // socket.on('getInfo', ()=>{
+      //   if(this.state.drafting) {
+
+      //   }
+      // });
       socket.on('advance', (data)=>{
+        this.setState({drafting: true});
         if (data.round == 10) {
           this.setState({yourTurn: false});
         } else {
@@ -59,6 +80,7 @@ var AuthComponent = require('./Authenticated.jsx.js');
     },
     startDraft: function(e) {
       socket.emit('startDraft', this.state.leagueId);
+      this.setState({drafting: true});
       // MainActions.startDraft(this.state.leagueId);
     },
 
@@ -67,10 +89,12 @@ var AuthComponent = require('./Authenticated.jsx.js');
     },
 
     render: function() {
+
+      let startButton = this.state.drafting ? '' : <button className="start" onClick={this.startDraft} >Start Draft</button>
       return (
           <div className="main">
             <h1>{this.state.leagueName}</h1>
-            <button className="start" onClick={this.startDraft} >Start Draft</button>
+            {startButton}
             <Timer round={this.state.round+1} time={this.state.time} activeTeamId={this.state.activeTeamId} activeTeamName={this.state.activeTeamName} />
             <Bracket teams={this.state.schoolsList} />
             <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} />
