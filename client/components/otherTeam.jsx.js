@@ -25,9 +25,9 @@ var OtherTeam = React.createClass({
   },
 
   render: function() {
-    var schoolNodes = this.state.otherSchoolList.map(function (school) {
+    var schoolNodes = this.state.otherSchoolList.map(function (school, order) {
       return (
-          <UserSchool schoolName = {school.market} schoolId={school.id} key={school.id} />
+          <UserSchool order={order+1} schoolName = {school.market} schoolId={school.id} key={school.id} />
         )
     });
     return (

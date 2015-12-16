@@ -92,7 +92,7 @@ var drafts = {};
 
 app.set('port', (process.env.PORT || 3000));
 
-models.sequelize.sync().then(function () {
+models.NCAA_Team.sync().then(function () {
   models.NCAA_Team.findAll().then(function(teams) {
     if (!teams.length) {
       schools.fetchAllSchools();

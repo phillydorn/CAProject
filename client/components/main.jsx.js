@@ -9,9 +9,11 @@ var OtherTeam = require('./otherTeams.jsx.js');
 var ChatWindow = require('./chatWindow.jsx.js');
 var Bracket = require('./bracket.jsx.js');
 var AuthComponent = require('./Authenticated.jsx.js');
+var DragDropContext = require('react-dnd').DragDropContext;
+var HTML5Backend = require ('react-dnd-html5-backend');
 
 
-  module.exports = AuthComponent(React.createClass({
+  module.exports = DragDropContext(HTML5Backend)(AuthComponent(React.createClass({
 
     mixins: [Reflux.ListenerMixin],
 
@@ -49,11 +51,6 @@ var AuthComponent = require('./Authenticated.jsx.js');
         this.setState({time: seconds})
       });
 
-      // socket.on('getInfo', ()=>{
-      //   if(this.state.drafting) {
-
-      //   }
-      // });
       socket.on('advance', (data)=>{
         this.setState({drafting: true});
         if (data.round == 10) {
@@ -104,6 +101,8 @@ var AuthComponent = require('./Authenticated.jsx.js');
           </div>
         );
     }
-  }));
+  })));
 
-
+exports.ItemTypes = {
+  SCHOOL: 'school'
+};

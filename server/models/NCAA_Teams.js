@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     sportRadarID: DataTypes.STRING,
     bracket: DataTypes.STRING,
     seed: DataTypes.INTEGER,
+    RPI_Ranking: DataTypes.INTEGER
 
   }, {
     classMethods: {

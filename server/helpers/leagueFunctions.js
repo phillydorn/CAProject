@@ -112,8 +112,9 @@ module.exports = {
 
 
     models.League.findById(id).then (function (league) {
+      console.log('league for schools', league)
       league.getNCAA_Teams({
-        order: ['seed']
+        order: ['RPI_Ranking']
       }).then (function(NCAATeams) {
         let data = {schoolsList: NCAATeams, leagueName:league.name}
         league.getTeams().then(function(teams){
