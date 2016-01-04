@@ -1,16 +1,17 @@
-var React = require('react');
-var Reflux = require('reflux');
-var mainStore = require('../stores/mainStore');
-var MainActions = require('../actions/MainActions');
-var TeamPool = require('./teamPool.jsx.js');
-var Timer = require('./timer.jsx.js');
-var UserTeam = require('./userTeam.jsx.js');
-var OtherTeam = require('./otherTeams.jsx.js');
-var ChatWindow = require('./chatWindow.jsx.js');
-var Bracket = require('./bracket.jsx.js');
-var AuthComponent = require('./Authenticated.jsx.js');
-var DragDropContext = require('react-dnd').DragDropContext;
-var HTML5Backend = require ('react-dnd-html5-backend');
+import React from 'react';
+import Reflux from 'reflux';
+import mainStore from '../stores/mainStore';
+import MainActions from '../actions/MainActions';
+import TeamPool from './teamPool.jsx.js';
+import Timer from './timer.jsx.js';
+import UserTeam from './userTeam.jsx.js';
+import OtherTeam from './otherTeams.jsx.js';
+import ChatWindow from './chatWindow.jsx.js';
+import Bracket from './bracket.jsx.js';
+import AuthComponent from './Authenticated.jsx.js';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext }from 'react-dnd';
+
 
 
   module.exports = DragDropContext(HTML5Backend)(AuthComponent(React.createClass({
@@ -94,7 +95,7 @@ var HTML5Backend = require ('react-dnd-html5-backend');
             {startButton}
             <Timer round={this.state.round+1} time={this.state.time} activeTeamId={this.state.activeTeamId} activeTeamName={this.state.activeTeamName} />
             <Bracket teams={this.state.schoolsList} />
-            <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} />
+            <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} teamId={this.state.teamId} />
             <OtherTeam otherTeams={this.state.otherTeams} />
             <UserTeam teamId={this.state.teamId} />
             <ChatWindow leagueId = {this.state.leagueId} username={this.state.username} />
@@ -103,6 +104,3 @@ var HTML5Backend = require ('react-dnd-html5-backend');
     }
   })));
 
-exports.ItemTypes = {
-  SCHOOL: 'school'
-};

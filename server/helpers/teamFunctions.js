@@ -1,3 +1,5 @@
+"use strict";
+
 var models = require('../models');
 
 module.exports = {
@@ -15,8 +17,16 @@ module.exports = {
     }).catch(function(err) {
         res.status(200).send([]);
       });
+  },
+
+  rerank(req, res){
+    let teamId = req.url.slice(1);
+    let rank = req.body.rank;
+    models.Team.findById(teamId).then((team)=>{
+      team.getNCAA_Teams().then((NCAATeams)=>{
+        console.log(NCAATeams)
+      })
+    })
   }
-
-
 
 }

@@ -1,5 +1,8 @@
 var React = require('react');
 var School = require('./school.jsx.js');
+var SchoolSlot = require('./schoolSlot.jsx.js');
+
+
 
 var TeamPool = React.createClass({
 
@@ -7,7 +10,9 @@ var TeamPool = React.createClass({
   render: function() {
     var schoolNodes = this.props.schoolsList.map(function (school, rank) {
       return (
-          <School rank={rank+1} yourTurn = {this.props.yourTurn} leagueId={this.props.leagueId} schoolName = {school.market} key = {school.id} schoolId = {school.id} />
+          <SchoolSlot key={school.id} teamId = {this.props.teamId} >
+            <School rank={rank+1} yourTurn = {this.props.yourTurn} leagueId={this.props.leagueId} schoolName = {school.market} key = {school.id} schoolId = {school.id} />
+          </SchoolSlot>
         )
     }.bind(this));
     return (

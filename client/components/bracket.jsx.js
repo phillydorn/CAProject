@@ -8,8 +8,8 @@ var Bracket = React.createClass({
 
 
   render: function() {
-    this.props.teams = this.props.teams instanceof Array ? this.props.teams : this.props.teams.list;
-    var schoolnodes = this.props.teams.map(function(team) {
+    var teams = this.props.teams instanceof Array ? this.props.teams : this.props.teams.list;
+    var schoolnodes = teams.map(function(team) {
 
     });
     return (

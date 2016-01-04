@@ -68,7 +68,13 @@ module.exports = {
               models.User.findById(userID).then(function(user) {
                 user.addTeam(team).then(function() {
                   user.addLeague(league).then (function() {
-                    res.status(200).send('success');
+                    models.NCAA_Team.findAll().then(function(NCAAs) {
+                      NCAAs.forEach((NCAA)=>{
+                        team.addNCAA_Team(NCAA, {playerRanking: NCAA.RPI_Ranking});
+                        team.save();
+                      })
+                      res.status(200).send('success');
+                    })
                   });
                 });
               });
@@ -112,7 +118,6 @@ module.exports = {
 
 
     models.League.findById(id).then (function (league) {
-      console.log('league for schools', league)
       league.getNCAA_Teams({
         order: ['RPI_Ranking']
       }).then (function(NCAATeams) {

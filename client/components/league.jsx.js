@@ -1,5 +1,5 @@
 var React = require('react');
-var LeagueActions = require('../actions/leagueActions');
+var LeagueActions = require('../actions/LeagueActions');
 
 var League = React.createClass({
 

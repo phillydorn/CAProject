@@ -1,6 +1,8 @@
 var React = require('react');
 var Router = require('react-router');
 
+require ('./styles/manifest.scss');
+
 var Route        = Router.Route;
 var DefaultRoute = Router.DefaultRoute;
 var RouteHandler = Router.RouteHandler;

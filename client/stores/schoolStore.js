@@ -18,6 +18,17 @@ var SchoolStore = Reflux.createStore({
         SchoolActions.selectTeam.completed(leagueId);
       }.bind(this)
     });
+  },
+
+  onRerank: function(rank, teamId) {
+    $.ajax({
+      method: 'PUT',
+      url: '/api/teams/'+ teamId,
+      data: { rank },
+      success: function (response) {
+        console.log(response)
+      }
+    })
   }
 
 });
