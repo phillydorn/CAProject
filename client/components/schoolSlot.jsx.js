@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, ReactDOM} from '../importPackage';
 import { DropTarget } from 'react-dnd';
 import { ItemTypes} from '../constants';
 import SchoolActions from '../actions/SchoolActions';
@@ -6,14 +6,15 @@ import SchoolActions from '../actions/SchoolActions';
 const slotTarget = {
   drop (props, monitor) {
     console.log(props)
-    moveSchool(props.children.props.rank, props.teamId)
+    return {rank: props.children.props.rank}
+    // moveSchool(props.children.props.rank, props.teamId)
   }
 };
 
 
-function moveSchool(rank, teamId) {
-  SchoolActions.rerank(rank, teamId);
-}
+// function moveSchool(rank, teamId) {
+//   SchoolActions.rerank(rank, teamId);
+// }
 
 function collect(connect, monitor) {
   return {
@@ -43,6 +44,5 @@ renderBorder() {
   }
 
 }
-// module.exports = SchoolSlot;
 
 module.exports = DropTarget(ItemTypes.SCHOOL, slotTarget, collect)(SchoolSlot);

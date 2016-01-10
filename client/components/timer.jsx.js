@@ -1,7 +1,6 @@
 "use strict";
 
-var React = require('react'),
-    Reflux = require('reflux');
+import { React, Reflux } from '../importPackage';
 
 
 class Timer extends React.Component{

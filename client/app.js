@@ -1,5 +1,4 @@
-var React = require('react');
-var Router = require('react-router');
+import { React, Router, ReactDOM } from './importPackage';
 
 require ('./styles/manifest.scss');
 
@@ -47,5 +46,5 @@ var routes = (
 );
 
 Router.run(routes, function (Handler) {
-    React.render(<Handler/>, document.getElementById('content'));
+    ReactDOM.render(<Handler/>, document.getElementById('content'));
 });

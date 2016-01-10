@@ -1,48 +1,50 @@
-var React = require('react');
-var SchoolActions = require('../actions/SchoolActions');
-var UserTeamActions = require('../actions/UserTeamActions');
-var schoolStore = require('../stores/schoolStore');
-var PropTypes = React.PropTypes;
-var ItemTypes = require('../constants').ItemTypes;
+import {React, ReactDOM} from '../importPackage';
+import SchoolActions from '../actions/SchoolActions';
+import UserTeamActions from '../actions/UserTeamActions';
+import schoolStore from '../stores/schoolStore';
+import { ItemTypes } from '../constants';
 import { DragSource } from 'react-dnd';
+let { PropTypes } = React;
 
-var schoolSource = {
-  beginDrag: function(props) {
+let schoolSource = {
+  beginDrag(props) {
+    console.log('begindrag', props)
       return {};
   },
-  endDrag: function(props, monitor) {
+  endDrag(props, monitor) {
     if (monitor.didDrop()){
-      console.log(monitor.getDropResult())
+      let {rank} = monitor.getDropResult();
+      let {teamId, schoolId } = props;
+    console.log('enddrag', props)
+      console.log('diddrop',monitor.getDropResult())
+      SchoolActions.rerank(schoolId, rank, teamId);
+
     }
   }
 }
 
-function collect(connect, monitor) {
+let collect = (connect, monitor) => {
   return {
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
   }
 }
 
-var School = React.createClass({
+class School extends React.Component {
 
-  propTypes: {
-    connectDragSource: PropTypes.func.isRequired,
-    isDragging: PropTypes.bool.isRequired
-  },
-
-  handleSelect: function(e) {
+  handleSelect(e) {
     e.preventDefault();
     if (this.props.yourTurn) {
-      var schoolId = this.props.schoolId;
-      var leagueId = this.props.leagueId;
+      let schoolId = this.props.schoolId;
+      let leagueId = this.props.leagueId;
       SchoolActions.selectTeam(schoolId, leagueId);
     }
-  },
-  render: function() {
+  }
 
-    var connectDragSource = this.props.connectDragSource;
-    var isDragging = this.props.isDragging;
+  render() {
+
+    let connectDragSource = this.props.connectDragSource;
+    let isDragging = this.props.isDragging;
 
     return connectDragSource(
         <li style={{
@@ -53,6 +55,12 @@ var School = React.createClass({
         </li>
       )
   }
-});
+};
 
-module.exports = DragSource(ItemTypes.SCHOOL, schoolSource, collect)(School);
+School.propTypes = {
+    connectDragSource: PropTypes.func.isRequired,
+    isDragging: PropTypes.bool.isRequired
+  };
+
+
+export default DragSource(ItemTypes.SCHOOL, schoolSource, collect)(School);

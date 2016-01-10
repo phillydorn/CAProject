@@ -1,6 +1,5 @@
-var Reflux= require('reflux');
+import {Reflux, $} from '../importPackage';
 var SchoolActions = require('../actions/SchoolActions');
-var $ = require('jquery');
 
 var SchoolStore = Reflux.createStore({
 
@@ -20,13 +19,13 @@ var SchoolStore = Reflux.createStore({
     });
   },
 
-  onRerank: function(rank, teamId) {
+  onRerank: function(schoolId, rank, teamId) {
     $.ajax({
       method: 'PUT',
       url: '/api/teams/'+ teamId,
-      data: { rank },
+      data: { schoolId, rank },
       success: function (response) {
-        console.log(response)
+        console.log('ranking', response)
       }
     })
   }

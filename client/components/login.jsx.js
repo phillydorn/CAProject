@@ -1,9 +1,8 @@
-var React = require('react');
-var Reflux = require('reflux');
+import { React, Reflux, Router, ReactDOM } from '../importPackage';
+
 var LoginActions = require('../actions/LoginActions');
 var loginStore = require('../stores/loginStore');
 var authStore = require('../stores/authStore');
-var Router = require('react-router');
 
 var Login = React.createClass({
 
@@ -32,8 +31,8 @@ var Login = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
     var data = {
-      username: React.findDOMNode(this.refs.username).value,
-      password: React.findDOMNode(this.refs.password).value
+      username: ReactDOM.findDOMNode(this.refs.username).value,
+      password: ReactDOM.findDOMNode(this.refs.password).value
     }
     LoginActions.sendLogin(data);
   },

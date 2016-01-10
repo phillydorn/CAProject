@@ -31,9 +31,9 @@ var OtherTeam = React.createClass({
         )
     });
     return (
-      <div className = "team-box otherTeam">
-      <h1>{this.props.teamName}</h1>
-        <ul className="team-list">
+      <div className = "team-box otherTeam" key="otherTeamBox">
+      <h1 key="teamName">{this.props.teamName}</h1>
+        <ul className="team-list" key="team-list">
          {schoolNodes}
         </ul>
       </div>

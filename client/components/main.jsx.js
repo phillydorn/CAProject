@@ -83,6 +83,9 @@ import { DragDropContext }from 'react-dnd';
     },
 
     componentWillUnmount: function () {
+      socket.removeAllListeners('timer');
+      socket.removeAllListeners('advance');
+      socket.removeAllListeners('update');
       socket.emit('leave', {leagueId: this.state.leagueId});
     },
 
