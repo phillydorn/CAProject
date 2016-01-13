@@ -7,6 +7,11 @@ import { DragSource } from 'react-dnd';
 let { PropTypes } = React;
 
 let schoolSource = {
+
+  canDrag(props) {
+    return props.rankingType == 'custom';
+  },
+
   beginDrag(props) {
     console.log('begindrag', props)
       return {};

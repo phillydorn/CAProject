@@ -4,6 +4,11 @@ import { ItemTypes} from '../constants';
 import SchoolActions from '../actions/SchoolActions';
 
 const slotTarget = {
+
+  canDrop(props) {
+    return props.rankingType == 'custom';
+  },
+
   drop (props, monitor) {
     console.log(props)
     return {rank: props.children.props.rank}
