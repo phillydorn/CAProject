@@ -19,9 +19,9 @@ var UserTeam = React.createClass({
   },
 
   componentWillReceiveProps: function (){
-    setTimeout(function() {
+    setTimeout(()=> {
       UserTeamActions.loadSchools(this.props.teamId);
-    }.bind(this), 500)
+    }, 500)
   },
 
   render: function() {

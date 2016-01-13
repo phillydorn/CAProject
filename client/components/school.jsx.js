@@ -15,9 +15,10 @@ let schoolSource = {
     if (monitor.didDrop()){
       let {rank} = monitor.getDropResult();
       let {teamId, schoolId } = props;
+      let currentRank = props.rank;
     console.log('enddrag', props)
       console.log('diddrop',monitor.getDropResult())
-      SchoolActions.rerank(schoolId, rank, teamId);
+      SchoolActions.rerank(schoolId, currentRank, rank, teamId);
 
     }
   }

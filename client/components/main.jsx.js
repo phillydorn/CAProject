@@ -1,5 +1,4 @@
-import React from 'react';
-import Reflux from 'reflux';
+import { React, Reflux } from '../importPackage';
 import mainStore from '../stores/mainStore';
 import MainActions from '../actions/MainActions';
 import TeamPool from './teamPool.jsx.js';
@@ -68,13 +67,18 @@ import { DragDropContext }from 'react-dnd';
     },
 
     populate: function(data) {
-      this.setState({
-        otherTeams: data.teams,
-        schoolsList: data.schoolsList,
-        leagueName: data.leagueName,
-        teamId: data.userTeam.id,
-        username: data.username
-      });
+      if (data.teams) {
+        this.setState({
+          otherTeams: data.teams,
+          schoolsList: data.schoolsList,
+          leagueName: data.leagueName,
+          teamId: data.userTeam.id,
+          username: data.username
+        });
+      } else {
+        this.setState({schoolsList: data.schoolsList})
+      }
+
     },
     startDraft: function(e) {
       socket.emit('startDraft', this.state.leagueId);

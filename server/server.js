@@ -6,7 +6,12 @@ var express = require('express'),
     app = express(),
     server  = require('http').Server(app),
     bodyParser = require ('body-parser'),
-    io = require('socket.io')(server);
+    io = require('socket.io')(server),
+    httpProxy = require('http-proxy'),
+    proxy = httpProxy.createProxyServer({
+      changeOrigin: true,
+      ws: true
+    });
 
 require('babel-core/register');
 require('./config/express')(app);
@@ -17,6 +22,8 @@ var models = require('./models');
 var schools = require('./helpers/schoolFunctions');
 var leagues = require('./helpers/leagueFunctions');
 var drafts = {};
+var isProduction = process.env.NODE_ENV === 'production';
+var port = isProduction ? process.env.PORT : 3000;
 
     io.on('connection', function(socket) {
 
@@ -90,7 +97,25 @@ var drafts = {};
       });
     });
 
-app.set('port', (process.env.PORT || 3000));
+if (!isProduction) {
+  var bundle = require('./bundle.js');
+  bundle();
+  app.all('/client/*', function(req, res) {
+    proxy.web(req, res, {
+      target: 'http://localhost:8080'
+    });
+  });
+}
+
+
+
+proxy.on('error', function(e) {
+    console.log('Could not connect to proxy. Please try again...');
+});
+
+
+
+app.set('port', port);
 
 models.NCAA_Team.sync().then(function () {
   models.NCAA_Team.findAll().then(function(teams) {

@@ -18,48 +18,44 @@ module.exports = {
     },
       function(err, resp, body) {
         var brackets = JSON.parse(body).brackets;
-        // var results = [];
         setTimeout(()=>{
           request({
             url: 'http://api.sportradar.us/ncaamb-t3/polls/rpi/2014/rankings.json?api_key='+sportRadarKey
           },
             (err, resp, body) => {
               let RPI_Teams = JSON.parse(body).rankings;
+              let allSchools = [];
               brackets.forEach(function(bracket) {
-                bracket.participants.forEach(function(school){
-                  let rank;
-                  RPI_Teams.forEach((RPI_Team)=>{
-                    if (school.id === RPI_Team.id) {
-                      rank = RPI_Team.rank;
-                    }
-                  });
-
-                  models.NCAA_Team.sync().then(function() {
-                    models.NCAA_Team.findOrCreate({
-                      where: {
-                        sportRadarID:school.id
-                      },
-                      defaults: {
-                        NCAA_Team_name: school.name,
-                        sportRadarID: school.id,
-                        seed: school.seed,
-                        market: school.market,
-                        bracket: bracket.name,
-                        RPI_Ranking: rank
-                      }
-                    })
-                  });
+                let bracketSchools = bracket.participants.map((school)=>{
+                  return {bracket:bracket.name, school:school }
                 });
+                allSchools = allSchools.concat(bracketSchools);
               });
-            });
-        },2000)
-            // results.push({
-            //       name: school.name,
-            //       id: school.id,
-            //       seed: school.seed,
-            //       market: school.market,
-            //       bracket: bracket.name
-        // res.status(200).send(results);
+
+              allSchools = allSchools.sort((a,b)=>{
+                let aRank, bRank;
+                RPI_Teams.forEach((RPI_Team)=>{
+                  if (RPI_Team.id === a.school.id) {
+                    aRank = RPI_Team.rank;
+                  } else if (RPI_Team.id === b.school.id) {
+                    bRank = RPI_Team.rank;
+                  }
+                });
+                return aRank-bRank;
+              });
+              allSchools.forEach(function(allSchool, index){
+                models.NCAA_Team.create({
+                  sportRadarID:allSchool.school.id,
+                  NCAA_Team_name: allSchool.school.name,
+                  sportRadarID: allSchool.school.id,
+                  seed: allSchool.school.seed,
+                  market: allSchool.school.market,
+                  bracket: allSchool.bracket,
+                  RPI_Ranking: index+1
+                })
+              });
+        });
+      },2000)
     });
   }
 }

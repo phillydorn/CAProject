@@ -3,11 +3,19 @@ var path = require('path');
 
 module.exports = {
 
+  devtool: 'eval',
+
   context: __dirname + '/client',
-  entry: './app',
+  entry: [
+    'webpack/hot/dev-server',
+    'webpack-dev-server/client?http://localhost:8080',
+    './app'
+  ],
+
   output: {
-    path: __dirname + '/client',
-    filename: 'build.js'
+    path: __dirname + '/client/build',
+    filename: 'build.js',
+    publicPath: 'http://localhost:8080/assets/'
   },
     module: {
         loaders: [
@@ -15,6 +23,7 @@ module.exports = {
             test: /\.js/,
             loader: 'babel',
             include: path.join(__dirname, 'client'),
+            exclude: path.join(__dirname, 'client', 'build.js'),
             query: {
               presets: ['react', 'es2015']
             }
@@ -25,11 +34,12 @@ module.exports = {
           }
         ]
       },
-      inline: true
+      inline: true,
+      // hot: true,
       // recordsPath: path.join(process.cwd(), 'cache', 'webpack.json'),
-      // plugins: [
-      //   new webpack.HotModuleReplacementPlugin()
-      // ]
+      plugins: [
+        new webpack.HotModuleReplacementPlugin()
+      ]
 
 
 };

@@ -7,14 +7,9 @@ const slotTarget = {
   drop (props, monitor) {
     console.log(props)
     return {rank: props.children.props.rank}
-    // moveSchool(props.children.props.rank, props.teamId)
   }
 };
 
-
-// function moveSchool(rank, teamId) {
-//   SchoolActions.rerank(rank, teamId);
-// }
 
 function collect(connect, monitor) {
   return {

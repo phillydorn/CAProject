@@ -8,15 +8,23 @@ var mainStore = Reflux.createStore({
 
   listenables: [MainActions, SchoolActions],
 
-  onPopulate: function(leagueID, socket) {
+  onPopulate: function(ID, socket, order) {
+    order = order || 'default';
+    let url;
+    if (order === 'default') {
+      url = '/api/leagues/'+ID;
+    } else {
+      url = '/api/teams/pool/' + ID
+    }
+
     $.ajax({
-      url: '/api/leagues/'+leagueID,
+      url,
       dataType: 'json',
       method: 'GET',
       success: function(data) {
         this.trigger(data);
         if (socket) {
-          socket.emit('leaguePage', {leagueId: leagueID});
+          socket.emit('leaguePage', {leagueId: ID});
         }
       }.bind(this)
     });

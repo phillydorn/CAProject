@@ -45,6 +45,15 @@ li {
   }
 }
 
+.ranking-button {
+  padding: 10px;
+  font-size: 16px;
+  margin: 0 5px 5px;
+  &.ranking-on {
+    background: yellow;
+  }
+}
+
 .bracket {
   background-image: url('/images/bracket.gif');
   background-repeat: no-repeat;
