@@ -1,48 +1,44 @@
 import {React, ReactDOM} from '../importPackage';
-import { DropTarget } from 'react-dnd';
-import { ItemTypes} from '../constants';
-import SchoolActions from '../actions/SchoolActions';
-
-const slotTarget = {
-
-  canDrop(props) {
-    return props.rankingType == 'custom';
-  },
-
-  drop (props, monitor) {
-    console.log(props)
-    return {rank: props.children.props.rank}
-  }
-};
+import TopTarget from './topTarget.jsx.js';
+import BottomTarget from './bottomTarget.jsx.js';
 
 
-function collect(connect, monitor) {
-  return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
 
-  };
-}
+
 
 class SchoolSlot extends React.Component {
-renderBorder() {
-    return (
-      <div style={{
-        'borderTop': '3px solid black'
-      }} />
-    );
+
+  constructor(props) {
+    super(props);
+    this.state = {hovering: false}
+
+  }
+
+  handleMouseOver(e) {
+    this.setState ({hovering: true});
+  }
+
+  handleMouseOut(e) {
+    this.setState ({hovering: false});
   }
 
   render () {
-    const { connectDropTarget, isOver } = this.props;
-    return connectDropTarget(
-      <div style = {{position: 'relative'}}>
-        {this.props.children}
-        {isOver && this.renderBorder()}
+
+    let background = this.props.rank % 2 === 0 ? '#a081a5' : 'inherit';
+    let hoverBackground = this.state.hovering ? '#e7ceeb' : background;
+    return (
+      <div
+      className="schoolSlot"
+      style = {{position: 'relative', height: '20px', 'backgroundColor': hoverBackground}}
+      onMouseOver = {this.handleMouseOver.bind(this)}
+      onMouseOut = {this.handleMouseOut.bind(this)}>
+        <TopTarget { ...this.props} />
+        <BottomTarget { ...this.props} />
       </div>
     )
   }
 
 }
 
-module.exports = DropTarget(ItemTypes.SCHOOL, slotTarget, collect)(SchoolSlot);
+
+module.exports = SchoolSlot;

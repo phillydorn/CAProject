@@ -53,10 +53,10 @@ class School extends React.Component {
     let isDragging = this.props.isDragging;
 
     return connectDragSource(
-        <li style={{
+        <li className ="school" style={{
         cursor: 'move'
       }}
-      onClick = {this.handleSelect} className = {"school " + this.props.schoolName}>
+      onClick = {this.handleSelect.bind(this)} className = {"school " + this.props.schoolName}>
           <a href="#">{this.props.rank}.  {this.props.schoolName}</a>
         </li>
       )

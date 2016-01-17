@@ -1,5 +1,4 @@
 import {React} from '../importPackage';
-import School from './school.jsx.js';
 import SchoolSlot  from './schoolSlot.jsx.js';
 var MainActions = require('../actions/MainActions');
 
@@ -35,8 +34,7 @@ class TeamPool extends React.Component {
 
     let schoolNodes = this.props.schoolsList.map((school, rank) => {
       return (
-          <SchoolSlot rankingType={this.state.ranking} key={school.id} teamId = {this.props.teamId} >
-            <School rank={rank+1} teamId = {this.props.teamId} rankingType = {this.state.ranking} yourTurn = {this.props.yourTurn} leagueId={this.props.leagueId} schoolName = {school.market} key = {school.id} schoolId = {school.id} />
+          <SchoolSlot { ...this.props} schoolName = {school.market} schoolId= {school.id} rank={rank+1} rankingType={this.state.ranking} key={school.id} >
           </SchoolSlot>
         )
     });

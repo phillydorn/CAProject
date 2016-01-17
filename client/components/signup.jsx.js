@@ -1,8 +1,7 @@
-var React = require('react');
-var Reflux = require('reflux');
+import {React, Reflux, Router, ReactDOM } from '../importPackage';
+
 var SignupActions = require('../actions/SignupActions');
 var signupStore = require('../stores/signupStore');
-var Router = require('react-router');
 var authStore = require('../stores/authStore');
 
 var Signup = React.createClass({
@@ -26,11 +25,11 @@ var Signup = React.createClass({
 
   handleSubmit: function(e) {
     e.preventDefault();
-    var firstname= React.findDOMNode(this.refs.firstname).value
-    var lastname= React.findDOMNode(this.refs.lastname).value;
-    var username= React.findDOMNode(this.refs.username).value;
-    var email= React.findDOMNode(this.refs.email).value;
-    var password= React.findDOMNode(this.refs.password).value;
+    var firstname= ReactDOM.findDOMNode(this.refs.firstname).value
+    var lastname= ReactDOM.findDOMNode(this.refs.lastname).value;
+    var username= ReactDOM.findDOMNode(this.refs.username).value;
+    var email= ReactDOM.findDOMNode(this.refs.email).value;
+    var password= ReactDOM.findDOMNode(this.refs.password).value;
 
     var data = {
         firstname: firstname,

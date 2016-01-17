@@ -81,9 +81,12 @@ import { DragDropContext }from 'react-dnd';
 
     },
     startDraft: function(e) {
-      socket.emit('startDraft', this.state.leagueId);
-      this.setState({drafting: true});
-      // MainActions.startDraft(this.state.leagueId);
+      if (this.state.otherTeams.length === 6) {
+        socket.emit('startDraft', this.state.leagueId);
+        this.setState({drafting: true});
+      } else {
+        alert('You cannot begin a draft with less than 6 teams.');
+      }
     },
 
     componentWillUnmount: function () {

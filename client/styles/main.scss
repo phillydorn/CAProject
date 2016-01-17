@@ -2,9 +2,13 @@ li {
   list-style: none;
 }
 
+.main {
+  background: #aaa;
+}
+
 .team-box {
   border: 3px solid black;
-  width: 200px;
+  width: 230px;
   max-height: 600px;
   overflow: auto;
   &.teamPool {
@@ -22,16 +26,21 @@ li {
   .team-list {
     padding: 0;
   }
+  .schoolSlot {
+    // :hover {
+    //   background-size: 215px 20px;
+    //   background-color: #e7ceeb;
+    // }
+  }
   .school {
-    border: 1px solid black;
+    // border: 1px solid black;
     width: 100%;
-    :hover {
-      background-size: 100%;
-      background-color: #e7ceeb;
-      .userTeam &{
-        background-color: #c4d3ef;
-      }
-    }
+    // :hover {
+    //   .userTeam &{
+    //     background-size: 100%;
+    //     background-color: #c4d3ef;
+    //   }
+    // }
     a {
       padding: 12px;
       text-align: left;
@@ -102,3 +111,35 @@ li {
     font-size: 18px;
   }
 }
+
+.topTarget {
+  width: 100%;
+  height: 50%;
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  border-top: 1px solid black;
+}
+
+.bottomTarget {
+  width: 100%;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  border-bottom: 1px solid black;
+}
+
+.school {
+  position: relative;
+
+  .bottomTarget &{
+    display: none;
+    border: none;
+  }
+
+  .topTarget &{
+    top: -4px;
+    border: none;
+  }
+}
+

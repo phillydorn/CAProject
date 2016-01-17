@@ -1,9 +1,7 @@
-var React = require('react');
+import {React, Reflux, Router, ReactDOM } from '../importPackage';
 var CreateLeagueActions = require('../actions/CreateLeagueActions');
 var createTeamStore = require('../stores/createTeamStore');
 var AuthComponent = require('./Authenticated.jsx.js');
-var Reflux = require('reflux');
-var Router = require('react-router');
 
 
 
@@ -13,7 +11,7 @@ var teamForm = React.createClass({
 
   handleSubmit: function(e) {
     e.preventDefault();
-      var teamName= React.findDOMNode(this.refs.teamName).value;
+      var teamName= ReactDOM.findDOMNode(this.refs.teamName).value;
     console.log('trigger', this.props.leagueID, teamName)
       CreateLeagueActions.createTeam(this.props.leagueID, teamName);
     },
