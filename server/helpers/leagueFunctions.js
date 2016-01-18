@@ -1,6 +1,7 @@
 "use strict";
 
 var models = require('../models');
+var draft = require('./draftFunctions');
 
 var draftOrder = [
   [0,1,2,3,4,5],
@@ -128,6 +129,8 @@ module.exports = {
             data.username = user.username;
             teams.forEach(function(team) {
               if (team.UserId===user.id) {
+                team.autodraft = false;
+                team.save();
                 data.userTeam = team;
                 res.status(200).json(data);
               }
@@ -143,19 +146,24 @@ module.exports = {
     var schoolId = req.body.schoolId;
     var leagueId = req.url.slice(1);
     var userId = req.user.id;
-    models.NCAA_Team.findById(schoolId).then (function(school) {
-      models.League.findById(leagueId).then(function(league) {
-        models.Team.findOne({
-          where: {
-            LeagueId: leagueId,
-            UserId: userId
-          }
-        }).then (function(team) {
-          team.addNCAA_Team(school).then (function() {
-            league.removeNCAA_Team(school).then (function() {
-                res.status(200).json(league);
-            });
-          });
+    var round = draft.getRound(leagueId);
+
+console.log('round is', round)
+    models.League.findById(leagueId).then(function(league) {
+      models.Team.findOne({
+        where: {
+          LeagueId: leagueId,
+          UserId: userId
+        }
+      }).then (function(team) {
+        team.getNCAA_Teams({where: {id: schoolId}}).then (function(schools) {
+          let school = schools[0];
+          school.Team_NCAA.drafted = true;
+          school.Team_NCAA.round = round;
+          school.Team_NCAA.save();
+          league.removeNCAA_Team(school).then (function() {
+            res.status(200).json(league);
+          })
         });
       });
     });

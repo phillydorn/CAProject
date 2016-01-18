@@ -1,11 +1,11 @@
-var React = require('react');
-var Reflux = require('reflux');
+import {React, Reflux, Router, ReactDOM} from '../importPackage';
+
+
 var CreateLeagueActions = require('../actions/CreateLeagueActions');
 var createLeagueStore = require('../stores/createLeagueStore');
 var createTeamStore = require('../stores/createTeamStore');
 var TeamForm = require('./teamForm.jsx.js');
 var AuthComponent = require('./Authenticated.jsx.js');
-var Router = require('react-router');
 
 
 
@@ -37,7 +37,7 @@ module.exports = AuthComponent(React.createClass({
 
   handleSubmit: function(e) {
       e.preventDefault();
-      var leaguename= React.findDOMNode(this.refs.leaguename).value
+      var leaguename= ReactDOM.findDOMNode(this.refs.leaguename).value
 
       CreateLeagueActions.createLeague(leaguename);
     },

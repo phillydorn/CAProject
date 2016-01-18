@@ -67,6 +67,7 @@ import { DragDropContext }from 'react-dnd';
     },
 
     populate: function(data) {
+      console.log('data', data)
       if (data.teams) {
         this.setState({
           otherTeams: data.teams,
@@ -81,19 +82,19 @@ import { DragDropContext }from 'react-dnd';
 
     },
     startDraft: function(e) {
-      if (this.state.otherTeams.length === 6) {
+      // if (this.state.otherTeams.length === 6) {
         socket.emit('startDraft', this.state.leagueId);
         this.setState({drafting: true});
-      } else {
-        alert('You cannot begin a draft with less than 6 teams.');
-      }
+      // } else {
+      //   alert('You cannot begin a draft with less than 6 teams.');
+      // }
     },
 
     componentWillUnmount: function () {
       socket.removeAllListeners('timer');
       socket.removeAllListeners('advance');
       socket.removeAllListeners('update');
-      socket.emit('leave', {leagueId: this.state.leagueId});
+      socket.emit('leave', {leagueId: this.state.leagueId, teamId: this.state.teamId});
     },
 
     render: function() {

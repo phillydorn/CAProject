@@ -72,6 +72,20 @@ module.exports = {
         })
       })
     })
+  },
+
+  turnOffAutoDraft(teamId) {
+    models.Team.findById(teamId).then((team) =>{
+      team.autodraft=false;
+      team.save();
+    });
+  },
+
+  turnOnAutoDraft(teamId) {
+    models.Team.findById(teamId).then((team) =>{
+      team.autodraft=true;
+      team.save();
+    });
   }
 
 }

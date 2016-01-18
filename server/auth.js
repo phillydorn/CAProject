@@ -44,7 +44,6 @@ passport.use(new LocalStrategy(
 module.exports = function(app) {
 
   app.post('/api/auth/signup', function (req, res) {
-    console.log('req',req.user)
     var newUser = {
       firstname : req.body.firstname,
       lastname : req.body.lastname,

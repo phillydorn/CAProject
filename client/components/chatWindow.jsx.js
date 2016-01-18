@@ -1,8 +1,6 @@
 "use strict";
-
-var React = require('react'),
-    Reflux = require('reflux'),
-    Message = require('./message.jsx.js');
+import {React, Reflux, ReactDOM} from '../importPackage';
+var Message = require('./message.jsx.js');
 
 
 class ChatWindow extends React.Component {
@@ -24,7 +22,7 @@ class ChatWindow extends React.Component {
 
   submitHandler(e) {
     e.preventDefault();
-    let content = React.findDOMNode(this.refs.messageText).value;
+    let content = ReactDOM.findDOMNode(this.refs.messageText).value;
     let username = this.props.username;
     let leagueId = this.props.leagueId;
     socket.emit('sendMessage', {leagueId, content, username})
