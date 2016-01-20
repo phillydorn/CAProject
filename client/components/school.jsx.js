@@ -43,7 +43,6 @@ class School extends React.Component {
     if (this.props.yourTurn) {
       let schoolId = this.props.schoolId;
       let leagueId = this.props.leagueId;
-      console.log('selected', this.props.schoolName)
       SchoolActions.selectTeam(schoolId, leagueId);
     } else {
       alert ('It is not your turn.')

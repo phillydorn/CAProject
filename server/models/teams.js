@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
     team_name: DataTypes.STRING,
     wins: DataTypes.INTEGER,
     draftPosition: DataTypes.INTEGER,
-    autodraft: {type: DataTypes.STRING, default: true}
+    autodraft: {type: DataTypes.BOOLEAN, default: true}
   },
 
   {

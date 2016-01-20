@@ -129,6 +129,7 @@ module.exports = {
             data.username = user.username;
             teams.forEach(function(team) {
               if (team.UserId===user.id) {
+                console.log('turning off in loadschools', team.id)
                 team.autodraft = false;
                 team.save();
                 data.userTeam = team;
@@ -142,34 +143,58 @@ module.exports = {
     })
   },
 
+  draftTeam(league, team, schoolId, res, io) {
+    team.getNCAA_Teams({where: {id: schoolId}}).then (function(schools) {
+      let school = schools[0];
+      school.Team_NCAA.draftedByMe = true;
+      school.Team_NCAA.round = round;
+      school.Team_NCAA.save();
+      school.getTeams({
+        include: [{
+          model: models.League,
+          where: {id: league.id}
+        }],
+        where: {
+          $not: [{id:team.id}],
+
+        }
+      }).then((otherTeams)=>{
+        otherTeams.forEach((otherTeam)=>{
+          otherTeam.Team_NCAA.draftedByOther = true;
+          otherTeam.Team_NCAA.save();
+        });
+      });
+      console.log('team', team.team_name, 'drafting', school.market)
+      league.removeNCAA_Team(school).then (function() {
+        if (res) {
+          res.status(200).json(league);
+        } else {
+          draft.advance(league.id, io)
+        }
+      })
+    });
+  },
+
   selectTeam(req, res) {
     var schoolId = req.body.schoolId;
     var leagueId = req.url.slice(1);
     var userId = req.user.id;
     var round = draft.getRound(leagueId);
-
-console.log('round is', round)
-    models.League.findById(leagueId).then(function(league) {
+    models.League.findById(leagueId).then((league)=> {
       models.Team.findOne({
         where: {
           LeagueId: leagueId,
           UserId: userId
         }
-      }).then (function(team) {
-        team.getNCAA_Teams({where: {id: schoolId}}).then (function(schools) {
-          let school = schools[0];
-          school.Team_NCAA.drafted = true;
-          school.Team_NCAA.round = round;
-          school.Team_NCAA.save();
-          league.removeNCAA_Team(school).then (function() {
-            res.status(200).json(league);
-          })
-        });
+      }).then ((team) => {
+
+        module.exports.draftTeam(league, team, schoolId, res);
       });
     });
   },
 
   findNextDraftId(round, position) {
+    console.log('round', round, 'position', position)
     let currentDraftPosition = draftOrder[round][position];
     return draftPositions[currentDraftPosition];
   },

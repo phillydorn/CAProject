@@ -23,7 +23,7 @@ module.exports = {
       if (team) {
         team.getNCAA_Teams().then(function(schools){
           let draftedSchools = schools.filter((school)=>{
-            return school.Team_NCAA.drafted;
+            return school.Team_NCAA.draftedByMe;
           });
           res.status(200).send(draftedSchools);
         });
@@ -75,6 +75,7 @@ module.exports = {
   },
 
   turnOffAutoDraft(teamId) {
+    console.log('turning off', teamId)
     models.Team.findById(teamId).then((team) =>{
       team.autodraft=false;
       team.save();
@@ -82,6 +83,7 @@ module.exports = {
   },
 
   turnOnAutoDraft(teamId) {
+    console.log('turnign on', teamId)
     models.Team.findById(teamId).then((team) =>{
       team.autodraft=true;
       team.save();

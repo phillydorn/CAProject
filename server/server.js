@@ -57,6 +57,7 @@ var port = isProduction ? process.env.PORT : 3000;
       socket.on('leave', function(data) {
         console.log('close connection', data.leagueId);
         socket.leave(data.leagueId)
+        console.log('leaving', data.teamId)
         teams.turnOnAutoDraft(data.teamId);
       })
 
