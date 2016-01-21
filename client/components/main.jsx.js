@@ -2,6 +2,7 @@ import { React, Reflux } from '../importPackage';
 import mainStore from '../stores/mainStore';
 import MainActions from '../actions/MainActions';
 import TeamPool from './teamPool.jsx.js';
+import teamPoolStore from '../stores/teamPoolStore.js';
 import Timer from './timer.jsx.js';
 import UserTeam from './userTeam.jsx.js';
 import OtherTeam from './otherTeams.jsx.js';
@@ -38,9 +39,9 @@ import { DragDropContext }from 'react-dnd';
     },
 
     componentDidMount: function(){
-      MainActions.populate(this.state.leagueId, socket);
       this.listenTo(mainStore, this.populate);
-
+      this.listenTo(teamPoolStore, this.rerank);
+      socket.emit('leaguePage', {leagueId: this.state.leagueId});
       socket.on('update', (message) =>{
         console.log('updating', message)
         MainActions.populate(this.state.leagueId);
@@ -64,6 +65,13 @@ import { DragDropContext }from 'react-dnd';
           this.setState({activeTeamId: data.nextUpId, activeTeamName: data.nextUpName})
         }
       });
+
+      socket.on('draftEnd', (data)=>{
+        this.setState({
+          drafting: false,
+          yourTurn: false
+        })
+      });
     },
 
     populate: function(data) {
@@ -81,6 +89,11 @@ import { DragDropContext }from 'react-dnd';
       }
 
     },
+
+    rerank(data) {
+      this.setState({schoolsList: data.schoolsList})
+    },
+
     startDraft: function(e) {
       if (this.state.otherTeams.length === 6) {
         socket.emit('startDraft', this.state.leagueId);

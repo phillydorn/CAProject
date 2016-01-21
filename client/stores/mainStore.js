@@ -23,9 +23,6 @@ var mainStore = Reflux.createStore({
       method: 'GET',
       success: function(data) {
         this.trigger(data);
-        if (socket) {
-          socket.emit('leaguePage', {leagueId: ID});
-        }
       }.bind(this)
     });
   },

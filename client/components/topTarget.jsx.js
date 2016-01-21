@@ -10,8 +10,9 @@ const slotTarget = {
     return props.rankingType == 'custom';
   },
 
-  drop (props, monitor) {
-    return {rank: props.rank-1}
+  drop (props, monitor, dropComponent) {
+    console.log('dropComponent is ', dropComponent)
+    return {rank: props.rank-1, dropComponent, position: 'top'}
   }
 };
 

@@ -4,6 +4,8 @@ import UserTeamActions from '../actions/UserTeamActions';
 import schoolStore from '../stores/schoolStore';
 import { ItemTypes } from '../constants';
 import { DragSource } from 'react-dnd';
+import TeamPoolActions from '../actions/TeamPoolActions';
+
 let { PropTypes } = React;
 
 let schoolSource = {
@@ -13,16 +15,17 @@ let schoolSource = {
   },
 
   beginDrag(props) {
-    console.log('begindrag', props)
-      return {};
+    console.log('begin', props)
+    return {};
   },
-  endDrag(props, monitor) {
+  endDrag(props, monitor, dragComponent) {
     if (monitor.didDrop()){
-      let {rank} = monitor.getDropResult();
-      let {teamId, schoolId } = props;
+      let {rank, dropComponent, position} = monitor.getDropResult();
+      let {teamId, schoolId, schoolsList} = props;
       let currentRank = props.rank;
-    console.log('enddrag', props)
       console.log('diddrop',monitor.getDropResult())
+      console.log('drag', dragComponent)
+      TeamPoolActions.rerank(dragComponent, dropComponent, currentRank, rank, position, schoolsList);
       SchoolActions.rerank(schoolId, currentRank, rank, teamId);
 
     }
