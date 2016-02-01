@@ -14,6 +14,10 @@ class TeamPool extends React.Component {
     this.toggleDefault = this.toggleDefault.bind(this);
   }
 
+  componentWillMount() {
+
+  }
+
   toggleDefault(e) {
     e.preventDefault();
     console.log('this', this)
@@ -24,7 +28,7 @@ class TeamPool extends React.Component {
   toggleCustom (e) {
     e.preventDefault();
     this.setState({ranking: 'custom'})
-    MainActions.populate(this.props.teamId, null, 'custom');
+    MainActions.populate(this.props.leagueId, null, 'custom');
   }
 
   render() {

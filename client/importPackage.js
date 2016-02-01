@@ -6,4 +6,4 @@ import Router from 'react-router';
 import Reflux from 'reflux';
 import $ from 'jquery';
 
-module.exports = { React, ReactDOM, Router, Reflux, $ };
+module.exports = { React, ReactDOM, Reflux, Router, $ };

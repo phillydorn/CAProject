@@ -8,10 +8,11 @@ var leagueStore = Reflux.createStore({
 
   onLoadUserLeagues: function() {
     $.ajax({
-      url: '/api/leagues/user',
+      url: 'api/leagues/user',
       dataType: 'json',
       method: 'GET',
       success: function(data) {
+        console.log('dta', data)
         this.trigger(data);
       }.bind(this)
     });
@@ -19,7 +20,7 @@ var leagueStore = Reflux.createStore({
 
   onLoadAllLeagues: function() {
     $.ajax({
-      url: '/api/leagues',
+      url: 'api/leagues',
       dataType: 'json',
       method: 'GET',
       success: function(response) {
@@ -27,6 +28,7 @@ var leagueStore = Reflux.createStore({
           leaguesList: response,
           joinedLeague: ''
         }
+        console.log('dta', data)
         this.trigger(data);
       }.bind(this)
     });

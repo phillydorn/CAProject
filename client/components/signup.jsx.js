@@ -1,4 +1,4 @@
-import {React, Reflux, Router, ReactDOM } from '../importPackage';
+import { React, Reflux, Router, ReactDOM } from '../importPackage';
 
 var SignupActions = require('../actions/SignupActions');
 var signupStore = require('../stores/signupStore');

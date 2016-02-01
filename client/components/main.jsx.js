@@ -1,4 +1,5 @@
 import { React, Reflux } from '../importPackage';
+import {Link } from 'react-router';
 import mainStore from '../stores/mainStore';
 import MainActions from '../actions/MainActions';
 import TeamPool from './teamPool.jsx.js';
@@ -118,7 +119,7 @@ import { DragDropContext }from 'react-dnd';
             <h1>{this.state.leagueName}</h1>
             {startButton}
             <Timer round={this.state.round+1} time={this.state.time} activeTeamId={this.state.activeTeamId} activeTeamName={this.state.activeTeamName} />
-            <Bracket teams={this.state.schoolsList} />
+            <a href={"/#/bracket/" + this.state.leagueId } className="bracketLink"></a>
             <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} teamId={this.state.teamId} />
             <OtherTeam otherTeams={this.state.otherTeams} />
             <UserTeam teamId={this.state.teamId} />

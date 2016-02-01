@@ -6,11 +6,7 @@ var authStore = require('../stores/authStore');
 
 var Login = React.createClass({
 
-  contextTypes: {
-    router: React.PropTypes.func
-  },
-
-    mixins: [Router.Navigation, Reflux.connect(authStore, 'loggedIn')],
+  mixins: [Router.Navigation, Reflux.connect(authStore, 'loggedIn')],
 
 
   getInitialState: function() {
@@ -23,7 +19,7 @@ var Login = React.createClass({
 
   pathRedirect: function(loggedIn) {
     if (loggedIn) {
-      this.transitionTo('/');
+      this.transitionTo('/')
     }
   },
 

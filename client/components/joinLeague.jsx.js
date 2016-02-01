@@ -1,7 +1,5 @@
-var React = require('react');
+import { React, Router, Reflux } from '../importPackage';
 var LeagueActions = require('../actions/LeagueActions');
-var Reflux = require('reflux');
-var Router = require('react-router');
 var TeamForm = require('./teamForm.jsx.js');
 
 
@@ -22,7 +20,7 @@ var joinLeague = React.createClass({
   render: function() {
     return (
         <li onClick={this.handleSelect} className = {"league " + this.props.leagueName}>
-          <a href={"#" +  this.props.leagueId} >{this.props.leagueName}</a>
+          <a href={"#" + this.props.leagueId}>{this.props.leagueName}</a>
           {this.state.teamForm}
         </li>
       )

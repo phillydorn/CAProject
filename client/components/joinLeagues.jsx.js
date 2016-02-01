@@ -1,6 +1,6 @@
-var React = require('react');
-var Reflux = require('reflux');
-var Router = require('react-router');
+import { React, Reflux, Router, ReactDOM } from '../importPackage';
+
+
 var AuthComponent = require('./Authenticated.jsx.js');
 var leagueStore = require('../stores/leagueStore');
 var createTeamStore = require('../stores/createTeamStore');
@@ -32,7 +32,7 @@ var LeagueActions = require('../actions/LeagueActions');
 
     pathRedirect: function(leagueID) {
       if (leagueID) {
-        this.transitionTo('/leagues/'+leagueID);
+      this.transitionTo('/league/'+leagueID);
       }
     },
 

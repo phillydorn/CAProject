@@ -57,5 +57,36 @@ module.exports = {
         });
       },2000)
     });
+  },
+
+  fillBracket(req, res) {
+    models.NCAA_Team.findAll().then((schools)=>{
+      let bracketSchools = schools.map((school)=>{
+        let {market, bracket, id, seed, wins, isPlayIn} = school;
+        return {market, bracket, id, seed, wins, isPlayIn}
+      });
+      res.status(200).json(bracketSchools)
+    });
+  },
+
+  fillUserBracket(req, res) {
+    let leagueId = req.url.slice(1);
+    models.League.findById(leagueId).then((league)=>{
+      models.User.findById(req.user.id).then((user)=>{
+        league.getTeams({where: {userId:req.user.id}}).then((team)=>{
+          console.log(team)
+        });
+      });
+    });
+
+  },
+
+  updateResults(req, res) {
+     request({
+      url: 'http://api.sportradar.us/ncaamb-t3/tournaments/83c03d12-e03b-4f71-846c-5d42ba90eeb1/schedule.json?api_key='+keys.sportradarKey,
+    },
+    (err,resp, body) => {
+      console.log('body', body)
+    });
   }
 }

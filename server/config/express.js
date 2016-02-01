@@ -16,6 +16,9 @@ var express = require('express'),
 
     module.exports = (app) => {
     app.use(express.static('./client'));
+    // app.get('*', function(req, res) {
+    //   res.sendFile(path.resolve('client', 'index.html'));
+    // });
 
     app.use(bodyParser.urlencoded({extended:true}));
     app.use(bodyParser.json());

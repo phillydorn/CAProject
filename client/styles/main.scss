@@ -3,7 +3,7 @@ li {
 }
 
 body {
-  background: #aaa;
+  background: #c4c4c4;
 }
 
 .team-box {
@@ -54,7 +54,10 @@ body {
     }
   }
 }
-
+td {
+  width: 20px;
+  border: 1px solid green;
+}
 .ranking-button {
   padding: 10px;
   font-size: 16px;
@@ -64,22 +67,7 @@ body {
   }
 }
 
-.bracket {
-  background-image: url('/images/bracket.gif');
-  background-repeat: no-repeat;
-  background-size: 100%;
-  position: relative;
-  width: 900px;
-  height: 900px;
-  display: block;
-  margin: 0 auto;
-  .main &{
-    height: 300px;
-    width: 300px;
-    float: right;
 
-  }
-}
 .chat-window {
   position: relative;
   height: 300px;
@@ -143,4 +131,22 @@ body {
     border: none;
   }
 }
+
+.bracketLink {
+  background-image: url('/images/bracket.gif');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  position: relative;
+  width: 900px;
+  height: 900px;
+  display: block;
+  margin: 0 auto;
+  .main &{
+    height: 300px;
+    width: 300px;
+    float: right;
+
+  }
+}
+
 

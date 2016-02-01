@@ -14,13 +14,28 @@ var userTeamStore = Reflux.createStore({
       method: 'GET',
       url: '/api/teams/'+teamId,
       success: function(response) {
+        console.log('schoo', response)
         this.trigger(response);
       }.bind(this)
     });
   },
 
+  onGetTeam: function(leagueId) {
+    $.ajax({
+      method: 'GET',
+      url: '/api/teams/league/'+leagueId,
+      success: (teamId)=>{
+        this.getSchools(teamId);
+      },
+      error (err) {
+        console.log('err', err)
+      }
+    });
+  },
+
   onLoadSchools: function(teamId) {
     this.teamId = teamId;
+    console.log('load', teamId)
     this.getSchools(teamId);
   },
 

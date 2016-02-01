@@ -10,6 +10,8 @@ module.exports = {
       team.getNCAA_Teams().then((schools)=>{
         schools = schools.sort((a,b)=>{
           return a.Team_NCAA.playerRanking - b.Team_NCAA.playerRanking;
+        }).filter((school)=>{
+          return !school.Team_NCAA.draftedByMe && !school.Team_NCAA.draftedByOther;
         });
 
         res.status(200).json({schoolsList: schools});
@@ -88,6 +90,19 @@ module.exports = {
       team.autodraft=true;
       team.save();
     });
+  },
+
+  getTeamId(req, res) {
+    let leagueId = req.url.split('/')[2];
+
+    models.Team.findAll({
+      where: {
+        LeagueId: leagueId,
+        UserId: req.user.id
+      }
+    }).then ((teams)=>{
+        res.status(200).json(teams[0].id);
+      });
   }
 
 }

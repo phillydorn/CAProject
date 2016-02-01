@@ -13,6 +13,7 @@ module.exports = AuthComponent(React.createClass({
 
 
   mixins: [Reflux.ListenerMixin, Router.Navigation],
+
   getInitialState: function() {
     return {teamForm: <div />, created: false}
   },
