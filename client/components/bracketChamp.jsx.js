@@ -9,15 +9,12 @@ class BracketChamp extends React.Component {
 
   render () {
 
-    let bracketSchools = [];
-      for (var i = 0; i< 1; i++) {
-        bracketSchools.push(<BracketSchool key={ "Champ" + i } name= {"Team" + i} />)
-      }
+
     return (
         <div className="champion">
           <div className = "border-div">
           </div>
-          {bracketSchools}
+          <BracketSchool key= "champ" id = "champ" yourSchools = {this.props.yourSchools} schoolId = {this.props.school.id} name = {this.props.school.market} />
         </div>
       )
   }

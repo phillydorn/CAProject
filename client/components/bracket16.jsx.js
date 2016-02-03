@@ -32,7 +32,7 @@ class Bracket16 extends React.Component {
           <div className = "border-div">
           </div>
           {bracketSchools}
-          <Bracket8 winners = {this.state.nextWinners} divisionOne="Midwest" divisionTwo="West" side={this.props.side} />
+          <Bracket8 winners = {this.state.nextWinners} yourSchools = {this.props.yourSchools} divisionOne="Midwest" divisionTwo="West" side={this.props.side} />
         </div>
       )
   }

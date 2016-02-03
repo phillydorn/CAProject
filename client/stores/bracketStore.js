@@ -14,7 +14,8 @@ var BracketStore = Reflux.createStore({
         east = [],
         west = [],
         south = [],
-        order = [1,16,8,9,5,12,4,13,6,11,3,14,7,10,2,15];
+        order = [1,16,8,9,5,12,4,13,6,11,3,14,7,10,2,15],
+        totalSchools = schools;
 
     schools.forEach(function(school) {
       if (school.bracket === 'Midwest Regional') {
@@ -89,7 +90,7 @@ var BracketStore = Reflux.createStore({
         east.push(eastSchools[seed-1]);
         west.push(westSchools[seed-1]);
       });
-      this.trigger({midwest, east, south, west, playInSchools})
+      this.trigger({midwest, east, south, west, playInSchools, totalSchools})
     }
 
   },

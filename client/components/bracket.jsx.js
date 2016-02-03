@@ -17,7 +17,7 @@ var Bracket = React.createClass({
   mixins: [Reflux.ListenerMixin, Reflux.connect(userTeamStore, "yourTeams")],
 
   getInitialState () {
-    return {leagueId: '', yourTeams: [], midwest: [], east: [], south: [], west: [], playInSchools: []};
+    return {leagueId: '', yourTeams: [], midwest: [], east: [], south: [], west: [], playInSchools: [], champ: {id: '', market: ''}};
   },
 
 
@@ -35,24 +35,22 @@ var Bracket = React.createClass({
 
   },
 
+
   fillBracket (schools) {
-    this.setState({midwest: schools.midwest, east: schools.east, south: schools.south, west: schools.west, playInSchools: schools.playInSchools})
+    let champ = schools.totalSchools.filter((school)=>{
+      return school.roundFinalWin;
+    })[0];
+
+    this.setState({midwest: schools.midwest, east: schools.east, south: schools.south, west: schools.west, playInSchools: schools.playInSchools, champ: champ})
     // this.setState(Object.assign(schools));
   },
 
   render: function() {
-    // <Bracket isVisible={false} yourTeams={this.state.yourTeams} teamId={this.state.teamId} teams={this.state.schoolsList} />
 
-
-          // <BracketFinal side=" right"/>
-          // <Bracket4 side=" right"/>
-          // <Bracket8 divisionOne="East" divisionTwo= "South" side=" right"/>
-          // <Bracket16 side=" right"/>
-          // <BracketRound2 side=" right"/>
     return (
         <div className="bracket" >
           <BracketRound1 yourSchools={this.state.yourTeams } top={this.state.midwest} bottom={this.state.west} side="" />
-          <BracketChamp />
+          <BracketChamp yourSchools = {this.state.yourTeams } school = {this.state.champ}/>
           <BracketRound1 yourSchools = {this.state.yourTeams} top={this.state.east} bottom={this.state.south} side=" right"/>
 
           <PlayIn yourSchools={this.state.yourTeams} teams={this.state.playInSchools} />
