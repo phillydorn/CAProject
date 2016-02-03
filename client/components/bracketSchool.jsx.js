@@ -25,13 +25,14 @@ class BracketSchool extends React.Component {
   }
 
   render () {
+    let winner = this.props.winner ? ' winner' : ' loser';
     let seed = this.props.seed ? this.props.seed + '. ' : '';
     let yourSchool = this.state.isYourSchool ? ' yourSchool' : '';
     return (
       <section className="bracketSchool-container" style={{position: 'relative'}}>
         <div className = "border-div">
         </div>
-        <p className={"bracketSchool" + yourSchool }>{seed}{this.props.name}</p>
+        <p className={"bracketSchool" + yourSchool + winner }>{seed}{this.props.name}</p>
       </section>
       )
   }

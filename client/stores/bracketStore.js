@@ -104,6 +104,7 @@ var BracketStore = Reflux.createStore({
     });
   }
 
+
 });
 
 export default BracketStore;

@@ -33,7 +33,7 @@ module.exports = AuthComponent(React.createClass({
   },
 
   pathRedirect: function(leagueID) {
-    this.transitionTo('/leagues/'+leagueID);
+    this.transitionTo('/league/'+leagueID);
   },
 
   handleSubmit: function(e) {

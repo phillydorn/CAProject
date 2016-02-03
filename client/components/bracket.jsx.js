@@ -1,11 +1,11 @@
 import { React, Reflux } from '../importPackage';
-import BracketRound1 from './BracketRound1.jsx.js';
-import BracketRound2 from './BracketRound2.jsx.js';
-import Bracket16 from './Bracket16.jsx.js';
-import Bracket8 from './Bracket8.jsx.js';
-import Bracket4 from './Bracket4.jsx.js';
-import BracketFinal from './BracketFinal.jsx.js';
-import BracketChamp from './BracketChamp.jsx.js';
+import BracketRound1 from './bracketRound1.jsx.js';
+import BracketRound2 from './bracketRound2.jsx.js';
+import Bracket16 from './bracket16.jsx.js';
+import Bracket8 from './bracket8.jsx.js';
+import Bracket4 from './bracket4.jsx.js';
+import BracketFinal from './bracketFinal.jsx.js';
+import BracketChamp from './bracketChamp.jsx.js';
 import PlayIn from './playin.jsx.js';
 import BracketActions from '../actions/BracketActions';
 import bracketStore from '../stores/bracketStore';
@@ -43,26 +43,18 @@ var Bracket = React.createClass({
   render: function() {
     // <Bracket isVisible={false} yourTeams={this.state.yourTeams} teamId={this.state.teamId} teams={this.state.schoolsList} />
 
+
+          // <BracketFinal side=" right"/>
+          // <Bracket4 side=" right"/>
+          // <Bracket8 divisionOne="East" divisionTwo= "South" side=" right"/>
+          // <Bracket16 side=" right"/>
+          // <BracketRound2 side=" right"/>
     return (
         <div className="bracket" >
-          <BracketRound1 yourSchools={this.state.yourTeams } top={this.state.midwest} bottom={this.state.west} side="">
-            <BracketRound2 side="">
-              <Bracket16 side="">
-                <Bracket8 divisionOne="Midwest" divisionTwo="West" side="">
-                  <Bracket4 side="">
-                    <BracketFinal side="" />
-                  </Bracket4>
-                </Bracket8>
-              </Bracket16>
-            </BracketRound2>
-          </BracketRound1>
+          <BracketRound1 yourSchools={this.state.yourTeams } top={this.state.midwest} bottom={this.state.west} side="" />
           <BracketChamp />
-          <BracketFinal side=" right"/>
-          <Bracket4 side=" right"/>
-          <Bracket8 divisionOne="East" divisionTwo= "South" side=" right"/>
-          <Bracket16 side=" right"/>
-          <BracketRound2 side=" right"/>
           <BracketRound1 yourSchools = {this.state.yourTeams} top={this.state.east} bottom={this.state.south} side=" right"/>
+
           <PlayIn yourSchools={this.state.yourTeams} teams={this.state.playInSchools} />
         </div>
       )

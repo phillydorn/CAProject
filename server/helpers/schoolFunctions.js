@@ -62,8 +62,8 @@ module.exports = {
   fillBracket(req, res) {
     models.NCAA_Team.findAll().then((schools)=>{
       let bracketSchools = schools.map((school)=>{
-        let {market, bracket, id, seed, wins, isPlayIn} = school;
-        return {market, bracket, id, seed, wins, isPlayIn}
+        let {market, bracket, id, seed, wins, isPlayIn, playInWin, round1Win, round2Win, round16Win, round8Win, round4Win, roundFinalWin } = school;
+        return {market, bracket, id, seed, wins, isPlayIn, playInWin, round1Win, round2Win, round16Win, round8Win, round4Win, roundFinalWin }
       });
       res.status(200).json(bracketSchools)
     });
@@ -81,12 +81,77 @@ module.exports = {
 
   },
 
+  totalWins(team) {
+    let total = 0;
+    if (team.playInWin) {
+      total++;
+    }
+    if (team.round1Win) {
+      total++;
+    }
+    if (team.round2Win) {
+      total++;
+    }
+    if (team.round16Win) {
+      total++;
+    }
+    if (team.round8Win) {
+      total++;
+    }
+    if (team.round4Win) {
+      total++;
+    }
+    if (team.roundFinalWin) {
+      total++;
+    }
+    return total;
+  },
+
+  findWins(round, roundWin) {
+    round.forEach((bracket)=>{
+      bracket.games.forEach((game)=> {
+        if (game.away.source && game.away.source.outcome === "win") {
+          const winnerId = game.away.id;
+          models.NCAA_Team.findAll({where:{sportRadarID: winnerId}}).then((teams)=>{
+            teams[0][roundWin] = true;
+            teams[0].wins = module.exports.totalWins(teams[0]);
+            teams[0].save();
+          });
+        } if (game.home.source && game.home.source.outcome === "win") {
+          const winnerId = game.home.id;
+          models.NCAA_Team.findAll({where:{sportRadarID: winnerId}}).then((teams)=>{
+            teams[0][roundWin] = true;
+            teams[0].wins = module.exports.totalWins(teams[0]);
+            teams[0].save();
+          });
+        }
+      });
+    });
+  },
+
   updateResults(req, res) {
      request({
       url: 'http://api.sportradar.us/ncaamb-t3/tournaments/83c03d12-e03b-4f71-846c-5d42ba90eeb1/schedule.json?api_key='+keys.sportradarKey,
     },
     (err,resp, body) => {
-      console.log('body', body)
+      const rounds = JSON.parse(body).rounds;
+
+      const round1 = rounds[1].bracketed,
+            round2 = rounds[2].bracketed,
+            round16 = rounds[3].bracketed,
+            round8 = rounds[4].bracketed,
+            round4 = [rounds[5]],
+            roundFinal = [rounds[6]];
+
+      module.exports.findWins(round1, 'playInWin');
+      module.exports.findWins(round2, 'round1Win');
+      module.exports.findWins(round16, 'round2Win');
+      module.exports.findWins(round8, 'round16Win');
+      module.exports.findWins(round4, 'round8Win');
+      module.exports.findWins(roundFinal, 'round4Win');
+
+
+      res.status(200).send(rounds)
     });
   }
 }

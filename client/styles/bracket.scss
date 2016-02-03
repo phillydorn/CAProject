@@ -9,6 +9,14 @@ $bracket-width: 115px;
   .yourSchool {
     color: red;
   }
+
+  .winner {
+    font-weight: bolder;
+  }
+
+  .loser {
+    text-decoration: line-through;
+  }
   div {
     position: absolute;
     width: $bracket-width;
@@ -41,7 +49,7 @@ $bracket-width: 115px;
     left: $bracket-width * 1;
     top: 15px;
      &.right {
-        left: $bracket-width * 11;
+        left: -$bracket-width;
       }
     .bracketSchool {
       margin-bottom: 39px;
@@ -49,10 +57,10 @@ $bracket-width: 115px;
 
   }
  .round-sixteen {
-    left: $bracket-width * 2;
-    top: 45px;
+    left: $bracket-width;
+    top: 30px;
    &.right {
-      left: $bracket-width * 10;
+      left: -$bracket-width;
     }
     .bracketSchool {
       margin-bottom: 93px;
@@ -60,10 +68,10 @@ $bracket-width: 115px;
 
   }
  .round-eight {
-    left:  $bracket-width * 3;
-    top: 97px;
+    left:  $bracket-width;
+    top: 55px;
    &.right {
-      left: $bracket-width * 9;
+      left: -$bracket-width;
     }
     .bracketSchool {
       margin-bottom: 203px;
@@ -78,10 +86,10 @@ $bracket-width: 115px;
     }
   }
  .round-four {
-    left: $bracket-width * 4;
-    top: 206px;
+    left: $bracket-width;
+    top: 110px;
     &.right {
-      left: $bracket-width * 8;
+      left: -$bracket-width;
     }
     .bracketSchool {
       margin-bottom: 408px;
@@ -89,15 +97,15 @@ $bracket-width: 115px;
 
   }
  .round-final {
-    left: $bracket-width * 5;
-    top: 306px;
+    left: $bracket-width;
+    top: 96px;
     .border-div {
       top: 26px;
       height: 128px;
     }
     &.right {
-      left: $bracket-width * 7;
-      top: 550px;
+      left: -$bracket-width;
+      top: 340px;
       .border-div {
         top: -79px;
         height: 94px;

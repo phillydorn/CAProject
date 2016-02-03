@@ -16,6 +16,8 @@ var JoinLeagues = require('./components/joinLeagues.jsx.js');
 var Leagues = require('./components/leagues.jsx.js');
 var NavHeader = require('./components/nav.jsx.js');
 var Logout = require('./components/logout.jsx.js');
+import AppActions from './actions/AppActions.js';
+import appStore from './stores/appStore';
 
 // import NoMatch from './components/nomatch.jsx.js';
 
@@ -26,6 +28,10 @@ var Logout = require('./components/logout.jsx.js');
 // const history = createHistory();
 
 var BracketApp = React.createClass({
+
+  componentDidMount () {
+    AppActions.updateResults();
+  },
 
   render : function(){
     return (

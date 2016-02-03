@@ -11,7 +11,15 @@ module.exports = function(sequelize, DataTypes) {
     bracket: DataTypes.STRING,
     seed: DataTypes.INTEGER,
     RPI_Ranking: DataTypes.INTEGER,
-    isPlayIn: { type: DataTypes.BOOLEAN, defaultValue: false}
+    isPlayIn: { type: DataTypes.BOOLEAN, defaultValue: false},
+    playInWin: { type: DataTypes.BOOLEAN, defaultValue: false},
+    round1Win: { type: DataTypes.BOOLEAN, defaultValue: false},
+    round2Win: { type: DataTypes.BOOLEAN, defaultValue: false},
+    round16Win: { type: DataTypes.BOOLEAN, defaultValue: false},
+    round8Win: { type: DataTypes.BOOLEAN, defaultValue: false},
+    round4Win: { type: DataTypes.BOOLEAN, defaultValue: false},
+    roundFinalWin: { type: DataTypes.BOOLEAN, defaultValue: false},
+
 
   }, {
     classMethods: {
