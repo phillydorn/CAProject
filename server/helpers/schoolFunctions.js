@@ -131,7 +131,7 @@ module.exports = {
 
   updateResults(req, res) {
      request({
-      url: 'http://api.sportradar.us/ncaamb-t3/tournaments/608152a4-cccc-4569-83ac-27062580099e/schedule.json?api_key='+keys.sportradarKey,
+      url: 'http://api.sportradar.us/ncaamb-t3/tournaments/608152a4-cccc-4569-83ac-27062580099e/schedule.json?api_key='+sportRadarKey,
     },
     (err,resp, body) => {
       const rounds = JSON.parse(body).rounds;
