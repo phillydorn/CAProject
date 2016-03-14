@@ -28,14 +28,11 @@ var BracketStore = Reflux.createStore({
         westSchools.push(school);
       }
     });
-
-
     let findPlayIn = (brackets) => {
       return brackets.map((bracket)=>{
         let playInSeeds ={};
-        let emptyIndex;
 
-        let result = bracket.map((school, idx)=>{
+        let results = bracket.map((school, idx)=>{
           if (school.isPlayIn) {
             for (var i=0; i<bracket.length; i++) {
               let school2 = bracket[i];
@@ -49,7 +46,6 @@ var BracketStore = Reflux.createStore({
                   playInSchools.push(playInBracket);
                   return [school, school2];
                 } else {
-                  emptyIndex = idx;
                   return '';
                 }
               }
@@ -58,8 +54,9 @@ var BracketStore = Reflux.createStore({
             return school;
           }
         });
-        result.splice(emptyIndex, 1);
-        return result;
+        return results.filter((result) => {
+          return result !== '';
+        });
       });
     }
 

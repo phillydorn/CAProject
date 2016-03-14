@@ -5,6 +5,7 @@ $bracket-width: 115px;
   .bracketSchool {
     border-bottom: 1px solid black;
     font-size: 12px;
+    height: 14px;
   }
   .yourSchool {
     color: red;
@@ -131,18 +132,39 @@ $bracket-width: 115px;
     position: absolute;
     width: 500px;
     height: 200px;
-    top: 790px;
-    left: 530px;
+    top: 640px;
+    left: 481px;
 
     h2 {
       text-align: center;
     }
+    .bracket-container {
+      position: relative;
+    }
 
     .playInBracket {
-      position: relative;
+      position: absolute;
       float: left;
       width: 200px;
       height: 200px;
+      &.bracket-0{
+        top: 0;
+        left: 67px;
+      }
+      &.bracket-1{
+        top: 0;
+        left: 283px;
+
+      }
+      &.bracket-2{
+        top: 100px;
+        left: 67px;
+      }
+      &.bracket-3{
+        top: 100px;
+        left: 283px;
+      }
+
       .playInSchools {
         width: $bracket-width;
         .bracketSchool-container:nth-child(odd){

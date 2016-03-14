@@ -25,7 +25,7 @@ class BracketSchool extends React.Component {
   }
 
   render () {
-    let winner = this.props.winner ? ' winner' : ' loser';
+    let winner = this.props.winner === 'winner' ? ' winner' : this.props.winner === 'notPlayed' ? '' : ' loser';
     let seed = this.props.seed ? this.props.seed + '. ' : '';
     let yourSchool = this.state.isYourSchool ? ' yourSchool' : '';
     return (

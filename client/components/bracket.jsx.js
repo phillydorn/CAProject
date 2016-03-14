@@ -17,7 +17,7 @@ var Bracket = React.createClass({
   mixins: [Reflux.ListenerMixin, Reflux.connect(userTeamStore, "yourTeams")],
 
   getInitialState () {
-    return {leagueId: '', yourTeams: [], midwest: [], east: [], south: [], west: [], playInSchools: [], champ: {id: '', market: ''}};
+    return {currentRound: 0, leagueId: '', yourTeams: [], midwest: [], east: [], south: [], west: [], playInSchools: [], champ: {id: '', market: ''}};
   },
 
 
@@ -40,7 +40,6 @@ var Bracket = React.createClass({
     let champ = schools.totalSchools.filter((school)=>{
       return school.roundFinalWin;
     })[0];
-
     this.setState({midwest: schools.midwest, east: schools.east, south: schools.south, west: schools.west, playInSchools: schools.playInSchools, champ: champ})
     // this.setState(Object.assign(schools));
   },
@@ -49,11 +48,11 @@ var Bracket = React.createClass({
 
     return (
         <div className="bracket" >
-          <BracketRound1 yourSchools={this.state.yourTeams } top={this.state.midwest} bottom={this.state.west} side="" />
-          <BracketChamp yourSchools = {this.state.yourTeams } school = {this.state.champ}/>
-          <BracketRound1 yourSchools = {this.state.yourTeams} top={this.state.east} bottom={this.state.south} side=" right"/>
+          <BracketRound1 currentRound = {this.state.currentRound} yourSchools={this.state.yourTeams } top={this.state.midwest} bottom={this.state.west} divisions = {{ top: "Midwest", bottom: "West"}} side="" />
+          <BracketChamp currentRound = {this.state.currentRound} yourSchools = {this.state.yourTeams } school = {this.state.champ}/>
+          <BracketRound1 currentRound = {this.state.currentRound} yourSchools = {this.state.yourTeams} top={this.state.east} bottom={this.state.south} divisions = {{top: "East", bottom: "South" }} side=" right"/>
 
-          <PlayIn yourSchools={this.state.yourTeams} teams={this.state.playInSchools} />
+          <PlayIn currentRound = {this.state.currentRound} yourSchools={this.state.yourTeams} teams={this.state.playInSchools} />
         </div>
       )
   }

@@ -14,13 +14,13 @@ module.exports = {
   fetchAllSchools: function(req, res) {
     request({
       // url: 'http://api.sportradar.us/ncaamb-t3/tournaments/83c03d12-e03b-4f71-846c-5d42ba90eeb1/schedule.json?api_key='+keys.sportradarKey,
-      url: 'http://api.sportradar.us/ncaamb-t3/tournaments/83c03d12-e03b-4f71-846c-5d42ba90eeb1/summary.json?api_key='+sportRadarKey
+      url: 'http://api.sportradar.us/ncaamb-t3/tournaments/608152a4-cccc-4569-83ac-27062580099e/summary.json?api_key='+sportRadarKey
     },
       function(err, resp, body) {
         var brackets = JSON.parse(body).brackets;
         setTimeout(()=>{
           request({
-            url: 'http://api.sportradar.us/ncaamb-t3/polls/rpi/2014/rankings.json?api_key='+sportRadarKey
+            url: 'http://api.sportradar.us/ncaamb-t3/polls/rpi/2015/rankings.json?api_key='+sportRadarKey
           },
             (err, resp, body) => {
               let RPI_Teams = JSON.parse(body).rankings;
@@ -110,14 +110,14 @@ module.exports = {
   findWins(round, roundWin) {
     round.forEach((bracket)=>{
       bracket.games.forEach((game)=> {
-        if (game.away.source && game.away.source.outcome === "win") {
+        if (game.away.name !== game.away.alias && game.away.source && game.away.source.outcome === "win") {
           const winnerId = game.away.id;
           models.NCAA_Team.findAll({where:{sportRadarID: winnerId}}).then((teams)=>{
             teams[0][roundWin] = true;
             teams[0].wins = module.exports.totalWins(teams[0]);
             teams[0].save();
           });
-        } if (game.home.source && game.home.source.outcome === "win") {
+        } if (game.home.name !== game.home.alias && game.home.source && game.home.source.outcome === "win") {
           const winnerId = game.home.id;
           models.NCAA_Team.findAll({where:{sportRadarID: winnerId}}).then((teams)=>{
             teams[0][roundWin] = true;
@@ -131,7 +131,7 @@ module.exports = {
 
   updateResults(req, res) {
      request({
-      url: 'http://api.sportradar.us/ncaamb-t3/tournaments/83c03d12-e03b-4f71-846c-5d42ba90eeb1/schedule.json?api_key='+keys.sportradarKey,
+      url: 'http://api.sportradar.us/ncaamb-t3/tournaments/608152a4-cccc-4569-83ac-27062580099e/schedule.json?api_key='+keys.sportradarKey,
     },
     (err,resp, body) => {
       const rounds = JSON.parse(body).rounds;
