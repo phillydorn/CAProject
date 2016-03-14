@@ -38,6 +38,7 @@ var port = isProduction ? process.env.PORT : 3000;
       });
 
       socket.on('sendMessage', (data) => {
+        console.log('data', data)
         let leagueId=data.leagueId;
         io.to(leagueId).emit('newMessage', data);
       });

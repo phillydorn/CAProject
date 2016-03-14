@@ -20,7 +20,9 @@ class ChatWindow extends React.Component {
 
   submitHandler(e) {
     e.preventDefault();
-    let content = ReactDOM.findDOMNode(this.refs.messageText).value;
+    let messageText = ReactDOM.findDOMNode(this.refs.messageText);
+    let content = messageText.value;
+    messageText.value = '';
     let username = this.props.username;
     let leagueId = this.props.leagueId;
     socket.emit('sendMessage', {leagueId, content, username})
