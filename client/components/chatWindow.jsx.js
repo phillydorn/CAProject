@@ -11,12 +11,10 @@ class ChatWindow extends React.Component {
   }
 
   componentDidMount() {
-    socket.on('newMessage', function(message) {
+    socket.on('newMessage', (message)=>{
       let messages = this.state.messages;
       messages.push(message);
-      console.log('messages', messages)
       this.setState ({messages});
-      console.log('state', this.state.messages)
     });
   }
 
@@ -30,7 +28,6 @@ class ChatWindow extends React.Component {
   }
 
   render() {
-    console.log('render', this.state)
     let messages = this.state.messages.map (function(message) {
       return (
           <Message content={message.content} username={message.username} />
