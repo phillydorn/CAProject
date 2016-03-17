@@ -3,7 +3,7 @@ var path = require('path');
 
 module.exports = {
 
-  devtool: 'eval',
+  devtool: 'source-map',
 
   context: __dirname + '/client',
   entry: [
@@ -44,8 +44,13 @@ module.exports = {
       // hot: true,
       // recordsPath: path.join(process.cwd(), 'cache', 'webpack.json'),
       plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.optimize.UglifyJsPlugin({compressor: {warnings: false}}),
+        new webpack.DefinePlugin({
+          'process.env': {
+            'NODE_ENV': JSON.stringify('production')
+          }
+        })
       ]
-
 
 };

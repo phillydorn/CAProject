@@ -40,7 +40,7 @@ import { DragDropContext }from 'react-dnd';
     },
 
     componentDidMount: function(){
-      this.listenTo(mainStore, this.populate);
+      this.listenTfo(mainStore, this.populate);
       this.listenTo(teamPoolStore, this.rerank);
       socket.emit('leaguePage', {leagueId: this.state.leagueId});
       socket.on('update', (message) =>{

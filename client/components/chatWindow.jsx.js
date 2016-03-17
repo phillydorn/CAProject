@@ -18,6 +18,11 @@ class ChatWindow extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    let node = ReactDOM.findDOMNode(this.refs.messages);
+    node.scrollTop = node.scrollHeight;
+  }
+
   submitHandler(e) {
     e.preventDefault();
     let messageText = ReactDOM.findDOMNode(this.refs.messageText);
@@ -39,7 +44,7 @@ class ChatWindow extends React.Component {
     return (
         <div className="chat-window">
           <h1>ChatWindow</h1>
-          <div className="messages">
+          <div className="messages" ref="messages">
             <ul>
               {messages}
             </ul>
