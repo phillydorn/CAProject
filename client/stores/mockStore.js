@@ -7,6 +7,7 @@ var mockStore = Reflux.createStore({
   listenables: [MockActions],
 
   onCreateTeams (leagueId) {
+    let self = this;
     $.ajax({
       url: 'api/mocks/teams',
       dataType: 'json',
@@ -14,9 +15,9 @@ var mockStore = Reflux.createStore({
       data: {leagueId},
       success (data) {
         console.log('success')
-        this.trigger({teams: true})
+        self.trigger({teams: true})
       }
-    });
+    })  ;
   }
 
 

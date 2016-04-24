@@ -3,3 +3,4 @@
 /server/keys.js
 *.pem
 *.hot-update.*
+client/build/build.js.map

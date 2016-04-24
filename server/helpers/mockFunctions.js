@@ -25,7 +25,7 @@ module.exports = {
       let teamId = leagueFunctions.createOwnerTeam(req)
 
     }
-    res.status(200).send('success');
+    res.status(200).json('success');
   }
 
 
