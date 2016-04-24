@@ -28,7 +28,6 @@ var isProduction = process.env.NODE_ENV === 'production';
 var port = isProduction ? process.env.PORT : 3000;
 
     io.on('connection', function(socket) {
-
       socket.on('leaguePage', (data) => {
         let leagueId = data.leagueId;
         socket.join(leagueId);

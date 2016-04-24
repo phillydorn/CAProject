@@ -57,7 +57,9 @@ module.exports = {
     var teamName = req.body.teamname;
     var userID = req.user.id;
     var leagueID = req.url.slice(1);
-    console.log('team', teamName, 'user', userID, 'leag', leagueID)
+    let {position} = req.body;
+
+    console.log('team', teamName, 'user', userID, 'leag', leagueID, 'pos', position)
 
     models.Team.create({team_name:teamName, wins:0}).then (function(team) {
       models.League.findById(leagueID).then(function(league) {
@@ -72,9 +74,17 @@ module.exports = {
                     models.NCAA_Team.findAll().then(function(NCAAs) {
                       NCAAs.forEach((NCAA)=>{
                         team.addNCAA_Team(NCAA, {playerRanking: NCAA.RPI_Ranking});
+                        team.autodraft = true;
+                        if (position) {
+                          team.draftPosition = position;
+                        }
                         team.save();
                       })
-                      res.status(200).send('success');
+                      if (res) {
+                        res.status(200).send('success');
+                      } else {
+                        return team.id;
+                      }
                     })
                   });
                 });
@@ -206,6 +216,7 @@ module.exports = {
           draftPositions[team.draftPosition-1].id=team.id;
           draftPositions[team.draftPosition-1].team_name=team.team_name;
         });
+        console.log('draftpositions', draftPositions)
         io.to(leagueId).emit('advance', {round: 0, position: 0, nextUpId:draftPositions[0].id, nextUpName: draftPositions[0].team_name});
       });
     });

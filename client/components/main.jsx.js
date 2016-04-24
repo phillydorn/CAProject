@@ -6,6 +6,7 @@ import TeamPool from './teamPool.jsx.js';
 import teamPoolStore from '../stores/teamPoolStore.js';
 import Timer from './timer.jsx.js';
 import UserTeam from './userTeam.jsx.js';
+import CreateTeams from './createTeams.jsx.js';
 import OtherTeam from './otherTeams.jsx.js';
 import ChatWindow from './chatWindow.jsx.js';
 import Bracket from './bracket.jsx.js';
@@ -40,7 +41,7 @@ import { DragDropContext }from 'react-dnd';
     },
 
     componentDidMount: function(){
-      this.listenTfo(mainStore, this.populate);
+      this.listenTo(mainStore, this.populate);
       this.listenTo(teamPoolStore, this.rerank);
       socket.emit('leaguePage', {leagueId: this.state.leagueId});
       socket.on('update', (message) =>{
@@ -118,6 +119,7 @@ import { DragDropContext }from 'react-dnd';
           <div className="main">
             <h1>{this.state.leagueName}</h1>
             {startButton}
+            <CreateTeams leagueId = {this.state.leagueId} />
             <Timer round={this.state.round+1} time={this.state.time} activeTeamId={this.state.activeTeamId} activeTeamName={this.state.activeTeamName} />
             <a href={"/#/bracket/" + this.state.leagueId } className="bracketLink"></a>
             <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} teamId={this.state.teamId} />

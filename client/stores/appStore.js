@@ -20,12 +20,12 @@ var appStore = Reflux.createStore({
   },
 
   onUpdateResults () {
-    $.ajax ({
-      method: 'GET',
-      url: 'api/schools/results',
-      success(data) {
-        console.log('succes', data)
-      }
-    });
+    // $.ajax ({
+    //   method: 'GET',
+    //   url: 'api/schools/results',
+    //   success(data) {
+    //     console.log('succes', data)
+    //   }
+    // });
   }
 });
