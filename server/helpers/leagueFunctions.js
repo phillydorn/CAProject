@@ -77,7 +77,9 @@ module.exports = {
                         team.autodraft = true;
                         if (position) {
                           team.draftPosition = position;
+                          league.totalUsers = 6;
                         }
+                        league.save();
                         team.save();
                       })
                       if (res) {
@@ -127,22 +129,21 @@ module.exports = {
   loadSchools: function(req, res) {
     var id = req.url.slice(1);
 
-
-    models.League.findById(id).then (function (league) {
+    models.League.findById(id).then ( (league)=> {
       league.getNCAA_Teams({
         order: ['RPI_Ranking']
-      }).then (function(NCAATeams) {
+      }).then ((NCAATeams) =>{
         let data = {schoolsList: NCAATeams, leagueName:league.name}
-        league.getTeams().then(function(teams){
+        league.getTeams().then((teams)=>{
           data.teams = teams;
-          models.User.findById(req.user.id).then(function(user) {
+          models.User.findById(req.user.id).then((user) => {
             data.username = user.username;
-            teams.forEach(function(team) {
+            teams.forEach((team) =>{
               if (team.UserId===user.id) {
-                console.log('turning off in loadschools', team.id)
                 team.autodraft = false;
                 team.save();
                 data.userTeam = team;
+                data.draftOrder = module.exports.getDraftOrder(teams);
                 res.status(200).json(data);
               }
             });
@@ -151,6 +152,16 @@ module.exports = {
 
       });
     })
+  },
+
+  getDraftOrder (teams) {
+    return draftOrder.map((round)=>{
+      return round.map((position)=>{
+        return teams.filter((team)=>{
+          return team.draftPosition-1 == position;
+        })[0]
+      });
+    });
   },
 
   draftTeam(league, team, schoolId, res, io) {

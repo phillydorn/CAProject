@@ -8,6 +8,7 @@ import Timer from './timer.jsx.js';
 import UserTeam from './userTeam.jsx.js';
 import CreateTeams from './createTeams.jsx.js';
 import OtherTeam from './otherTeams.jsx.js';
+import DraftOrder from './draftOrder.jsx.js';
 import ChatWindow from './chatWindow.jsx.js';
 import Bracket from './bracket.jsx.js';
 import AuthComponent from './Authenticated.jsx.js';
@@ -33,7 +34,8 @@ import { DragDropContext }from 'react-dnd';
         schoolsList: [],
         yourTurn: false,
         activeTeam: '',
-        drafting: false
+        drafting: false,
+        draftOrder: []
       }
     },
 
@@ -55,6 +57,7 @@ import { DragDropContext }from 'react-dnd';
       });
 
       socket.on('advance', (data)=>{
+        console.log('advance', data)
         this.setState({drafting: true});
         if (data.round == 10) {
           this.setState({yourTurn: false});
@@ -84,7 +87,8 @@ import { DragDropContext }from 'react-dnd';
           schoolsList: data.schoolsList,
           leagueName: data.leagueName,
           teamId: data.userTeam.id,
-          username: data.username
+          username: data.username,
+          draftOrder: data.draftOrder
         });
       } else {
         this.setState({schoolsList: data.schoolsList})
@@ -121,6 +125,7 @@ import { DragDropContext }from 'react-dnd';
             {startButton}
             <CreateTeams leagueId = {this.state.leagueId} />
             <Timer round={this.state.round+1} time={this.state.time} activeTeamId={this.state.activeTeamId} activeTeamName={this.state.activeTeamName} />
+            <DraftOrder order = {this.state.draftOrder}/>
             <a href={"/#/bracket/" + this.state.leagueId } className="bracketLink"></a>
             <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} teamId={this.state.teamId} />
             <OtherTeam otherTeams={this.state.otherTeams} />
