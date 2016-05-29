@@ -12,9 +12,10 @@ class ChatWindow extends React.Component {
 
   componentDidMount() {
     socket.on('newMessage', (message)=>{
+      console.log('message', message)
       let messages = this.state.messages;
       messages.push(message);
-      this.setState ({messages});
+      this.setState ({messages: messages});
     });
   }
 

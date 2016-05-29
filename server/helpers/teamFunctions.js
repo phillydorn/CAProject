@@ -103,6 +103,14 @@ module.exports = {
     }).then ((teams)=>{
         res.status(200).json(teams[0].id);
       });
+  },
+
+  getTeamName(teamId, leagueId, schoolName, io) {
+    models.Team.findById(teamId).then((team)=>{
+      console.log('team name ', team.team_name)
+      let message = {username: 'DraftBot', content: team.team_name + ' has chosen ' + schoolName + '.'};
+      io.to(leagueId).emit('newMessage', message);
+    });
   }
 
 }

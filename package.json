@@ -5,7 +5,8 @@
   "main": "server/server.js",
   "repository": "https://github.com/phillydorn/CAProject.git",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "nodemon --harmony-destructuring server/server.js"
   },
   "author": "Phil Dornfeld",
   "license": "ISC",

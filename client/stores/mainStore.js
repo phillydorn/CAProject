@@ -27,9 +27,9 @@ var mainStore = Reflux.createStore({
     });
   },
 
-  onSelectTeamCompleted: function(leagueId) {
+  onSelectTeamCompleted: function(leagueId, schoolId, teamId, schoolName) {
     console.log('complete')
-    socket.emit('update', {leagueId: leagueId});
+    socket.emit('update', {leagueId, teamId, schoolName});
   },
 
   onStartDraft: function(leagueId) {

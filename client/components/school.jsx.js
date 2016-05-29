@@ -44,9 +44,8 @@ class School extends React.Component {
   handleSelect(e) {
     e.preventDefault();
     if (this.props.yourTurn) {
-      let schoolId = this.props.schoolId;
-      let leagueId = this.props.leagueId;
-      SchoolActions.selectTeam(schoolId, leagueId);
+      let { schoolId, leagueId, teamId, schoolName } = this.props;
+      SchoolActions.selectTeam(schoolId, leagueId, teamId, schoolName);
     } else {
       alert ('It is not your turn.')
     }

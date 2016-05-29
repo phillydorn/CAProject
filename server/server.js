@@ -49,7 +49,9 @@ var port = isProduction ? process.env.PORT : 3000;
 
       socket.on('update', (data) =>{
 
-        let leagueId= data.leagueId;
+        let { leagueId, schoolName, teamId } = data;
+        console.log('update', teamId)
+        teams.getTeamName(teamId, leagueId, schoolName, io);
         draft.advance(leagueId, io);
 
       });

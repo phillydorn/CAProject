@@ -7,7 +7,7 @@ var SchoolStore = Reflux.createStore({
 
   listenables: [SchoolActions],
 
-  onSelectTeam: function(schoolId, leagueId){
+  onSelectTeam: function(schoolId, leagueId, teamId, schoolName){
     $.ajax({
       method: 'PUT',
       url: '/api/leagues/'+leagueId,
@@ -15,7 +15,8 @@ var SchoolStore = Reflux.createStore({
         schoolId: schoolId
       },
       success: function(response) {
-        SchoolActions.selectTeam.completed(leagueId);
+        console.log('success')
+        SchoolActions.selectTeam.completed(leagueId, schoolId, teamId, schoolName);
       }.bind(this)
     });
   },
