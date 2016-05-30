@@ -9,9 +9,10 @@ module.exports = {
   startTimer(io, leagueId, teamId) {
     let leagues = require('./leagueFunctions');
     let seconds = 60;
+    io.to(leagueId).emit('timer', seconds)
     drafts[leagueId].timer = setInterval(()=>{
       seconds--;
-      io.to(leagueId).emit('timer', seconds)
+      console.log('seconds', seconds)
       if (seconds < 1) {
         clearInterval(drafts[leagueId].timer);
         models.League.findById(leagueId).then((league)=>{

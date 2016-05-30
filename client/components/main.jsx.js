@@ -25,7 +25,7 @@ import { DragDropContext }from 'react-dnd';
       return {
         round: 0,
         position: 0,
-        time: '',
+        // time: '',
         otherTeams: [],
         leagueId: this.props.params.league,
         username: '',
@@ -52,9 +52,9 @@ import { DragDropContext }from 'react-dnd';
       });
 
 
-      socket.on('timer', (seconds)=> {
-        this.setState({time: seconds})
-      });
+      // socket.on('timer', (seconds)=> {
+      //   this.setState({time: seconds})
+      // });
 
       socket.on('advance', (data)=>{
         console.log('advance', data)
@@ -110,7 +110,7 @@ import { DragDropContext }from 'react-dnd';
     },
 
     componentWillUnmount: function () {
-      socket.removeAllListeners('timer');
+      // socket.removeAllListeners('timer');
       socket.removeAllListeners('advance');
       socket.removeAllListeners('update');
       socket.emit('leave', {leagueId: this.state.leagueId, teamId: this.state.teamId});
@@ -124,7 +124,7 @@ import { DragDropContext }from 'react-dnd';
             <h1>{this.state.leagueName}</h1>
             {startButton}
             <CreateTeams leagueId = {this.state.leagueId} />
-            <Timer round={this.state.round+1} time={this.state.time} activeTeamId={this.state.activeTeamId} activeTeamName={this.state.activeTeamName} />
+            <Timer round={this.state.round+1} activeTeamId={this.state.activeTeamId} activeTeamName={this.state.activeTeamName} />
             <DraftOrder order = {this.state.draftOrder}/>
             <a href={"/#/bracket/" + this.state.leagueId } className="bracketLink"></a>
             <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} teamId={this.state.teamId} />
