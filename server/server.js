@@ -43,7 +43,6 @@ var port = isProduction ? process.env.PORT : 3000;
       });
 
       socket.on('startDraft', (leagueId)=> {
-        draft.startDraft(io, leagueId);
         leagues.startDraft(io, leagueId);
       });
 

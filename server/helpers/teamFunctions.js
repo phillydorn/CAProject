@@ -1,6 +1,7 @@
 "use strict";
 
 var models = require('../models');
+var Sequelize = require('sequelize');
 
 module.exports = {
 
@@ -8,12 +9,12 @@ module.exports = {
     let teamId = req.url.split('/')[2];
     models.Team.findById(teamId).then((team)=>{
       team.getNCAA_Teams().then((schools)=>{
+
         schools = schools.sort((a,b)=>{
           return a.Team_NCAA.playerRanking - b.Team_NCAA.playerRanking;
         }).filter((school)=>{
-          return !school.Team_NCAA.draftedByMe && !school.Team_NCAA.draftedByOther;
+          return school.hasLeagues([team.leagueId])
         });
-
         res.status(200).json({schoolsList: schools});
       });
     });
@@ -111,6 +112,29 @@ module.exports = {
       let message = {username: 'DraftBot', content: team.team_name + ' has chosen ' + schoolName + '.'};
       io.to(leagueId).emit('newMessage', message);
     });
-  }
+  },
 
+  getTopRankedTeam(team, league, callback) {
+
+    league.getNCAA_Teams().then((schools)=>{
+      team.getNCAA_Teams().then((teamSchools)=>{
+        schools = schools.sort((a,b)=>{
+          let aPlayerRanking, bPlayerRanking;
+          teamSchools.forEach((teamSchool)=>{
+            if (a.id == teamSchool.id) {
+              aPlayerRanking = teamSchool.Team_NCAA.playerRanking;
+            } else if (b.id == teamSchool.id) {
+              bPlayerRanking = teamSchool.Team_NCAA.playerRanking;
+
+            }
+          });
+          return aPlayerRanking - bPlayerRanking;
+        })
+        callback(schools[0].id);
+      }).catch((error) =>{
+        console.log('error', error)
+      })
+
+    });
+  }
 }

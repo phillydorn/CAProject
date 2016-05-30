@@ -80,7 +80,7 @@ import { DragDropContext }from 'react-dnd';
     },
 
     populate: function(data) {
-      console.log('data', data)
+      console.log('bakc', data)
       if (data.teams) {
         this.setState({
           otherTeams: data.teams,

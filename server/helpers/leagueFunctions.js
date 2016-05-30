@@ -128,7 +128,7 @@ module.exports = {
 
   loadSchools: function(req, res) {
     var id = req.url.slice(1);
-
+    console.log('url', req.url)
     models.League.findById(id).then ( (league)=> {
       league.getNCAA_Teams({
         order: ['RPI_Ranking']
@@ -229,6 +229,8 @@ module.exports = {
         });
         console.log('draftpositions', draftPositions)
         io.to(leagueId).emit('advance', {round: 0, position: 0, nextUpId:draftPositions[0].id, nextUpName: draftPositions[0].team_name});
+        draft.startDraft(io, leagueId, draftPositions[0].id);
+
       });
     });
   },

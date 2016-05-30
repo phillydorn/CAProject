@@ -20,15 +20,14 @@ class TeamPool extends React.Component {
 
   toggleDefault(e) {
     e.preventDefault();
-    console.log('this', this)
     this.setState({ranking: 'default'})
-    MainActions.populate(this.props.teamId, null, 'default');
+    MainActions.populate(this.props.leagueId, null, 'default');
   }
 
   toggleCustom (e) {
     e.preventDefault();
     this.setState({ranking: 'custom'})
-    MainActions.populate(this.props.leagueId, null, 'custom');
+    MainActions.populate(this.props.teamId, null, 'custom');
   }
 
   render() {
