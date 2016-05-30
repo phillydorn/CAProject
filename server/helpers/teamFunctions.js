@@ -130,7 +130,7 @@ module.exports = {
           });
           return aPlayerRanking - bPlayerRanking;
         })
-        callback(schools[0].id);
+        callback(schools[0]);
       }).catch((error) =>{
         console.log('error', error)
       })

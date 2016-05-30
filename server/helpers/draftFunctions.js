@@ -8,7 +8,7 @@ module.exports = {
 
   startTimer(io, leagueId, teamId) {
     let leagues = require('./leagueFunctions');
-    let seconds = 5;
+    let seconds = 60;
     drafts[leagueId].timer = setInterval(()=>{
       seconds--;
       io.to(leagueId).emit('timer', seconds)
@@ -16,9 +16,9 @@ module.exports = {
         clearInterval(drafts[leagueId].timer);
         models.League.findById(leagueId).then((league)=>{
           models.Team.findById(teamId).then((team)=>{
-            teams.getTopRankedTeam(team, league, (topTeamId)=>{
-              console.log('top ranked is', topTeamId)
-              leagues.draftTeam(league, team, topTeamId, null, io);
+            teams.getTopRankedTeam(team, league, (topTeam)=>{
+              console.log('top ranked is', topTeam.market)
+              leagues.draftTeam(league, team, topTeam.id, 0, null, io);
             });
           });
         });
@@ -64,23 +64,16 @@ module.exports = {
       models.League.findById(leagueId).then((league)=>{
         models.Team.findById(nextDraft.id).then((team)=>{
           if(team.autodraft === true) {
+
             io.to(leagueId).emit('advance', {round: drafts[leagueId].round, position: drafts[leagueId].position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});
-            team.getNCAA_Teams().then((schools)=>{
-              var minSchool = schools.filter((school)=>{
-                return school.hasLeagues([team.leagueId]);
-            })
-              .reduce((prev, curr)=>{
-                if (prev.Team_NCAA.playerRanking < curr.Team_NCAA.playerRanking) {
-                  return prev;
-                } else {
-                  return curr;
-                }
-              }, {Team_NCAA:Infinity});
-              console.log('team', team.team_name, 'should draft', minSchool.market);
-                leagues.draftTeam(league, team, minSchool.id, null, io);
-              });
 
+            teams.getTopRankedTeam(team, league, (topTeam)=>{
+              console.log('top ranked is', topTeam.market)
+              leagues.draftTeam(league, team, topTeam.id, drafts[leagueId].round, null, io);
+              let message = {username: 'DraftBot', content: team.team_name + ' has chosen ' + topTeam.market + '.'};
+              io.to(leagueId).emit('newMessage', message);
 
+            });
 
           } else {
             io.to(leagueId).emit('advance', {round: drafts[leagueId].round, position: drafts[leagueId].position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});

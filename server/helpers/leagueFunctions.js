@@ -164,7 +164,7 @@ module.exports = {
     });
   },
 
-  draftTeam(league, team, schoolId, res, io) {
+  draftTeam(league, team, schoolId, round, res, io) {
     team.getNCAA_Teams({where: {id: schoolId}}).then (function(schools) {
       let school = schools[0];
       school.Team_NCAA.draftedByMe = true;
@@ -209,7 +209,7 @@ module.exports = {
         }
       }).then ((team) => {
 
-        module.exports.draftTeam(league, team, schoolId, res);
+        module.exports.draftTeam(league, team, schoolId, round, res);
       });
     });
   },
