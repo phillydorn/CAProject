@@ -14,6 +14,7 @@ var userTeamStore = Reflux.createStore({
       method: 'GET',
       url: '/api/teams/'+teamId,
       success: function(response) {
+        console.log('user', response)
         this.trigger(response);
       }.bind(this)
     });

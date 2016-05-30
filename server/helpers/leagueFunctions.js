@@ -201,6 +201,7 @@ module.exports = {
     var leagueId = req.url.slice(1);
     var userId = req.user.id;
     var round = draft.getRound(leagueId);
+    console.log('your round is', round)
     models.League.findById(leagueId).then((league)=> {
       models.Team.findOne({
         where: {
@@ -208,7 +209,6 @@ module.exports = {
           UserId: userId
         }
       }).then ((team) => {
-
         module.exports.draftTeam(league, team, schoolId, round, res);
       });
     });

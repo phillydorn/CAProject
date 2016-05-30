@@ -68,7 +68,7 @@ module.exports = {
             io.to(leagueId).emit('advance', {round: drafts[leagueId].round, position: drafts[leagueId].position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});
 
             teams.getTopRankedTeam(team, league, (topTeam)=>{
-              console.log('top ranked is', topTeam.market)
+              console.log('top ranked is', topTeam.market, 'round is ', drafts[leagueId].round)
               leagues.draftTeam(league, team, topTeam.id, drafts[leagueId].round, null, io);
               let message = {username: 'DraftBot', content: team.team_name + ' has chosen ' + topTeam.market + '.'};
               io.to(leagueId).emit('newMessage', message);
@@ -89,7 +89,7 @@ module.exports = {
   },
 
   getRound(leagueId) {
-    return drafts[leagueId].round + 1;
+    return drafts[leagueId].round;
   }
 
 }
