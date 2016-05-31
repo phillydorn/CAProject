@@ -25,7 +25,6 @@ import { DragDropContext }from 'react-dnd';
       return {
         round: 0,
         position: 0,
-        // time: '',
         otherTeams: [],
         leagueId: this.props.params.league,
         username: '',
@@ -39,9 +38,6 @@ import { DragDropContext }from 'react-dnd';
       }
     },
 
-    componentWillMount: function() {
-    },
-
     componentDidMount: function(){
       this.listenTo(mainStore, this.populate);
       this.listenTo(teamPoolStore, this.rerank);
@@ -50,11 +46,6 @@ import { DragDropContext }from 'react-dnd';
         console.log('updating', message)
         MainActions.populate(this.state.leagueId);
       });
-
-
-      // socket.on('timer', (seconds)=> {
-      //   this.setState({time: seconds})
-      // });
 
       socket.on('advance', (data)=>{
         console.log('advance', data)
@@ -79,7 +70,8 @@ import { DragDropContext }from 'react-dnd';
       });
     },
 
-    populate: function(data) {
+
+    populate (data) {
       console.log('bakc', data)
       if (data.teams) {
         this.setState({
@@ -110,14 +102,13 @@ import { DragDropContext }from 'react-dnd';
     },
 
     componentWillUnmount: function () {
-      // socket.removeAllListeners('timer');
       socket.removeAllListeners('advance');
       socket.removeAllListeners('update');
       socket.emit('leave', {leagueId: this.state.leagueId, teamId: this.state.teamId});
     },
 
     render: function() {
-
+      console.log('render main', this.props, 'state', this.state)
       let startButton = this.state.drafting ? '' : <button className="start" onClick={this.startDraft} >Start Draft</button>
       return (
           <div className="main">

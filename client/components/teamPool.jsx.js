@@ -14,12 +14,15 @@ class TeamPool extends React.Component {
     this.toggleDefault = this.toggleDefault.bind(this);
   }
 
-  componentWillMount() {
-
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.teamId !== this.props.teamId ||
+           nextProps.schoolsList.length !== this.props.schoolsList.length ||
+           nextProps.yourTurn !== this.props.yourTurn ||
+           nextState.ranking !== this.state.ranking;
   }
 
   toggleDefault(e) {
-    e.preventDefault();
+  e.preventDefault();
     this.setState({ranking: 'default'})
     MainActions.populate(this.props.leagueId, null, 'default');
   }
@@ -31,6 +34,7 @@ class TeamPool extends React.Component {
   }
 
   render() {
+    console.log('render teampool', this.props, 'state', this.state)
     let isDefault = this.state.ranking === 'default' ? 'ranking-on' : '';
     let isCustom = this.state.ranking === 'custom' ? 'ranking-on' : '';
 

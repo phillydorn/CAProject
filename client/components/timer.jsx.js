@@ -11,20 +11,27 @@ class Timer extends React.Component{
   }
 
   componentDidMount() {
-    socket.on('timer', ()=>{
-      this.startTimer.bind(this)
+    socket.on('timer', (seconds)=>{
+      this.startTimer()
     });
   }
+
+   componentWillUnmount () {
+      socket.removeAllListeners('timer');
+    }
 
   startTimer () {
     let self = this;
     let seconds = 60;
-    let timer = setInterval(()=>{
-    self.setState({time: seconds});
+    if (this.timer){
+      clearInterval(this.timer)
+    }
+    this.timer = setInterval(()=>{
     console.log('seconds  d', seconds)
+    self.setState({time: seconds});
       seconds--;
       if (seconds < 1) {
-        clearInterval(timer);
+        clearInterval(self.timer);
       }
     }, 1000);
   }

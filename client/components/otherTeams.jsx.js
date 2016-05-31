@@ -10,11 +10,17 @@ var UserTeam = require('./userTeam.jsx.js');
 
 var OtherTeams = React.createClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return {otherTeamId: '', teamName: '', team: {}}
   },
 
-  handleSelect: function (e) {
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.otherTeams.length !== this.props.otherTeams.length ||
+           nextState.otherTeamId !== this.state.otherTeamId;
+
+  },
+
+  handleSelect (e) {
     var teamName;
     this.props.otherTeams.forEach ((team) => {
       if (team.id == e.target.value) {
@@ -28,7 +34,8 @@ var OtherTeams = React.createClass({
   },
 
 
-  render: function() {
+  render () {
+    console.log('render other Teams', this.props, 'state', this.state)
     var otherTeams = this.props.otherTeams.map(function(team) {
       return (
         <option key={team.id} value={team.id}>{team.team_name}</option>

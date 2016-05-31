@@ -10,12 +10,8 @@ var UserTeam = React.createClass({
     mixins: [Reflux.connect(userTeamStore, "userSchoolList")],
 
 
- getInitialState: function() {
-    let list = [];
-    for (var i=0; i<10; i++) {
-      list.push({Team_NCAA: {round: 0}});
-    }
-    return {userSchoolList: list};
+ getInitialState () {
+    return {userSchoolList: []};
   },
 
   componentWillReceiveProps: function (){
@@ -24,7 +20,12 @@ var UserTeam = React.createClass({
     }, 500)
   },
 
-  render: function() {
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.teamId !== this.props.teamId || nextState.userSchoolList.length !== this.state.userSchoolList.length;
+  },
+
+  render () {
+    console.log('render user', this.props, 'state', this.state)
     var schoolNodes = this.state.userSchoolList.sort((a,b)=>{
       return a.Team_NCAA.round - b.Team_NCAA.round;
     }).map(function (school, order) {
