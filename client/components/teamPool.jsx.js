@@ -15,14 +15,26 @@ class TeamPool extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+
     return nextProps.teamId !== this.props.teamId ||
            nextProps.schoolsList.length !== this.props.schoolsList.length ||
            nextProps.yourTurn !== this.props.yourTurn ||
+           !this.checkSchoolsList(nextProps) ||
            nextState.ranking !== this.state.ranking;
   }
 
+  checkSchoolsList (nextProps) {
+      let len = this.props.schoolsList.length;
+      for (let i = 0; i<len; i++) {
+        if (this.props.schoolsList[i].id !== nextProps.schoolsList[i].id) {
+          return false;
+        }
+      return true;
+      }
+    }
+
   toggleDefault(e) {
-  e.preventDefault();
+    e.preventDefault();
     this.setState({ranking: 'default'})
     MainActions.populate(this.props.leagueId, null, 'default');
   }

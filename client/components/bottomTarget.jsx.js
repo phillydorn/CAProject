@@ -10,6 +10,7 @@ const slotTarget = {
   },
 
   drop (props, monitor, dropComponent) {
+    console.log('dropComponent is ', dropComponent)
     return {rank: props.rank, dropComponent, position: 'bottom'}
   }
 };

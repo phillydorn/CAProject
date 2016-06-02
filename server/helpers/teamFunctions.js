@@ -6,16 +6,27 @@ var Sequelize = require('sequelize');
 module.exports = {
 
   loadPool (req, res) {
+    console.log('loadingpool')
     let teamId = req.url.split('/')[2];
     models.Team.findById(teamId).then((team)=>{
       team.getNCAA_Teams().then((schools)=>{
+        models.League.findById(team.LeagueId).then((league)=>{
+          league.getNCAA_Teams().then((leagueSchools) => {
+            schools = schools.sort((a,b)=>{
+              return a.Team_NCAA.playerRanking - b.Team_NCAA.playerRanking;
+            })
+            let undraftedSchools = [];
+            schools.forEach((school) =>{
+              leagueSchools.forEach((leagueSchool) =>{
+                if (school.id == leagueSchool.id) {
+                  undraftedSchools.push(leagueSchool);
+                }
+              });
+            });
+            res.status(200).json({schoolsList: undraftedSchools});
 
-        schools = schools.sort((a,b)=>{
-          return a.Team_NCAA.playerRanking - b.Team_NCAA.playerRanking;
-        }).filter((school)=>{
-          return school.hasLeagues([team.leagueId])
+          });
         });
-        res.status(200).json({schoolsList: schools});
       });
     });
   },

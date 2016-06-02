@@ -13,7 +13,7 @@ var mainStore = Reflux.createStore({
     let url;
     if (order === 'default') {
       url = '/api/leagues/'+ID;
-    } else {
+    } else if (order == 'custom') {
       url = '/api/teams/pool/' + ID
     }
 
