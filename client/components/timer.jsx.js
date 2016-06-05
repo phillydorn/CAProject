@@ -26,14 +26,16 @@ class Timer extends React.Component{
     if (this.timer){
       clearInterval(this.timer)
     }
-    this.timer = setInterval(()=>{
-    console.log('seconds  d', seconds)
-    self.setState({time: seconds});
-      seconds--;
-      if (seconds < 1) {
-        clearInterval(self.timer);
-      }
-    }, 1000);
+    if (this.props.round < 11 ) {
+      this.timer = setInterval(()=>{
+      console.log('seconds  d', seconds)
+      self.setState({time: seconds});
+        seconds--;
+        if (seconds < 1) {
+          clearInterval(self.timer);
+        }
+      }, 1000);
+    }
   }
 
   render () {

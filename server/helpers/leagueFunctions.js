@@ -54,6 +54,8 @@ module.exports = {
   },
 
   createOwnerTeam: function(req, res) {
+
+    var io = require('../server');
     var teamName = req.body.teamname;
     var userID = req.user.id;
     var leagueID = req.url.slice(1);
@@ -85,6 +87,7 @@ module.exports = {
                       if (res) {
                         res.status(200).send('success');
                       } else {
+                        io.to(leagueID).emit('update', leagueID);
                         return team.id;
                       }
                     })

@@ -1,3 +1,16 @@
 .draftPosition {
-  display: inline;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+
+.drafter-avatar {
+  background-image: url('/images/basketball.png');
+  height: 50px;
+  width: 50px;
+  background-size: cover;
+}
+
+.drafter-name.is-drafting {
+  background-color: green;
 }

@@ -49,7 +49,12 @@ import { DragDropContext }from 'react-dnd';
 
       socket.on('advance', (data)=>{
         console.log('advance', data)
-        this.setState({drafting: true});
+        let { round, position } = data;
+        this.setState({
+                  drafting: true,
+                  round: round,
+                  position: position
+                });
         if (data.round == 10) {
           this.setState({yourTurn: false});
         } else {
@@ -116,7 +121,7 @@ import { DragDropContext }from 'react-dnd';
             {startButton}
             <CreateTeams leagueId = {this.state.leagueId} />
             <Timer round={this.state.round+1} activeTeamId={this.state.activeTeamId} activeTeamName={this.state.activeTeamName} />
-            <DraftOrder order = {this.state.draftOrder}/>
+            <DraftOrder order = {this.state.draftOrder} round = {this.state.round} position = {this.state.position} />
             <a href={"/#/bracket/" + this.state.leagueId } className="bracketLink"></a>
             <TeamPool yourTurn={this.state.yourTurn} leagueId={this.state.leagueId} schoolsList={this.state.schoolsList} teamId={this.state.teamId} />
             <OtherTeam otherTeams={this.state.otherTeams} />

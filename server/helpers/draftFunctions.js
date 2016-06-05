@@ -65,7 +65,6 @@ module.exports = {
       models.League.findById(leagueId).then((league)=>{
         models.Team.findById(nextDraft.id).then((team)=>{
           if(team.autodraft === true) {
-
             io.to(leagueId).emit('advance', {round: drafts[leagueId].round, position: drafts[leagueId].position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});
 
             teams.getTopRankedTeam(team, league, (topTeam)=>{
@@ -77,6 +76,7 @@ module.exports = {
             });
 
           } else {
+
             io.to(leagueId).emit('advance', {round: drafts[leagueId].round, position: drafts[leagueId].position, nextUpId:nextDraft.id, nextUpName: nextDraft.team_name});
             if (drafts[leagueId].round < 10) {
               this.startTimer(io, leagueId, nextDraft.id);

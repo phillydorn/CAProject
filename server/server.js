@@ -98,5 +98,5 @@ models.NCAA_Team.sync().then(function () {
   });
 });
 
-
+module.exports = io;
 
