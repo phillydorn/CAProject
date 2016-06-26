@@ -1,7 +1,6 @@
 var React = require('react');
 var UserSchool = require('./userSchool.jsx.js');
 var Reflux = require('reflux');
-var mainStore = require('../stores/mainStore');
 var UserTeamActions=  require('../actions/UserTeamActions');
 var userTeamStore =  require('../stores/userTeamStore');
 

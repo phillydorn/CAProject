@@ -1,7 +1,6 @@
 var Reflux = require('reflux');
 var OtherTeamActions = require('../actions/OtherTeamActions');
 var SchoolActions = require('../actions/SchoolActions');
-var mainStore = require('./mainStore');
 var $ = require('jquery');
 
 var otherTeamStore = Reflux.createStore({
