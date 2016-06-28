@@ -15,33 +15,34 @@ class TeamPool extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-
     return nextProps.teamId !== this.props.teamId ||
            nextProps.schoolsList.length !== this.props.schoolsList.length ||
            nextProps.yourTurn !== this.props.yourTurn ||
-           !this.checkSchoolsList(nextProps) ||
-           nextState.ranking !== this.state.ranking;
+           !this.checkSchoolsList(nextProps);
   }
 
   checkSchoolsList (nextProps) {
+    console.log('this', this.props.schoolsList, 'next', nextProps.schoolsList)
       let len = this.props.schoolsList.length;
       for (let i = 0; i<len; i++) {
         if (this.props.schoolsList[i].id !== nextProps.schoolsList[i].id) {
           return false;
         }
-      return true;
       }
+      return true;
     }
 
   toggleDefault(e) {
     e.preventDefault();
     this.setState({ranking: 'default'})
+    console.log('toggling', this.state.ranking)
     MainActions.populate(this.props.leagueId, null, 'default');
   }
 
   toggleCustom (e) {
     e.preventDefault();
     this.setState({ranking: 'custom'})
+    console.log('toggling', this.state.ranking)
     MainActions.populate(this.props.teamId, null, 'custom');
   }
 
