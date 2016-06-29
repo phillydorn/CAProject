@@ -3,13 +3,12 @@ var path = require('path');
 
 module.exports = {
 
-  devtool: 'eval',
+  devtool: 'source-map',
 
   context: __dirname + '/client',
   entry: [
     'webpack/hot/dev-server',
-    // 'webpack-dev-server/client?http://localhost:8080',
-    'webpack-dev-server/client?http://' + require("os").hostname() + ':8080/',
+    'webpack-dev-server/client?http://localhost:8080',
     './app'
   ],
 
