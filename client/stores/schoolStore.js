@@ -27,7 +27,7 @@ var SchoolStore = Reflux.createStore({
       url: '/api/teams/'+ teamId,
       data: { schoolId, currentRank, newRank },
       success: function (response) {
-        MainActions.populate(teamId, null, 'custom');
+        // MainActions.populate(teamId, null, 'custom');
         console.log('ranking', response)
       }
     })
