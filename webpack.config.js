@@ -8,7 +8,8 @@ module.exports = {
   context: __dirname + '/client',
   entry: [
     'webpack/hot/dev-server',
-    'webpack-dev-server/client?http://localhost:8080',
+    // 'webpack-dev-server/client?http://localhost:8080',
+    'webpack-dev-server/client?http://' + require("os").hostname() + ':8080/',
     './app'
   ],
 
