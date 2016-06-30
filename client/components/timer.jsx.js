@@ -41,10 +41,10 @@ class Timer extends React.Component{
   render () {
     var activeString = this.props.activeTeamName ? this.props.activeTeamName+' is drafting.' : "Draft has not begun yet.";
     return (
-      <div>
-        <p>Round {this.props.round}</p>
-        <p>{activeString}</p>
-        <p>Time Left: {this.state.time} seconds</p>
+      <div className = "round-info" >
+        <p className = "round-number" >Round {this.props.round}</p>
+        <p className = "round-active" >{activeString}</p>
+        <p clasName = "round-time-left">Time Left: {this.state.time} seconds</p>
       </div>
     )
   }

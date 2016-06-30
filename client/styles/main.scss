@@ -6,6 +6,16 @@ body {
   background: #c4c4c4;
 }
 
+.round-info {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  -ms-transform: translateX(-50%); /* IE 9 */
+  -webkit-transform: translateX(-50%); /* Chrome, Safari, Opera */
+  transform: translateX(-50%);
+  font-size: 24px;
+}
+
 .team-box {
   border: 3px solid black;
   width: 230px;
@@ -13,11 +23,19 @@ body {
   overflow: auto;
   &.teamPool {
     background-color: #b99abe;
-    float: left;
+    position: absolute;
+    top: 310px;
+    left: 50%;
+    -ms-transform: translateX(-50%); /* IE 9 */
+    -webkit-transform: translateX(-50%); /* Chrome, Safari, Opera */
+    transform: translateX(-50%);
+
   }
   &.userTeam {
     background-color: #9dbcf3;
-    float: right;
+    position: absolute;
+    right: 0;
+    top: 200px;
   }
    &.otherTeam {
     background-color: #8483a2;
@@ -58,6 +76,16 @@ td {
   width: 20px;
   border: 1px solid green;
 }
+
+.ranking-switch {
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  -ms-transform: translateX(-50%); /* IE 9 */
+  -webkit-transform: translateX(-50%); /* Chrome, Safari, Opera */
+  transform: translateX(-50%);
+
+}
 .ranking-button {
   padding: 10px;
   font-size: 16px;
@@ -69,11 +97,12 @@ td {
 
 
 .chat-window {
-  position: relative;
+  position: absolute;
+  right: 0;
+  top: 400px;
   height: 300px;
   width: 500px;
   background-color: #d3d3d3;
-  clear: left;
   border: 1px solid black;
 
   .messages {

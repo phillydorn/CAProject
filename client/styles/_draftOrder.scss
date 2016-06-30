@@ -1,5 +1,5 @@
 .draftPosition {
-  display: inline-block;
+  display: block;
   margin-right: 5px;
 }
 
@@ -9,8 +9,18 @@
   height: 50px;
   width: 50px;
   background-size: cover;
+  display: inline-block;
+  vertical-align: middle;
 }
 
-.drafter-name.is-drafting {
-  background-color: green;
+.drafter-name {
+
+  display: inline-block;
+  vertical-align: middle;
+
+  &.is-drafting {
+    background-color: green;
+
+  }
 }
+
